@@ -32,14 +32,12 @@ for filename in sample_filenames:
             break
 
 samples_loaded  = LoadSeqs(data=samples,moltype=DNA,aligned=False)
-samples_fasta   = sampels_loaded.toFasta()
+samples_fasta   = samples_loaded.toFasta()
 
 # import pprint
 # pprint.pprint(sorted(gene_lengths))
 #plt.hist(gene_lengths)
 #plt.show()         # TODO: server backend needs install: 'ImportError: Gtk* backend requires pygtk to be installed.'
-
-
 
 fileout_fasta = open(pathin+'all.fasta','wb')
 fileout_fasta.write(samples_fasta)

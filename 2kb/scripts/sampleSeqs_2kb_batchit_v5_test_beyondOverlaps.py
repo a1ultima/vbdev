@@ -38,9 +38,7 @@ def sampleSequences (sample_direction, sample_range, geneIds, sample_data={}, sa
     sample_range = 2000  # no. of bases to sample up/downstream
     sample_data  = {} #Note: sampleSequences either starts from scratch (default) or builts upon previous data 
     """
-
     print 'Sampling sequences: '+str(sample_range)+'bp '+sample_direction+'...'
-
     print(geneIds)
 
     for geneId in geneIds:
@@ -51,9 +49,8 @@ def sampleSequences (sample_direction, sample_range, geneIds, sample_data={}, sa
         sample_seqs[geneId] = {'untruncated':str(),'truncated':str()}
      
         if sample_direction == 'upstream':
-            sampleLocation = geneLocation.resized(-sample_range,-len(geneLocation)) #TODO: check if this is off by 1 or not
-            overlap_features = list(ensemblGenome.getFeatures(region=sampleLocation,feature_types='gene'))
-
+            sampleLocation  = geneLocation.resized(-sample_range,-len(geneLocation)) #TODO: check if this is off by 1 or not
+            overlap_features= list(ensemblGenome.getFeatures(region=sampleLocation,feature_types='gene'))
             if not overlap_features:            # keep full sample & skip to next loop if no features are found
                 # a) NO OVERLAPS PROCEDURE:     # TODO: print msg that there are no overlaps
                 sample_data[geneId]['sampleLocation']['untruncated']= sampleLocation  # Alterrnate route 1 --v
@@ -62,24 +59,25 @@ def sampleSequences (sample_direction, sample_range, geneIds, sample_data={}, sa
                 sample_seqs[geneId]['truncated']                    = str(ensemblGenome.getRegion(sampleLocation).Seq)
             else:
                 # b) OVERLAPS PROCEDURE:
-                overlap_exons = [[[exon for exon in transcript.Exons] for transcript in transcripts] for transcripts in [feature.Transcripts for feature in overlap_features]] # exons Of Transcripts Of Features
-                overlap_exons = list(itertools.chain(*overlap_exons)) # flattens --> lvl 2 --v
-                overlap_exons = list(itertools.chain(*overlap_exons)) # flattens --> lvl 1
-                overlap_locations = sorted([exon.Location for exon in overlap_exons],key=attrgetter('End')) # 'End' <= 3' of feature vs. 5' of sample
+                overlap_exons       = [[[exon for exon in transcript.Exons] for transcript in transcripts] for transcripts in [feature.Transcripts for feature in overlap_features]] # exons Of Transcripts Of Features
+                overlap_exons       = list(itertools.chain(*overlap_exons)) # flattens --> lvl 2 --v
+                overlap_exons       = list(itertools.chain(*overlap_exons)) # flattens --> lvl 1
+                overlap_locations   = sorted([exon.Location for exon in overlap_exons],key=attrgetter('End')) # 'End' <= 3' of feature vs. 5' of sample
 
                 # TRUNCATION STEP 1:    remove exons that are so far downstream of sample they are beyond sample overlap
                 #
-                # overlapping exons:    5'----3'    5'----3'         5'----3'       5'----3' 
-                #                            ||      |||||||           xxxx           xxxx  <--notice we dont want the xxx's to truncate away our Sample
-                # sample:                    5'-------S---------3'+5'-----------G------------------//  S = sample, G = gene of sample
+                #   overlapping exons:      5'----3'    5'----3'         5'----3'       5'----3' 
+                #                              ||||      ||||||            xxxx           xxxx  <--notice we dont want the xxx's to truncate away our Sample
+                #   sample:                    5'-------S---------3'+5'-----------G------------------//  S = sample, G = gene of sample
                 #
                 # TODO: ignore exons whose 5' end is > sample's 3' end (not technically overlapping)
+                overlap_locations = [i for i in overlap_locations if i.Start < sampleLocation.End]
 
-                # TRUNCATION STEP:      care only about the furthest downstream exon who overlaps w/ sample
+                # TRUNCATION STEP 2:    care only about the furthest downstream exon who overlaps w/ sample
+                #   
                 overlap_limit = overlap_locations[-1]   # the last overlapping feature beyond which there are no overlaps w/i sample
 
-
-                # TRUNCATION STEP 2:    
+                # TRUNCATION STEP 3:    
                 #
                 #   overlapping exon 5'---------------------3'
                 #                         |||||||||||||||||||  <--notice the entire sample must be removed 
@@ -104,7 +102,6 @@ def sampleSequences (sample_direction, sample_range, geneIds, sample_data={}, sa
             sampleLocation      = geneLocation.resized(len(geneLocation),+sample_range)
             overlap_features    = [feature for feature in ensemblGenome.getFeatures(region=sampleLocation,feature_types='gene')]
             overlap_locations   = sorted([feature.Location for feature in overlap_features],key=attrgetter('Start'))    # 'Start' <= 5' of feature vs. 3' of sample
-
     return sample_data, sample_seqs    #ANDY_01/27
     #return sample_data, sample_seqs
 
