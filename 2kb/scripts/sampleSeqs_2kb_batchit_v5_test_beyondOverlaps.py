@@ -20,13 +20,10 @@ def scanGenes (ensemblGenome, geneId, featureType, scanFrom, scanTo):
     scan_type   = 'gene'
     scan_range  = (-100000,100000) 
     """
-    
     print 'Scanning for genes...'
-
     scan_target = ensemblGenome.getGeneByStableId(StableId=geneId).Location
     scan_genes  = ensemblGenome.getFeatures(region=scan_target.resized(scanFrom,scanTo),feature_types=featureType)
     scan_geneIds= [i.StableId for i in scan_genes]
-    
     return scan_geneIds
 
 #______________________________________________#
@@ -40,14 +37,12 @@ def sampleSequences (sample_direction, sample_range, geneIds, sample_data={}, sa
     """
     print 'Sampling sequences: '+str(sample_range)+'bp '+sample_direction+'...'
     print(geneIds)
-
     for geneId in geneIds:
         print '\t'+geneId
         gene = ensemblGenome.getGeneByStableId(StableId=geneId) # select gene
         geneLocation = gene.Location 
         sample_data[geneId] = {'geneLocation':geneLocation,'sampleLocation':{'untruncated':[],'truncated':[],'featuresIn':[]}}
         sample_seqs[geneId] = {'untruncated':str(),'truncated':str()}
-     
         if sample_direction == 'upstream':
             sampleLocation  = geneLocation.resized(-sample_range,-len(geneLocation)) #TODO: check if this is off by 1 or not
             overlap_features= list(ensemblGenome.getFeatures(region=sampleLocation,feature_types='gene'))
@@ -79,7 +74,7 @@ def sampleSequences (sample_direction, sample_range, geneIds, sample_data={}, sa
 
                 # TRUNCATION STEP 3:    
                 #
-                #   overlapping exon 5'---------------------3'
+                #   overlapping exon: 5'---------------------3'
                 #                         |||||||||||||||||||  <--notice the entire sample must be removed 
                 #   sample:               5'----S----3'+5'--------G--------//  
                 #
