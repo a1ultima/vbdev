@@ -18,16 +18,16 @@ def chunks(l, n):
 # #______________________________________________#
 # # Scan for genes to sample up/down stream seqs
 # #______________________________________________#
-# def scanGenes (ensemblGenome, geneId, featureType, scanFrom, scanTo):
+# def scanGenes (ensembl_genome, geneId, featureType, scanFrom, scanTo):
 #     """ Example args:
-#     ensemblGenome= Genome(Species=species, Release=Release, account=account)
+#     ensembl_genome= Genome(Species=species, Release=Release, account=account)
 #     scan_id     = 'ENSG00000012048'
 #     scan_type   = 'gene'
 #     scan_range  = (-100000,100000) 
 #     """
 #     print 'Scanning for genes...'
-#     scan_target = ensemblGenome.getGeneByStableId(StableId=geneId).Location
-#     scan_genes  = ensemblGenome.getFeatures(region=scan_target.resized(scanFrom,scanTo),feature_types=featureType)
+#     scan_target = ensembl_genome.getGeneByStableId(StableId=geneId).Location
+#     scan_genes  = ensembl_genome.getFeatures(region=scan_target.resized(scanFrom,scanTo),feature_types=featureType)
 #     scan_geneIds= [i.StableId for i in scan_genes]
 #     return scan_geneIds
 
@@ -35,16 +35,16 @@ def chunks(l, n):
 #______________________________________________#
 # Sample up/down steam seqs from scanned genes
 #______________________________________________#
-# def scanGenes (ensemblGenome, geneId, featureType, scanFrom, scanTo):
+# def scanGenes (ensembl_genome, geneId, featureType, scanFrom, scanTo):
 #     """ Example args:
-#     ensemblGenome= Genome(Species=species, Release=Release, account=account)
+#     ensembl_genome= Genome(Species=species, Release=Release, account=account)
 #     scan_id     = 'ENSG00000012048'
 #     scan_type   = 'gene'
 #     scan_range  = (-100000,100000) 
 #     """
 #     print 'Scanning for genes...'
-#     scan_target = ensemblGenome.getGeneByStableId(StableId=geneId).Location
-#     scan_genes  = ensemblGenome.getFeatures(region=scan_target.resized(scanFrom,scanTo),feature_types=featureType)
+#     scan_target = ensembl_genome.getGeneByStableId(StableId=geneId).Location
+#     scan_genes  = ensembl_genome.getFeatures(region=scan_target.resized(scanFrom,scanTo),feature_types=featureType)
 #     scan_geneIds= [i.StableId for i in scan_genes]
 #     return scan_geneIds
 
@@ -73,7 +73,7 @@ def setupGenome( species, db_host=None, db_user=None, db_pass=None, db_release=N
 #______________________________________________#
 # Sample up/down steam seqs from scanned genes
 #______________________________________________#
-def sampleSequences ( ensembl_genome, sample_direction='upstream', sample_range=2000, sample_data={}, sample_seqs={}):
+def sampleSequences ( ensembl_genome, sample_direction='upstream', sample_range=2000, sample_data={}, sample_seqs={}, pickle_it=True):
     """ Example Args:
     sample_direction  = 'upstream' # 'downstream', 'both'
     sample_range = 2000  # no. of bases to sample up/downstream
@@ -85,19 +85,19 @@ def sampleSequences ( ensembl_genome, sample_direction='upstream', sample_range=
 
     for geneId in geneIds:
         print '\t'+geneId
-        gene = ensemblGenome.getGeneByStableId(StableId=geneId) # select gene
+        gene = ensembl_genome.getGeneByStableId(StableId=geneId) # select gene
         geneLocation = gene.Location 
         sample_data[geneId] = {'geneLocation':geneLocation,'sampleLocation':{'untruncated':[],'truncated':[],'featuresIn':[]}}
         sample_seqs[geneId] = {'untruncated':str(),'truncated':str()}
         if sample_direction == 'upstream':
             sampleLocation  = geneLocation.resized(-sample_range,-len(geneLocation)) #TODO: check if this is off by 1 or not
-            overlap_features= list(ensemblGenome.getFeatures(region=sampleLocation,feature_types='gene'))
+            overlap_features= list(ensembl_genome.getFeatures(region=sampleLocation,feature_types='gene'))
             if not overlap_features:            # keep full sample & skip to next loop if no features are found
                 # a) NO OVERLAPS PROCEDURE:     # TODO: print msg that there are no overlaps
                 sample_data[geneId]['sampleLocation']['untruncated']= sampleLocation  # Alterrnate route 1 --v
                 sample_data[geneId]['sampleLocation']['truncated']  = sampleLocation
-                sample_seqs[geneId]['untruncated']                  = str(ensemblGenome.getRegion(sampleLocation).Seq)
-                sample_seqs[geneId]['truncated']                    = str(ensemblGenome.getRegion(sampleLocation).Seq)
+                sample_seqs[geneId]['untruncated']                  = str(ensembl_genome.getRegion(sampleLocation).Seq)
+                sample_seqs[geneId]['truncated']                    = str(ensembl_genome.getRegion(sampleLocation).Seq)
             else:
                 # b) OVERLAPS PROCEDURE:
                 overlap_exons       = [[[exon for exon in transcript.Exons] for transcript in transcripts] for transcripts in [feature.Transcripts for feature in overlap_features]] # exons Of Transcripts Of Features
@@ -133,21 +133,23 @@ def sampleSequences ( ensembl_genome, sample_direction='upstream', sample_range=
                 sample_data[geneId]['sampleLocation']['untruncated']= sampleLocation # Alternate route 2   --^
                 sample_data[geneId]['sampleLocation']['truncated']  = sampleLocation_truncated 
                 sample_data[geneId]['sampleLocation']['featuresIn'] = overlap_features
-                sample_seqs[geneId]['untruncated']                  = str(ensemblGenome.getRegion(sampleLocation).Seq)
+                sample_seqs[geneId]['untruncated']                  = str(ensembl_genome.getRegion(sampleLocation).Seq)
                 if sampleLocation_truncated:
-                    sample_seqs[geneId]['truncated']                = str(ensemblGenome.getRegion(sampleLocation_truncated).Seq)
+                    sample_seqs[geneId]['truncated']                = str(ensembl_genome.getRegion(sampleLocation_truncated).Seq)
                 else:
                     sample_seqs[geneId]['truncated']                = None
         elif sample_direction == 'downstream':
             print '\t'+sample_direction+'...'
             sampleLocation      = geneLocation.resized(len(geneLocation),+sample_range)
-            overlap_features    = [feature for feature in ensemblGenome.getFeatures(region=sampleLocation,feature_types='gene')]
+            overlap_features    = [feature for feature in ensembl_genome.getFeatures(region=sampleLocation,feature_types='gene')]
             overlap_locations   = sorted([feature.Location for feature in overlap_features],key=attrgetter('Start'))    # 'Start' <= 5' of feature vs. 3' of sample
     return sample_data, sample_seqs    #ANDY_01/27
     #return sample_data, sample_seqs
 
 
-
+import pickle
+pickle_in     = pickle.load(open('.p','rb'))
+pickle_out     = pickle.dump(,open('.p','wb'))
 
 
 
@@ -169,8 +171,8 @@ def sampleSequences ( ensembl_genome, sample_direction='upstream', sample_range=
 # sample_direction= 'upstream'
 # account         = HostAccount(account[0],account[1],account[2]) 
 # Species.amendSpecies(species,species)
-# ensemblGenome   = Genome(Species=species, Release=release, account=account)
-# geneList        = scanGenes(ensemblGenome,starterGene,'gene',-99999999999,99999999999) # Grabs a list of genes to sample from --> ideally if we just had all the genes in a list...
+# ensembl_genome   = Genome(Species=species, Release=release, account=account)
+# geneList        = scanGenes(ensembl_genome,starterGene,'gene',-99999999999,99999999999) # Grabs a list of genes to sample from --> ideally if we just had all the genes in a list...
 # print geneList
 
 

@@ -7,13 +7,9 @@ from operator import attrgetter
 import pprint
 from cogent.db.ensembl import HostAccount
 import itertools
+from cogent import LoadSeqs, DNA
 
 # DEFINE FUNCTIONS
-
-def chunks(l, n):
-    """ Yield successive n-sized chunks from l. """
-    for i in xrange(0, len(l), n):
-        yield l[i:i+n]
 
 # #______________________________________________#
 # # Scan for genes to sample up/down stream seqs
@@ -82,20 +78,19 @@ def sampleSequences ( ensembl_genome, sample_direction='upstream', sample_range=
     print 'Sampling sequences: '+str(sample_range)+'bp '+sample_direction+'...'
     genes   = ensembl_genome.getGenesMatching(BioType='protein_coding')   # queries ensembl genome for all protein coding genes
     geneIds = [gene.StableId for gene in genes]  # grab all gene ids
+    geneIds = geneIds[0:100]    # ANDY: testing for just 100
 
     for geneId in geneIds:
         print '\t'+geneId
-        gene                = ensembl_genome.getGeneByStableId(StableId=geneId) # select gene
-        geneLocation        = gene.Location 
-
-        sample_data[geneId] = {'geneLocation':geneLocation,'sampleLocation':{'untruncated':[],'truncated':[],'featuresIn':[]}}
+        geneLocation                = ensembl_genome.getGeneByStableId(StableId=geneId).Location # select gene
+        #geneLocation        = gene.Location 
+        sample_data[geneId] = {'geneLocation':geneLocation,'sampleLocation':{'untruncated':[],'truncated':[],'featuresIn':[]}} # initiate storage
         sample_seqs[geneId] = {'untruncated':str(),'truncated':str()}
 
         if sample_direction=='upstream':
-            sampleLocation  = geneLocation.resized(-sample_range,-len(geneLocation)) #TODO: check if off by 1 @@@@@@@@@@@
+            sampleLocation  = geneLocation.resized(-sample_range,-len(geneLocation)) # focus on the sampled region, #TODO: check if off by 1 @@@@@@@@@@@
         elif sample_direction=='downstream':
             sampleLocation  = geneLocation.resized(+len(geneLocation),+sample_range) 
-        
         overlap_features    = list(ensembl_genome.getFeatures(region=sampleLocation,feature_types='gene'))
 
         if not overlap_features:            # keep full sample & skip to next loop if no features are found
@@ -108,9 +103,7 @@ def sampleSequences ( ensembl_genome, sample_direction='upstream', sample_range=
         else:
             # b) OVERLAPS PROCEDURE:
             overlap_exons       = [[[exon for exon in transcript.Exons] for transcript in transcripts] for transcripts in [feature.Transcripts for feature in overlap_features]] # exons Of Transcripts Of Features
-            overlap_exons       = list(itertools.chain(*overlap_exons)) # flattens --> lvl 2 --v
-            overlap_exons       = list(itertools.chain(*overlap_exons)) # flattens --> lvl 1
-
+            overlap_exons       = list(itertools.chain(*list(itertools.chain(*overlap_exons)))) # flattens from: 3d->2d->1d
             overlap_locations   = [exon.Location for exon in overlap_exons]
 
             # TRUNCATION STEP 1:    remove exons that are so far down/upstream of sample they are beyond sample overlap // WARN: can be redundant?
@@ -163,11 +156,18 @@ def sampleSequences ( ensembl_genome, sample_direction='upstream', sample_range=
                 sample_seqs[geneId]['truncated']                = str(ensembl_genome.getRegion(sampleLocation_truncated).Seq)
             else:
                 sample_seqs[geneId]['truncated']                = None
+
+
     return sample_data, sample_seqs    #ANDY_01/27
     #return sample_data, sample_seqs
 
 
 
+import pickle
+pickle_in     = pickle.load(open('.p','rb'))
+pickle_out     = pickle.dump(,open('.p','wb'))
+
+#-------------------------------------------------------------------------------------------------------------------------------------
 # OLD METHODS
 
 #______________________________________________#
