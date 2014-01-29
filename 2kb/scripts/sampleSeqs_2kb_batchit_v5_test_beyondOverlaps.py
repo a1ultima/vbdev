@@ -10,21 +10,28 @@ import itertools
 
 # DEFINE FUNCTIONS
 
+# #______________________________________________#
+# # Scan for genes to sample up/down stream seqs
+# #______________________________________________#
+# def scanGenes (ensemblGenome, geneId, featureType, scanFrom, scanTo):
+#     """ Example args:
+#     ensemblGenome= Genome(Species=species, Release=Release, account=account)
+#     scan_id     = 'ENSG00000012048'
+#     scan_type   = 'gene'
+#     scan_range  = (-100000,100000) 
+#     """
+#     print 'Scanning for genes...'
+#     scan_target = ensemblGenome.getGeneByStableId(StableId=geneId).Location
+#     scan_genes  = ensemblGenome.getFeatures(region=scan_target.resized(scanFrom,scanTo),feature_types=featureType)
+#     scan_geneIds= [i.StableId for i in scan_genes]
+#     return scan_geneIds
+
+
 #______________________________________________#
-# Scan for genes to sample up/down stream seqs
+# Sample up/down steam seqs from scanned genes
 #______________________________________________#
-def scanGenes (ensemblGenome, geneId, featureType, scanFrom, scanTo):
-    """ Example args:
-    ensemblGenome= Genome(Species=species, Release=Release, account=account)
-    scan_id     = 'ENSG00000012048'
-    scan_type   = 'gene'
-    scan_range  = (-100000,100000) 
-    """
-    print 'Scanning for genes...'
-    scan_target = ensemblGenome.getGeneByStableId(StableId=geneId).Location
-    scan_genes  = ensemblGenome.getFeatures(region=scan_target.resized(scanFrom,scanTo),feature_types=featureType)
-    scan_geneIds= [i.StableId for i in scan_genes]
-    return scan_geneIds
+
+
 
 #______________________________________________#
 # Sample up/down steam seqs from scanned genes
