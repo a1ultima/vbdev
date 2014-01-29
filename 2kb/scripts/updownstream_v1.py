@@ -76,9 +76,9 @@ def sampleSequences_read ( ensembl_genome, sample_direction='upstream', sample_r
 
     for geneId in geneIds:
         print '\t'+geneId
-        geneLocation                = ensembl_genome.getGeneByStableId(StableId=geneId).Location # select gene
+        geneLocation = ensembl_genome.getGeneByStableId(StableId=geneId).Location # select gene
 
-        return ensembl_genome.getGeneByStableId(StableId=geneId)
+        #return ensembl_genome.getGeneByStableId(StableId=geneId)
 
         #geneLocation        = gene.Location 
         sample_data[geneId] = {'geneLocation':geneLocation,'sampleLocation':{'untruncated':[],'truncated':[],'featuresIn':[]}} # initiate storage
@@ -95,8 +95,8 @@ def sampleSequences_read ( ensembl_genome, sample_direction='upstream', sample_r
             print('\t\tNo overlapping features')
             sample_data[geneId]['sampleLocation']['untruncated']= sampleLocation  # Alterrnate route 1 --v
             sample_data[geneId]['sampleLocation']['truncated']  = sampleLocation
-            sample_seqs[geneId]['untruncated']  =sample_seqs[geneId]['truncated']= str(ensembl_genome.getRegion(sampleLocation).Seq)
-            sample_seqs[geneId]['location']     = ':'.join(str(sampleLocation).split(':')[2:]) # genome coordinates summary
+            sample_seqs[geneId]['untruncated'] = sample_seqs[geneId]['truncated'] = str(ensembl_genome.getRegion(sampleLocation).Seq)
+            sample_seqs[geneId]['location'] = ':'.join(str(sampleLocation).split(':')[2:]) # genome coordinates summary
         else:
             # b) OVERLAPS PROCEDURE:
             overlap_exons       = [[[exon for exon in transcript.Exons] for transcript in transcripts] for transcripts in [feature.Transcripts for feature in overlap_features]] # exons Of Transcripts Of Features
@@ -153,6 +153,7 @@ def sampleSequences_read ( ensembl_genome, sample_direction='upstream', sample_r
                 sample_seqs[geneId]['truncated']                = str(ensembl_genome.getRegion(sampleLocation_truncated).Seq)
             else:
                 sample_seqs[geneId]['truncated']                = None
+            sample_seqs[geneId]['location']                     = ':'.join(str(sampleLocation).split(':')[2:]) # genome coordinates summary
 
     #return sample_data, sample_seqs    #ANDY_01/27
     return sample_seqs  # yields the dictionary
@@ -167,28 +168,24 @@ def sampleSequences_write(ensembl_genome, sample_data, fasta_it=True, pickle_it=
     species  = ensembl_genome.Species.replace(' ','_').lower()
 
     for geneId in geneIds:
-        seq         = sample_data[geneId]['truncated']
+        seq             = sample_data[geneId]['truncated']
         if seq:
-            seq_length = len(seq)
+            seq_length  = len(seq)
         else:
-            seq_length = 0
+            seq_length  = 0
             seq = ''
         header = geneId+'_'+str(seq_length)+'bp'
         samples[header] = seq
 
     if pickle_it:
         import pickle
-        pickle_path = '../data/sample_seqs/pickled/'
+        pickle_path     = '../data/sample_seqs/pickled/'
         pickle.dump(samples,open(pickle_path+species+'.p','wb'))
-
     if fasta_it:
         from cogent import LoadSeqs, DNA
         fasta_path      = '../data/sample_seqs/fasta/'
         fasta_file      = open(fasta_path+species+'.fasta','wb')
-
-        #return samples
         samples_fasta   = LoadSeqs(data=samples,moltype=DNA,aligned=False).toFasta()
-
         fasta_file.write(samples_fasta)
         fasta_file.close()
 
