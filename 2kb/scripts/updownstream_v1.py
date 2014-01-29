@@ -77,9 +77,12 @@ def sampleSequences_read ( ensembl_genome, sample_direction='upstream', sample_r
     for geneId in geneIds:
         print '\t'+geneId
         geneLocation                = ensembl_genome.getGeneByStableId(StableId=geneId).Location # select gene
+
+        return ensembl_genome.getGeneByStableId(StableId=geneId)
+
         #geneLocation        = gene.Location 
         sample_data[geneId] = {'geneLocation':geneLocation,'sampleLocation':{'untruncated':[],'truncated':[],'featuresIn':[]}} # initiate storage
-        sample_seqs[geneId] = {'untruncated':str(),'truncated':str()}
+        sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'location':str()}
 
         if sample_direction=='upstream':
             sampleLocation  = geneLocation.resized(-sample_range,-len(geneLocation)) # focus on the sampled region, #TODO: check if off by 1 @@@@@@@@@@@
@@ -92,8 +95,8 @@ def sampleSequences_read ( ensembl_genome, sample_direction='upstream', sample_r
             print('\t\tNo overlapping features')
             sample_data[geneId]['sampleLocation']['untruncated']= sampleLocation  # Alterrnate route 1 --v
             sample_data[geneId]['sampleLocation']['truncated']  = sampleLocation
-            sample_seqs[geneId]['untruncated']                  = str(ensembl_genome.getRegion(sampleLocation).Seq)
-            sample_seqs[geneId]['truncated']                    = str(ensembl_genome.getRegion(sampleLocation).Seq)
+            sample_seqs[geneId]['untruncated']  =sample_seqs[geneId]['truncated']= str(ensembl_genome.getRegion(sampleLocation).Seq)
+            sample_seqs[geneId]['location']     = ':'.join(str(sampleLocation).split(':')[2:]) # genome coordinates summary
         else:
             # b) OVERLAPS PROCEDURE:
             overlap_exons       = [[[exon for exon in transcript.Exons] for transcript in transcripts] for transcripts in [feature.Transcripts for feature in overlap_features]] # exons Of Transcripts Of Features
@@ -189,7 +192,7 @@ def sampleSequences_write(ensembl_genome, sample_data, fasta_it=True, pickle_it=
         fasta_file.write(samples_fasta)
         fasta_file.close()
 
-samples = sampleSequences_write(genome,sample_data)
+#samples = sampleSequences_write(genome,sample_data)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OLD METHODS
