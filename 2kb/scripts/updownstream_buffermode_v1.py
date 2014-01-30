@@ -99,7 +99,7 @@ def sampleSequences_read ( ensembl_genome, sample_direction='upstream', sample_r
             # TRUNCATION STEP 1:    remove exons that are so far down/upstream of sample they are beyond sample overlap // WARN: can be redundant?
             #
             #   overlapping exons:      5'----3'    5'----3'         5'----3'       5'----3' 
-            #                              ||||      ||||||            xxxx           xxxx  <--notice we dont want the xxx's to truncate away our Sample
+            #                              ||||      ||||||            xxxx           xxxx  notice we dont want the xxx's to truncate away our Sample
             #   sample:                    5'-------S---------3'+5'-----------G------------------//  S = sample, G = gene of sample
             overlap_locations   = [i for i in overlap_locations if (i.Start < sampleLocation.End) and (i.End > sampleLocation.Start)] # remove "too-far-downstream" features
             if overlap_locations==[]:
@@ -208,7 +208,7 @@ def sampleSequences_write(ensembl_genome, sample_data, fasta_it=True, pickle_it=
 
 genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
 samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=200, sample_data={}, sample_seqs={})
-samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=False, include_genes=True)
+samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------

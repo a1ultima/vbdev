@@ -74,7 +74,8 @@ def sampleSequences_read ( ensembl_genome, sample_direction='upstream', sample_r
     geneIds = [gene.StableId for gene in genes]  # grab all gene ids
     #geneIds = geneIds[0:100]    # ANDY: testing for just 100
 
-    for geneId in geneIds:
+    for count,geneId in enumerate(geneIds):
+        print count
         #print '\t'+geneId
         gene        = ensembl_genome.getGeneByStableId(StableId=geneId) # select gene
         geneLocation= gene.Location # coordinates
@@ -208,7 +209,7 @@ def sampleSequences_write(ensembl_genome, sample_data, fasta_it=True, pickle_it=
 
 genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
 samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=200, sample_data={}, sample_seqs={})
-samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=False, include_genes=True)
+samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
