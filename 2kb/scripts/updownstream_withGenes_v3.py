@@ -78,6 +78,9 @@ def sampleSequences_read ( ensembl_genome, sample_direction='upstream', sample_r
         print count
         #print '\t'+geneId
         gene        = ensembl_genome.getGeneByStableId(StableId=geneId) # select gene
+
+        return gene
+
         geneLocation= gene.Location # coordinates
 
         # INITIATE STORAGE:
