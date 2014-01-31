@@ -2,6 +2,8 @@
 from operator import attrgetter
 import itertools
 
+import difflib
+
 
 # DEFINE FUNCTIONS
 
@@ -54,23 +56,42 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
         print '\t'+str(count)+' '+geneId
         gene        = ensembl_genome.getGeneByStableId(StableId=geneId) # select gene
         geneLocation= gene.Location # coordinates for whole gene
-        gene_exons  = [[e.Location for e in t.Exons] for t in gene.Transcripts] # coordinates for limiting exon fo the gene
 
-    # # INITIATE STORAGE:
-    #     sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(gene.Seq),'sample_location':str(),'gene_location':':'.join(str(geneLocation).split(':')[2:])}
+        # Assuming all genes have utr3 annotated:       <- WARN: not always true?
 
-    # EXON TARGET               # Sampling starts from the limiting exon of the current gene --> and spans according to sample_range
+        #gene_exons  = [[e.Location for e in t.Exons] for t in gene.Transcripts] # coordinates for limiting exon fo the gene
+
+    # EXON TARGET               # Sampling starts from the limiting exon of the current gene -> and spans according to sample_range
         if sample_direction=='upstream':
-            gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('Start')) # flattens from: 2d->1d
-            gene_limiting_exon  = gene_exons[0]     # exon closest to the 5' end of sample
-            sampleLocation      = gene_limiting_exon.resized(-sample_range-1,-len(gene_limiting_exon)-1) # focus on the sampled region, #TODO: check if off by 1 @@@@@@@@@@@
+            
+            print('cool')
+
+            # gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('Start')) # flattens from: 2d->1d
+            # gene_limiting_exon  = gene_exons[0]     # exon closest to the 5' end of sample
+            # sampleLocation      = gene_limiting_exon.resized(-sample_range-1,-len(gene_limiting_exon)-1) # focus on the sampled region, #TODO: check if off by 1 @@@@@@@@@@@
         elif sample_direction=='downstream':
-            gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('End'))  # flattens from: 2d->1d
-            gene_limiting_exon  = gene_exons[-1]    # exon closest to 3' end of sample
-            sampleLocation      = gene_limiting_exon.resized(+len(gene_limiting_exon)+1,+sample_range+1) 
+
+            seq_transcript = str(gene.getLongestCdsTranscript().Seq)
+            seq_utr        = str(gene.getLongestCdsTranscript().Utr3)
+
+            matcher = difflib.SequenceMatcher(a=seq_transcript, b=seq_utr) # Matches coordinates of a string and its substring
+            match   = matcher.find_longest_match(0, len(matcher.a), 0, len(matcher.b))
+
+            location_sample     = gene.getLongestCdsTranscript().Location.resized(  match.a,   # <- where the utr begins amtching                         
+                                                                                    match.b+(sample_range-match.size)) # <- where the utr needs to extend for specified sample_range
+            location_transcript = gene.getLongestCdsTranscript().Location.resized(0,match.a)   # <- truncate the utr away
+
+            seq_transcript  = str(ensembl_genome.getRegion(location_transcript).Seq)
+            seq_sample      = str(ensembl_genome.getRegion(location_sample).Seq)
+
+            sampleLocation = location_sample
+            # gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('End'))  # flattens from: 2d->1d
+            # gene_limiting_exon  = gene_exons[-1]    # exon closest to 3' end of sample
+            # sampleLocation      = gene_limiting_exon.resized(+len(gene_limiting_exon)+1,+sample_range+1) 
 
     # INITIATE STORAGE:         ANDY: concatenate just the limiting exon sequence to the sampleseq?
-        sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(ensembl_genome.getRegion(gene_limiting_exon).Seq),'sample_location':str(),'gene_location':':'.join(str(gene_limiting_exon).split(':')[2:])}
+        #sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(ensembl_genome.getRegion(gene_limiting_exon).Seq),'sample_location':str(),'gene_location':':'.join(str(gene_limiting_exon).split(':')[2:])}
+        sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(seq_transcript),'sample_location':str(),'gene_location':':'.join(str(location_transcript).split(':')[2:])}
 
     # FEATURES OVERLAP WITH SAMPLE? 
         overlaps_flag           = None
@@ -93,13 +114,13 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
 
     # SAMPLE TRUNCATION PROCEDURES
         if not overlaps_flag:            # keep full sample & skip to next loop if no features are found
-            # a) NO OVERLAPS? --> Store whole sample
+            # a) NO OVERLAPS? -> Store whole sample
 
             # print('\t\tOvelapping Features: NO')
             sample_seqs[geneId]['untruncated']      = sample_seqs[geneId]['truncated'] = str(ensembl_genome.getRegion(sampleLocation).Seq)
             sample_seqs[geneId]['sample_location']  = ':'.join(str(sampleLocation).split(':')[2:]) # genome coordinates summary
         else:
-            # b) OVERLAPS? --> Truncate sample accordingly
+            # b) OVERLAPS? -> Truncate sample accordingly
             
             # print('\t\tOverLapping Features: YES')
 
