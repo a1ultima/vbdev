@@ -12,13 +12,14 @@ import itertools
 def setupGenome( species, db_host=None, db_user=None, db_pass=None, db_release=None ):
     """ 
     NOTES:
-
+        setup the ensembl_genome object using pycogent, this object has methods described here: http://pycogent.org/examples/query_ensembl.html
+    
     ARGUMENTS:
-        species     = 'Anopheles gambiae'
-        db_host     = 'localhost'
-        db_user     = 'vbuser'
-        db_pass     = 'Savvas'
-        db_release  = 73
+        species     = 'Anopheles gambiae'   #string: this needs to match the mysql databases in vbdev: >mysql -hlocalhost -uvbuser -pSavvas
+        db_host     = 'localhost'           #string: ''
+        db_user     = 'vbuser'              #string: ''
+        db_pass     = 'Savvas'              #string: ''
+        db_release  = 73                    #integer: the realease versions we use are all 73
     """
     if not db_host:
         account=None
