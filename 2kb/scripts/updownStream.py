@@ -68,26 +68,22 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
 
             # gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('Start')) # flattens from: 2d->1d
             # gene_limiting_exon  = gene_exons[0]     # exon closest to the 5' end of sample
-            # sampleLocation      = gene_limiting_exon.resized(-sample_range-1,-len(gene_limiting_exon)-1) # focus on the sampled region, #TODO: check if off by 1 @@@@@@@@@@@
+            # location_sample      = gene_limiting_exon.resized(-sample_range-1,-len(gene_limiting_exon)-1) # focus on the sampled region, #TODO: check if off by 1 @@@@@@@@@@@
         elif sample_direction=='downstream':
 
-            seq_transcript = str(gene.getLongestCdsTranscript().Seq)
-            seq_utr        = str(gene.getLongestCdsTranscript().Utr3)
-
-            matcher = difflib.SequenceMatcher(a=seq_transcript, b=seq_utr) # Matches coordinates of a string and its substring
-            match   = matcher.find_longest_match(0, len(matcher.a), 0, len(matcher.b))
-
+            seq_transcript      = str(gene.getLongestCdsTranscript().Seq)
+            seq_utr             = str(gene.getLongestCdsTranscript().Utr3)
+            matcher             = difflib.SequenceMatcher(a=seq_transcript, b=seq_utr) # Matches coordinates of a string and its substring
+            match               = matcher.find_longest_match(0, len(matcher.a), 0, len(matcher.b))
             location_sample     = gene.getLongestCdsTranscript().Location.resized(  match.a,   # <- where the utr begins amtching                         
                                                                                     match.b+(sample_range-match.size)) # <- where the utr needs to extend for specified sample_range
             location_transcript = gene.getLongestCdsTranscript().Location.resized(0,match.a)   # <- truncate the utr away
-
             seq_transcript  = str(ensembl_genome.getRegion(location_transcript).Seq)
             seq_sample      = str(ensembl_genome.getRegion(location_sample).Seq)
 
-            sampleLocation = location_sample
             # gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('End'))  # flattens from: 2d->1d
             # gene_limiting_exon  = gene_exons[-1]    # exon closest to 3' end of sample
-            # sampleLocation      = gene_limiting_exon.resized(+len(gene_limiting_exon)+1,+sample_range+1) 
+            # location_sample      = gene_limiting_exon.resized(+len(gene_limiting_exon)+1,+sample_range+1) 
 
     # INITIATE STORAGE:         ANDY: concatenate just the limiting exon sequence to the sampleseq?
         #sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(ensembl_genome.getRegion(gene_limiting_exon).Seq),'sample_location':str(),'gene_location':':'.join(str(gene_limiting_exon).split(':')[2:])}
@@ -95,7 +91,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
 
     # FEATURES OVERLAP WITH SAMPLE? 
         overlaps_flag           = None
-        overlap_features        = list(ensembl_genome.getFeatures(region=sampleLocation,feature_types='gene'))
+        overlap_features        = list(ensembl_genome.getFeatures(region=location_sample,feature_types='gene'))
         if overlap_features:
             overlaps_flag       = True
             overlap_exons       = [[[exon for exon in transcript.Exons] for transcript in transcripts] for transcripts in [feature.Transcripts for feature in overlap_features]] # exons Of Transcripts Of Features
@@ -106,7 +102,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
             #   overlapping exons:      5'----3'    5'----3'         5'----3'       5'----3' 
             #                              ||||      ||||||            xxxx           xxxx  <- notice we dont want the xxx's to truncate away our Sample
             #   sample:                    5'-------S---------3'+5'-----------G------------------//  S = sample, G = gene of sample
-            overlap_locations   = [i for i in overlap_locations if (i.Start < sampleLocation.End) and (i.End > sampleLocation.Start)] # remove "too-far-downstream" features
+            overlap_locations   = [i for i in overlap_locations if (i.Start < location_sample.End) and (i.End > location_sample.Start)] # remove "too-far-downstream" features
             if overlap_locations==[]:
                 overlaps_flag = False
         else:
@@ -117,8 +113,8 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
             # a) NO OVERLAPS? -> Store whole sample
 
             # print('\t\tOvelapping Features: NO')
-            sample_seqs[geneId]['untruncated']      = sample_seqs[geneId]['truncated'] = str(ensembl_genome.getRegion(sampleLocation).Seq)
-            sample_seqs[geneId]['sample_location']  = ':'.join(str(sampleLocation).split(':')[2:]) # genome coordinates summary
+            sample_seqs[geneId]['untruncated']      = sample_seqs[geneId]['truncated'] = str(ensembl_genome.getRegion(location_sample).Seq)
+            sample_seqs[geneId]['sample_location']  = ':'.join(str(location_sample).split(':')[2:]) # genome coordinates summary
         else:
             # b) OVERLAPS? -> Truncate sample accordingly
             
@@ -142,22 +138,22 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
             #   sample:               5'----S----3'+5'--------G--------//  
             #
             if sample_direction == 'upstream':
-                if overlap_limit.End > sampleLocation.End:          # if overlapping feature spans the entire sample
+                if overlap_limit.End > location_sample.End:          # if overlapping feature spans the entire sample
                     #print('\t\tComplete overlap!')
-                    sampleLocation_truncated= None
+                    location_sample_truncated= None
                 else:
-                    sampleLocation_truncated= sampleLocation.resized(+(overlap_limit.End-sampleLocation.Start),0) # Truncate the sampled upstream sequence (promoter to prevent overlap)
+                    location_sample_truncated= location_sample.resized(+(overlap_limit.End-location_sample.Start),0) # Truncate the sampled upstream sequence (promoter to prevent overlap)
             elif sample_direction == 'downstream':
-                if overlap_limit.Start < sampleLocation.Start:      # if overlapping feature spans the entire sample
+                if overlap_limit.Start < location_sample.Start:      # if overlapping feature spans the entire sample
                     #print('\t\tComplete overlap!')
-                    sampleLocation_truncated= None
+                    location_sample_truncated= None
                 else:
-                    sampleLocation_truncated= sampleLocation.resized(0,-(sampleLocation.End - overlap_limit.Start)) # Truncate the sampled upstream sequence (promoter to prevent overlap)
+                    location_sample_truncated= location_sample.resized(0,-(location_sample.End - overlap_limit.Start)) # Truncate the sampled upstream sequence (promoter to prevent overlap)
         # STORE DATA...
-            sample_seqs[geneId]['sample_location']              = ':'.join(str(sampleLocation).split(':')[2:]) # genome coordinates summary
-            sample_seqs[geneId]['untruncated']                  = str(ensembl_genome.getRegion(sampleLocation).Seq)
-            if sampleLocation_truncated:
-                sample_seqs[geneId]['truncated']                = str(ensembl_genome.getRegion(sampleLocation_truncated).Seq)
+            sample_seqs[geneId]['sample_location']              = ':'.join(str(location_sample).split(':')[2:]) # genome coordinates summary
+            sample_seqs[geneId]['untruncated']                  = str(ensembl_genome.getRegion(location_sample).Seq)
+            if location_sample_truncated:
+                sample_seqs[geneId]['truncated']                = str(ensembl_genome.getRegion(location_sample_truncated).Seq)
             else:
                 sample_seqs[geneId]['truncated']                = ''
 
