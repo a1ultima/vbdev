@@ -53,7 +53,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
     sample_failures = []
     genes   = ensembl_genome.getGenesMatching(BioType='protein_coding')   # queries ensembl genome for all protein coding genes
     geneIds = [gene.StableId for gene in genes]  # grab all gene ids
-    #geneIds = geneIds[0:100]    # ANDY: testing for just 100
+    geneIds = geneIds[0:100]    # ANDY: testing for just 100
 
     for count,geneId in enumerate(geneIds):
         print '\t'+str(count)+' '+geneId
@@ -115,13 +115,13 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
                 sample_failures.append((geneId,'utr3 failed to match back to the transcript...'))
                 continue
 
-            utr_match       = utr_match_all[0]
+            utr_match       = utr_match_all[-1]
             utr_match_start = utr_match[0]
             utr_match_end   = utr_match[1]
 
-            if not len(utr_match_all)==1: # ANDY: sometimes the utr matches twice to transcript
-                sample_failures.append((geneId,'utr3 matched twice to the transcript...'))
-                continue
+            # if not len(utr_match_all)==1: # ANDY: sometimes the utr matches twice to transcript
+            #     sample_failures.append((geneId,'utr3 matched twice to the transcript...'))
+            #     continue
 
             location_utr = gene.getLongestCdsTranscript().Location.resized( utr_match_start,                    # utr begins matching  
                                                                             len(seq_transcript)-utr_match_end ) # utr ends matching
@@ -318,15 +318,15 @@ species_list = [    'Aedes aegypti',
                 ]
 sample_directions = ['downstream']
 
-sampleAllSpecies(species_list,sample_directions)
+#sampleAllSpecies(species_list,sample_directions)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # TESTING
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-# genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-# samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=200, sample_data={}, sample_seqs={})
-# samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
+genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
+samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=200, sample_data={}, sample_seqs={})
+samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
