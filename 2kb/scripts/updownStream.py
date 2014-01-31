@@ -50,7 +50,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
     print 'Sampling sequences: '+str(sample_range)+'bp '+sample_direction+'...'
     genes   = ensembl_genome.getGenesMatching(BioType='protein_coding')   # queries ensembl genome for all protein coding genes
     geneIds = [gene.StableId for gene in genes]  # grab all gene ids
-    geneIds = geneIds[0:10]    # ANDY: testing for just 100
+    geneIds = geneIds[0:100]    # ANDY: testing for just 100
 
     for count,geneId in enumerate(geneIds):
         print '\t'+str(count)+' '+geneId
@@ -105,7 +105,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
                                                                                     match.b+(sample_range-match.size)) # <- where the utr needs to extend for specified sample_range
             location_transcript = gene.getLongestCdsTranscript().Location.resized(0,match.a)   # <- truncate the utr away
             seq_transcript_noUtr= str(ensembl_genome.getRegion(location_transcript).Seq)
-            seq_sample          = str(ensembl_genome.getRegion(location_sample).Seq)
+            #seq_sample          = str(ensembl_genome.getRegion(location_sample).Seq)
 
             # gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('End'))  # flattens from: 2d->1d
             # gene_limiting_exon  = gene_exons[-1]    # exon closest to 3' end of sample
@@ -118,6 +118,9 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
     # FEATURES OVERLAP WITH SAMPLE? 
         overlaps_flag           = None
         overlap_features        = list(ensembl_genome.getFeatures(region=location_sample,feature_types='gene'))
+
+        return overlap_features
+
         if overlap_features:
             overlaps_flag       = True
             overlap_exons       = [[[exon for exon in transcript.Exons] for transcript in transcripts] for transcripts in [feature.Transcripts for feature in overlap_features]] # exons Of Transcripts Of Features
@@ -296,9 +299,9 @@ sample_directions = ['downstream','upstream']
 # TESTING
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-genome = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-gene   = sampleSequences_read (    genome, sample_direction='downstream', sample_range=200, sample_data={}, sample_seqs={})
-
+genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
+samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=200, sample_data={}, sample_seqs={})
+#samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OLD METHODS
