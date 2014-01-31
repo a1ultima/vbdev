@@ -116,10 +116,9 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
         sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(seq_transcript_noUtr),'sample_location':str(),'gene_location':':'.join(str(location_transcript).split(':')[2:])}
 
     # FEATURES OVERLAP WITH SAMPLE? 
-        overlaps_flag           = None
-        overlap_features        = list(ensembl_genome.getFeatures(region=location_sample,feature_types='gene'))
-
-        return overlap_features
+        overlaps_flag   = None
+        overlap_features= [feature for feature in ensembl_genome.getFeatures(region=location_sample,feature_types='gene') if not feature.StableId==geneId] # do any features overlap with our sample?
+        # ^ filter out all features pertaining to our current gene from which we are sampling from
 
         if overlap_features:
             overlaps_flag       = True
@@ -301,7 +300,7 @@ sample_directions = ['downstream','upstream']
 
 genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
 samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=200, sample_data={}, sample_seqs={})
-#samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
+samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OLD METHODS
