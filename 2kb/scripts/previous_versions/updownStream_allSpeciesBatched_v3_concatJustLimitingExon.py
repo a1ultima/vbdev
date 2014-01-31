@@ -169,8 +169,6 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
             sample_seqs[geneId]['untruncated']                  = str(ensembl_genome.getRegion(sampleLocation).Seq)
             if sampleLocation_truncated:
                 sample_seqs[geneId]['truncated']                = str(ensembl_genome.getRegion(sampleLocation_truncated).Seq)
-                # if geneId == 'AGAP004769':       # ANDY: 30/01/14 bug --> really long sample truncated seqs
-                #     return o1, o2, o3, gene, sampleLocation_truncated, sampleLocation
             else:
                 sample_seqs[geneId]['truncated']                = ''
 
