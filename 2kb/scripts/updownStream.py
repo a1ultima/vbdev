@@ -48,10 +48,12 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
         sample_range = 2000  # no. of bases to sample up/downstream     # int:          how many bp of sequence to sample?
         sample_data  = {}                                               # dictionary:   starts from scratch (default) or recurse upon previous data 
     """
+
     print 'Sampling sequences: '+str(sample_range)+'bp '+sample_direction+'...'
+    sample_failures = []
     genes   = ensembl_genome.getGenesMatching(BioType='protein_coding')   # queries ensembl genome for all protein coding genes
     geneIds = [gene.StableId for gene in genes]  # grab all gene ids
-    geneIds = geneIds[0:5]    # ANDY: testing for just 100
+    #geneIds = geneIds[0:100]    # ANDY: testing for just 100
 
     for count,geneId in enumerate(geneIds):
         print '\t'+str(count)+' '+geneId
@@ -59,8 +61,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
         geneLocation= gene.Location # coordinates for whole gene
 
         # Assuming all genes have utr3 annotated:       <- WARN: not always true?
-
-        #gene_exons  = [[e.Location for e in t.Exons] for t in gene.Transcripts] # coordinates for limiting exon fo the gene
+        # gene_exons  = [[e.Location for e in t.Exons] for t in gene.Transcripts] # coordinates for limiting exon fo the gene
 
     # EXON TARGET               # Sampling starts from the limiting exon of the current gene -> and spans according to sample_range
         if sample_direction=='upstream':
@@ -101,30 +102,38 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
             seq_transcript      = str(gene.getLongestCdsTranscript().Seq)
             seq_utr             = str(gene.getLongestCdsTranscript().Utr3)
 
-            print(seq_transcript,seq_utr)
+            #print(seq_transcript,seq_utr)
 
             # matcher             = difflib.SequenceMatcher(a=seq_transcript, b=seq_utr) # Matches coordinates of a string and its substring
             # match               = matcher.find_longest_match(0, len(matcher.a), 0, len(matcher.b))
             #location_sample     = gene.getLongestCdsTranscript().Location.resized(  match.a,   # <- where the utr begins amtching                         
             #                                                                        match.b+(sample_range-match.size)) # <- where the utr needs to extend for specified sample_range
+            s               = re.compile(seq_utr)
+            utr_match_all   = [(m.start(),m.end()) for m in s.finditer(seq_transcript)]
 
-            s = re.compile(seq_transcript)
-            utr_match_all   = [(m.start(),m.end()) for m in s.finditer(seq_utr)]
+            if not utr_match_all: # ANDY: sometimes utr fails to map back..
+                sample_failures.append((geneId,'utr3 failed to match back to the transcript...'))
+                continue
+
             utr_match       = utr_match_all[0]
             utr_match_start = utr_match[0]
             utr_match_end   = utr_match[1]
 
-            if not len(utr_match_all)==1:
-                print('NOOOOOO!!!!')
-                return None
-            location_utr = gene.getLongestCdsTranscript().Location.resized( +utr_match_start,                    # utr begins matching  
-                                                                            len(seq_transcript)-utr_match_end ) # utr ends matching
-            location_sample = location_utr.resized(0,200-len(location_utr)) # e.g. if annotaed utr = 100bp, we add +100 = 200bp // or if utr = 300bp, we subtract 100bp = 200bp
-            print(location_sample,len(location_sample))
-            print(match)
+            if not len(utr_match_all)==1: # ANDY: sometimes the utr matches twice to transcript
+                sample_failures.append((geneId,'utr3 matched twice to the transcript...'))
+                continue
 
-            location_transcript = gene.getLongestCdsTranscript().Location.resized(0,match.a)   # <- truncate the utr away
-            seq_transcript_noUtr= str(ensembl_genome.getRegion(location_transcript).Seq)
+            location_utr = gene.getLongestCdsTranscript().Location.resized( utr_match_start,                    # utr begins matching  
+                                                                            len(seq_transcript)-utr_match_end ) # utr ends matching
+
+        # MODE 1: If annotated UTR then keep it
+            location_sample = location_utr 
+
+        # MODE 2: Maintain Constant Sampling Length // Rob & Mike dont like it
+            #location_sample = location_utr.resized(0,200-len(location_utr)) # e.g. if annotaed utr = 100bp, we add +100 = 200bp // or if utr = 300bp, we subtract 100bp = 200bp
+
+            location_transcript_noUtr   = gene.getLongestCdsTranscript().Location.resized(0,-utr_match_start)   # <- truncate the utr away
+            seq_transcript_noUtr        = str(ensembl_genome.getRegion(location_transcript_noUtr).Seq)
             #seq_sample          = str(ensembl_genome.getRegion(location_sample).Seq)
 
             # gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('End'))  # flattens from: 2d->1d
@@ -133,7 +142,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
 
     # INITIATE STORAGE:         ANDY: concatenate just the limiting exon sequence to the sampleseq?
         #sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(ensembl_genome.getRegion(gene_limiting_exon).Seq),'sample_location':str(),'gene_location':':'.join(str(gene_limiting_exon).split(':')[2:])}
-        sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(seq_transcript_noUtr),'sample_location':str(),'gene_location':':'.join(str(location_transcript).split(':')[2:])}
+        sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(seq_transcript_noUtr),'sample_location':str(),'gene_location':':'.join(str(location_transcript_noUtr).split(':')[2:])}
 
     # FEATURES OVERLAP WITH SAMPLE? 
         overlaps_flag   = None
@@ -159,15 +168,12 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
     # SAMPLE TRUNCATION PROCEDURES
         if not overlaps_flag:            # keep full sample & skip to next loop if no features are found
             # a) NO OVERLAPS? -> Store whole sample
-
-            # print('\t\tOvelapping Features: NO')
+                # print('\t\tOvelapping Features: NO')
             sample_seqs[geneId]['untruncated']      = sample_seqs[geneId]['truncated'] = str(ensembl_genome.getRegion(location_sample).Seq)
             sample_seqs[geneId]['sample_location']  = ':'.join(str(location_sample).split(':')[2:]) # genome coordinates summary
         else:
             # b) OVERLAPS? -> Truncate sample accordingly
-            
-            # print('\t\tOverLapping Features: YES')
-
+                # print('\t\tOverLapping Features: YES')
             # TRUNCATION STEP 2:    care only about the furthest downstream exon who overlaps w/ sample
             #
             #   overlapping exons:  Only want this one!->  >>>5'---3'<<<   5'---3' 5'---3' 5'---3' 5'---3'
@@ -206,7 +212,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
                 sample_seqs[geneId]['truncated']                = ''
 
     #return sample_data, sample_seqs    #ANDY_01/27
-    return sample_seqs, sample_direction  # yields the dictionary
+    return sample_seqs, sample_direction, sample_failures  # yields the dictionary
 
 #______________________________________________#
 # write sequences into either a pickle or fasta
@@ -310,17 +316,18 @@ species_list = [    'Aedes aegypti',
                 #,'Anopheles stephensiI',           # this is broken..?
                 #'Anopheles stephensi'              # ''
                 ]
-sample_directions = ['downstream','upstream']
+sample_directions = ['downstream']
 
-#sampleAllSpecies(species_list,sample_directions)
+sampleAllSpecies(species_list,sample_directions)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # TESTING
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=200, sample_data={}, sample_seqs={})
-samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
+# genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
+# samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=200, sample_data={}, sample_seqs={})
+# samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OLD METHODS
