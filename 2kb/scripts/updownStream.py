@@ -2,7 +2,8 @@
 from operator import attrgetter
 import itertools
 
-import difflib
+#import difflib
+import re
 
 
 # DEFINE FUNCTIONS
@@ -50,7 +51,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
     print 'Sampling sequences: '+str(sample_range)+'bp '+sample_direction+'...'
     genes   = ensembl_genome.getGenesMatching(BioType='protein_coding')   # queries ensembl genome for all protein coding genes
     geneIds = [gene.StableId for gene in genes]  # grab all gene ids
-    geneIds = geneIds[0:100]    # ANDY: testing for just 100
+    geneIds = geneIds[0:5]    # ANDY: testing for just 100
 
     for count,geneId in enumerate(geneIds):
         print '\t'+str(count)+' '+geneId
@@ -99,10 +100,29 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
         elif sample_direction=='downstream':
             seq_transcript      = str(gene.getLongestCdsTranscript().Seq)
             seq_utr             = str(gene.getLongestCdsTranscript().Utr3)
-            matcher             = difflib.SequenceMatcher(a=seq_transcript, b=seq_utr) # Matches coordinates of a string and its substring
-            match               = matcher.find_longest_match(0, len(matcher.a), 0, len(matcher.b))
-            location_sample     = gene.getLongestCdsTranscript().Location.resized(  match.a,   # <- where the utr begins amtching                         
-                                                                                    match.b+(sample_range-match.size)) # <- where the utr needs to extend for specified sample_range
+
+            print(seq_transcript,seq_utr)
+
+            # matcher             = difflib.SequenceMatcher(a=seq_transcript, b=seq_utr) # Matches coordinates of a string and its substring
+            # match               = matcher.find_longest_match(0, len(matcher.a), 0, len(matcher.b))
+            #location_sample     = gene.getLongestCdsTranscript().Location.resized(  match.a,   # <- where the utr begins amtching                         
+            #                                                                        match.b+(sample_range-match.size)) # <- where the utr needs to extend for specified sample_range
+
+            s = re.compile(seq_transcript)
+            utr_match_all   = [(m.start(),m.end()) for m in s.finditer(seq_utr)]
+            utr_match       = utr_match_all[0]
+            utr_match_start = utr_match[0]
+            utr_match_end   = utr_match[1]
+
+            if not len(utr_match_all)==1:
+                print('NOOOOOO!!!!')
+                return None
+            location_utr = gene.getLongestCdsTranscript().Location.resized( +utr_match_start,                    # utr begins matching  
+                                                                            len(seq_transcript)-utr_match_end ) # utr ends matching
+            location_sample = location_utr.resized(0,200-len(location_utr)) # e.g. if annotaed utr = 100bp, we add +100 = 200bp // or if utr = 300bp, we subtract 100bp = 200bp
+            print(location_sample,len(location_sample))
+            print(match)
+
             location_transcript = gene.getLongestCdsTranscript().Location.resized(0,match.a)   # <- truncate the utr away
             seq_transcript_noUtr= str(ensembl_genome.getRegion(location_transcript).Seq)
             #seq_sample          = str(ensembl_genome.getRegion(location_sample).Seq)
