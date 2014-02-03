@@ -96,7 +96,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
 
             # gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('Start')) # flattens from: 2d->1d
             # gene_limiting_exon  = gene_exons[0]     # exon closest to the 5' end of sample
-            # location_sample      = gene_limiting_exon.resized(-sample_range-1,-len(gene_limiting_exon)-1) # focus on the sampled region, #TODO: check if off by 1 @@@@@@@@@@@
+            # location_sample     = gene_limiting_exon.resized(-sample_range-1,-len(gene_limiting_exon)-1) # focus on the sampled region, #TODO: check if off by 1 @@@@@@@@@@@
 
         elif sample_direction=='downstream':
             transcript          = gene.getLongestCdsTranscript()
@@ -109,6 +109,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
             # YES: 
             if seq_utr:
                 annotated_utr_flag = True  # if UTR is annotated, no need to check for overlapping features
+
                 utr_query       = re.compile(seq_utr)
                 utr_match_all   = [m.start() for m in utr_query.finditer(seq_transcript)]
             # Does the UTR match to Transcript?
@@ -131,16 +132,29 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
                     utr_match_all   = [m.start() for m in utr_query.finditer(seq_transcript)]
                     utr_match_start = utr_match_all[-1]
                 #location_utr                = location_transcript.resized( utr_match_start, len(seq_transcript)-utr_match_end ) # (shift to utr_start, shift to utr_end)
-                location_utr                = location_transcript.resized( utr_match_start, 0 )                 # (shift to utr_start, shift to utr_end)
-                location_transcript_noUtr   = location_transcript.resized( 0, -len(seq_utr) )                   # truncate the utr away
-                seq_transcript_noUtr        = str(ensembl_genome.getRegion( location_transcript_noUtr).Seq)
+
+                if location_transcript.Strand == -1:
+                    location_utr                = location_transcript.resized( 0, 0-utr_match_start )                 # (shift to utr_start, shift to utr_end)
+                    location_transcript_noUtr   = location_transcript.resized( 0+len(seq_utr), 0 )                   # truncate the utr away
+                else:
+                    location_utr                = location_transcript.resized( 0+utr_match_start, 0 )                 # (shift to utr_start, shift to utr_end)
+                    location_transcript_noUtr   = location_transcript.resized( 0, 0-len(seq_utr) )                   # truncate the utr away
+
+                seq_transcript_noUtr            = str(ensembl_genome.getRegion( location_transcript_noUtr).Seq)
+
             # NO:
             else: 
-                annotated_utr_flag          = False
-                location_utr                = location_transcript.resized( len(seq_transcript), sample_range )  # (shift to transcript_end, shift to sampling range)
-                location_transcript_noUtr   = location_transcript
-                seq_transcript_noUtr        = str(ensembl_genome.getRegion( location_transcript_noUtr).Seq)
-                seq_utr                     = str(ensembl_genome.getRegion( location_utr).Seq)
+                annotated_utr_flag = False
+
+                if location_transcript.Strand == -1:
+                    location_utr                = location_transcript.resized( 0-sample_range, 0-len(seq_transcript) )  # (shift to transcript_end, shift to sampling range)
+                    location_transcript_noUtr   = location_transcript
+                else:
+                    location_utr                = location_transcript.resized( 0+len(seq_transcript), 0+sample_range )  # (shift to transcript_end, shift to sampling range)
+                    location_transcript_noUtr   = location_transcript
+
+                seq_transcript_noUtr            = str(ensembl_genome.getRegion( location_transcript_noUtr ).Seq )
+                seq_utr                         = str(ensembl_genome.getRegion( location_utr ).Seq )
 
         # MODE 1: If annotated UTR then keep it
             location_sample = location_utr 
@@ -298,7 +312,7 @@ def sampleAllSpecies(species_list,sample_directions):
         for species in species_list:
             print(species)
             genome          = setupGenome(              species, db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-            samples_read    = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=200, sample_data={}, sample_seqs={})
+            samples_read    = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=500, sample_data={}, sample_seqs={})
             samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
             import pprint
             pprint.pprint(samples_write[1]) # show the header
@@ -328,8 +342,8 @@ species_list = [    'Aedes aegypti',
                 #,'Anopheles stephensiI',           # this is broken..?
                 #'Anopheles stephensi'              # ''
                 ]
-#sample_directions = ['downstream']
-#sampleAllSpecies(species_list,sample_directions)
+# sample_directions = ['downstream']
+# sampleAllSpecies(species_list,sample_directions)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # TESTING
