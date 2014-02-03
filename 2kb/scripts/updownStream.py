@@ -53,7 +53,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
     sample_failures = []
     genes   = ensembl_genome.getGenesMatching(BioType='protein_coding')   # queries ensembl genome for all protein coding genes
     geneIds = [gene.StableId for gene in genes]  # grab all gene ids
-    #geneIds = geneIds[0:100]    # ANDY: testing for just 100
+    geneIds = geneIds[0:10]    # ANDY: testing for just 100
 
     for count,geneId in enumerate(geneIds):
         print '\t'+str(count)+' '+geneId
@@ -67,7 +67,6 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
         if sample_direction=='upstream':
 
             print ('Upstream is not finished yet')
-
             return None
 
             # ANDY: There seems to be a bug in an annotation that makes upstream not possible at the mo..?
@@ -98,9 +97,11 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
             # gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('Start')) # flattens from: 2d->1d
             # gene_limiting_exon  = gene_exons[0]     # exon closest to the 5' end of sample
             # location_sample      = gene_limiting_exon.resized(-sample_range-1,-len(gene_limiting_exon)-1) # focus on the sampled region, #TODO: check if off by 1 @@@@@@@@@@@
+
         elif sample_direction=='downstream':
             seq_transcript      = str(gene.getLongestCdsTranscript().Seq)
             seq_utr             = str(gene.getLongestCdsTranscript().Utr3)
+            location_transcript = gene.getLongestCdsTranscript().Location
 
             #print(seq_transcript,seq_utr)
 
@@ -108,37 +109,41 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', sample_ra
             # match               = matcher.find_longest_match(0, len(matcher.a), 0, len(matcher.b))
             #location_sample     = gene.getLongestCdsTranscript().Location.resized(  match.a,   # <- where the utr begins amtching                         
             #                                                                        match.b+(sample_range-match.size)) # <- where the utr needs to extend for specified sample_range
-            s               = re.compile(seq_utr)
-            utr_match_all   = [(m.start(),m.end()) for m in s.finditer(seq_transcript)]
 
-            if not utr_match_all: # ANDY: sometimes utr fails to map back..
-                sample_failures.append((geneId,'utr3 failed to match back to the transcript...'))
-                continue
-
-            utr_match       = utr_match_all[-1]
-            utr_match_start = utr_match[0]
-            utr_match_end   = utr_match[1]
-
-            # if not len(utr_match_all)==1: # ANDY: sometimes the utr matches twice to transcript
-            #     sample_failures.append((geneId,'utr3 matched twice to the transcript...'))
-            #     continue
-
-            location_utr = gene.getLongestCdsTranscript().Location.resized( utr_match_start,                    # utr begins matching  
-                                                                            len(seq_transcript)-utr_match_end ) # utr ends matching
+        # IS THERE AN ANNOTATED UTR3 ?
+            # YES: 
+            if seq_utr:
+                utr_query       = re.compile(seq_utr)
+                utr_match_all   = [(m.start(),m.end()) for m in utr_query.finditer(seq_transcript)]
+                if not utr_match_all: # ANDY: sometimes utr fails to map back..
+                    sample_failures.append((geneId,'utr3 failed to match back to the transcript...'))
+                    continue
+                utr_match       = utr_match_all[-1]
+                utr_match_start = utr_match[0]
+                utr_match_end   = utr_match[1]
+                print(utr_match)
+                # if not len(utr_match_all)==1: # ANDY: sometimes the utr matches twice to transcript
+                #     sample_failures.append((geneId,'utr3 matched twice to the transcript...'))
+                #     continue
+                location_utr                = location_transcript.resized( utr_match_start, len(seq_transcript)-utr_match_end ) # (shift to utr_start, shift to utr_end)
+                location_transcript_noUtr   = location_transcript.resized(0,-utr_match_start)                                   # <- truncate the utr away
+                seq_transcript_noUtr        = str(ensembl_genome.getRegion(location_transcript_noUtr).Seq)
+            # NO:
+            else: 
+                location_utr                = location_transcript.resized( len(seq_transcript), sample_range )         # (shift to transcript_end, shift to sampling range)
+                location_transcript_noUtr   = location_transcript
+                seq_transcript_noUtr        = str(ensembl_genome.getRegion(location_transcript_noUtr).Seq)
 
         # MODE 1: If annotated UTR then keep it
             location_sample = location_utr 
 
         # MODE 2: Maintain Constant Sampling Length // Rob & Mike dont like it
-            #location_sample = location_utr.resized(0,200-len(location_utr)) # e.g. if annotaed utr = 100bp, we add +100 = 200bp // or if utr = 300bp, we subtract 100bp = 200bp
+            # location_sample = location_utr.resized(0,200-len(location_utr)) # e.g. if annotaed utr = 100bp, we add +100 = 200bp // or if utr = 300bp, we subtract 100bp = 200bp
 
-            location_transcript_noUtr   = gene.getLongestCdsTranscript().Location.resized(0,-utr_match_start)   # <- truncate the utr away
-            seq_transcript_noUtr        = str(ensembl_genome.getRegion(location_transcript_noUtr).Seq)
-            #seq_sample          = str(ensembl_genome.getRegion(location_sample).Seq)
-
+            # seq_sample          = str(ensembl_genome.getRegion(location_sample).Seq)
             # gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('End'))  # flattens from: 2d->1d
             # gene_limiting_exon  = gene_exons[-1]    # exon closest to 3' end of sample
-            # location_sample      = gene_limiting_exon.resized(+len(gene_limiting_exon)+1,+sample_range+1) 
+            # location_sample     = gene_limiting_exon.resized(+len(gene_limiting_exon)+1,+sample_range+1) 
 
     # INITIATE STORAGE:         ANDY: concatenate just the limiting exon sequence to the sampleseq?
         #sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(ensembl_genome.getRegion(gene_limiting_exon).Seq),'sample_location':str(),'gene_location':':'.join(str(gene_limiting_exon).split(':')[2:])}
@@ -316,16 +321,16 @@ species_list = [    'Aedes aegypti',
                 #,'Anopheles stephensiI',           # this is broken..?
                 #'Anopheles stephensi'              # ''
                 ]
-sample_directions = ['downstream']
-sampleAllSpecies(species_list,sample_directions)
+#sample_directions = ['downstream']
+#sampleAllSpecies(species_list,sample_directions)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # TESTING
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-# genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-# samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=200, sample_data={}, sample_seqs={})
-# samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
+genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
+samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=200, sample_data={}, sample_seqs={})
+samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
