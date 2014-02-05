@@ -58,10 +58,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
     for count,geneId in enumerate(geneIds):
         print '\t'+str(count)+' '+geneId
         gene        = ensembl_genome.getGeneByStableId(StableId=geneId) # select gene
-        geneLocation= gene.Location # coordinates for whole gene
-
-        # Assuming all genes have utr3 annotated:        WARN: not always true?
-        # gene_exons  = [[e.Location for e in t.Exons] for t in gene.Transcripts] # coordinates for limiting exon fo the gene
+        #geneLocation= gene.Location # coordinates for whole gene
 
     # EXON TARGET               # Sampling starts from the limiting exon of the current gene  and spans according to sample_range
         if sample_direction=='upstream':
@@ -69,34 +66,25 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
             print ('Upstream is not finished yet')
             return None
 
-            # ANDY: There seems to be a bug in an annotation that makes upstream not possible at the mo..?
-            #   g    = genome.getGeneByStableId('AGAP000011')
-            #   tran = str(g.getLongestCdsTranscript().Seq)
-            #           CCAGTGTCGAATAGCTTCTTCAGGAGTGAACACAAGCTCAAGCCCGCCTTGGCCTTCTCCTCGCTCGAGATCAGCAAAACGAAGCAAACAACAAACAACAGAACGCGCCAGAACTGCAGCGAGCACGAGTGTCCTAACACGCGAAAAGAAAGATTTCACTTTTTTTTGGTTTTTGCAAGCAATCACTCATCGTTGTGTAAAACAAAACAAAAAAAAACAAGAGAGAGAGAACGATATTACTAGCAAAAAAGGCAAAGGTACGCAGGATTACGCTGGGCGTCATCATTATCCGATTTGTACCTTTTACCCCGTTCTGAAAGTACTGACATACACATCCTTGTCAAGCTTTAGTTTACTCAGTAGCACATCCATAGTAGCGATACGTTAAGTAGCTTTAGTGTAAGGAACTAGTACAGATACACCGAAACTCAGCATGGAGCTGTGATATTACAGCTGAGCTGCTCGCTTAGTGTAATGTGTGTGTTTTTTGTATTGTTTTTTTTTCACTCACTTTCCTTTTTCACACGCATTCCGGCCTGCATTTGTTTTGCTAGTGTACAGTACAGCTGTCAAATGCGACATCTTCACAAGTATTGCGATCGCTCCCTTTCTATCAACCGGCTGTTTGTCAGTAATGCTGGATAACCCATCATTGCACAGTGGAAAGGGAAAGTGTATTTCTAGACCATTCCAGTCCAGTGAATAGTTATCTCCTCCTGTCACTGTCGCAGCTAAAAGCCAGTAGGACGCTCCTTAGTAGAGCGAAATTTGTCAGTAAATAGTAATAGTAGTACGTGCTCGATCGGTACTTTCGACTTCGGTGAAACAAAGTGCTTGCTTTTTTCTCTGTGCTACCCCTCCGTTTATATTGTGCATGTGCGATAGTGTGTATGTGTGTTTTTAAATGTGTATCTGTTGTGTGTGTGTTTGTTTATTAAGTGAGTCCTATTTTGAACCATCTCATCATCATCTCAACCCGTTCCAGCTAGGTGACAGCCCGACGCCTACAGTGAAGCATCAATCGCACCCTCATATCCCGCTGAAAGGAAACATCGAAGGCGGTGCGTGCCATCCTAAACGGTAGACAACTCCACCCTCACACCCCAAAACACAGAGCGCATCAAGATGGTCCTGCGAAGCAAGGTGAGCAGTTTAGTAGCAATATAACTTTAGTTCCGCTTCTCCGTGTCATGTAAAGTGTCCACAAGTGTGTGCAGGCGAGAGTGTAATTGCGGTAAGCGGGGTACCGTGTGGCTCACCCAACTCATCTGTTTATACAATCGCAACGCGTTGTTTGCCGCGTGGATATTCTAGAACGATCGTGTGCGTGGCGCGCAACGAGAGAGCCATAAAGTAACAGCGAGTGTCGAAATTTCTAGACGACAATGCTGCGGGTCCCAAAAGTTGTAGCGGCGAAAATGCTGCTTTCGCCTTGCTTTTGGGTGTACAACGTCACACACTCACACACACACACACTCACTCACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACATGATGTAGAGTCGCGGTCTCTGCTCTGCTTGCAACATCCCCCGCTCCCGTGGCTGTCCGTTTGGCGGGGGCTCGACCTCCCGTTCGGACAGGTTTTCACTATTTGCGTGTAGGTCGCTTCCGTGTCGAAGGATGGGGGGGGGTGGTAAGCGCAGAACACCCGGCAAGAGGTGTTGCTTTTTATTCGACGTCTTGTACGGGAAGGGGAAGGGTAGGTTCATAGAATCCCGCTGCCCTGGAAACCGGATTATTCTCCACACCCATTCGCAGGCGGAAAACAGCTTCTCCCTTTCTGCTGCGACCACCCGGTAGTCCTTCGAACACGTTATGCCTCCCTGCCGAAGGACACGGCCCCATCTCCGAGAACCAGGAAAGGAGCGATCTTGCGTCAGCCGCCGCTACGGCAAACATACCAGGAAGAGTTCATCGCACGTTGAGAAGGCCGCACAGGGGACGGGAAATGGGGGCTGCCGCGGGTGCTGCTGCTTAGAACGGCGCGTGATCAACGTAGGTTTTTGCATAATTGACAGGCCTGTGCCAAGGGCGACAGTGATGGCGATGACGATCTATTGCCTGGGCGTTGGAACCGCTTCGGAGCACATGCTCGAGCTTGTATTGGCTACTATCTGGCGTACTATCTACTACTACTACTATTTGGCGAGAGTTCTTGGGCTCTCGTGCTGCTCCCAGAATGCAGAGCGCCCAGTCATGTAGCATGGTCAACTTCCTCTCCCACGAGCATTGGTGCGACACGAAGGGCCTCGCTTCGCCACGGTCTCTGCTGGGTGTGGTAGACGGCAATTTAATTCGCGACCATTCGCTGCGTTGTGACCGCTATTGGAAGGATAGGGTGCTTTCGTGATCAAGGTACCATGTCCACGGGCTATTACTGCTTGCTCCACCGAGCTTTTGGCTACAAGTGTGTGAAATTACGCTCGCACTGGAGATGGATGGTAGGCACGAAGACGCCACCGTGTCAACAATCAACCAACGGCAGATCAACGGCAACTCCCCTGGAGGCCTGTCTCTGCAAGCGCGTGCGCACACATGGGCTACGCATCAATCAACCTCGCGCACAAACCAGGCCAGAACGTGCGGCATCCTATTGAGGCCAGCCTGCCGATGCAAATGCCGTTCGAAAGGCCGACTCTTTGTTGAGGGCTCGCCAGATTTCGCCTTTCTTATCTTTCGCCGACCTGCCGCCGACCTTGGGCGAATGGACGCGATGGCTCAGCCCTGCGATGCAAGACATCTTCCCGCACAGGATATGGCTGGCATCTTCCCGCACAGGGCCCCTTTCCACTCCGGTGCGGGTTGCTGTGACGTCACCAAGTCATCAACAGCAGCCCCCCTTCCACATTCTCCTCTGCCGATCCGGGGTAGCCGATCCTGCAACCCCCCCCCCCCCCCTTCCTCAAAATGGTAATGGTGCGCTCGTTCCCTTATCGCTCCACCTAAATGACGTCGACATATTTCCAGTGTATGTGTGTGTGTATGCGTGTTATTTTTGTTGTTGTTTTTTGTTGCTTTATTCCATCAAACGTCCGTTTGCGATTTCATCATGCTCCATTATCACGCCCCGGGATCCCCTTGGCAACCGGATCGGAGAGCGCGCGAACGAATCGCTGCAGTTGACGCGCACGCACACGCCTCCTGCGGAAGACGGCCGAAGATCCTGGCCCGTTTGGCCCGAGGGGCGGGGTGCCAACTACCAACCGTGTGCCCCCGAGATCCGTATCTGCGCTTGAGGCTCTGGCTGGTGCGGCGGTGCGCTAACAACAAACCCCGCAGGGCAAGGAAAAACACAGTCGGGGCCGTGGGTCGCCCGCCAACCCGCCATTACGAACATGCGGAATGTATGTACAACAAATGATTATAGCGCATCGCGGCAAGGTAAACACGGTTTCGTGCAATCGTGGCAAAATAATAATGCTCGATTGATAAGGCATAATGCCACAGGCCGCCATGCCTCACCTTATCTTCTGCTGATAGGGCCTCCGGTTTTGCAGTACAAATTTTTGTTTTTTTTTTTTGTAAAGTTCTTCAACGCTCGGCGGTGCTCTTTCTTTTCTTTTCTAACGTGCCCACGGCAAAATTAATCAAGCGAGCAGGAATGTACGCAGTAACCCACGAGTGTGCCGAAAATGTGGCGCACCCAGGGGCCGCACAAAGAAAAGGAGAGCGACGCTTCATCCGCGTGCGCGTCTTCTGTTTGCGCAAGTGCTGCTCCTGCTGCTGCGGGAGCGGACGCCTCACAAAAGGTGTGGTGGGGAGACGCGAACGAGCTTACTTGCTTACTTGCCGCCGAACCTTCTTGCCCTCGTCATAAATCTCGCGAAACCTACAAAAGAATAAAAAAGAAACACATTTTTGGCTGGATAAGGCTGGCGTGAACGAAACAATCCAGGGATTAGCAGCATTTACAGCAGAAGGCACTGTGTAGCTGTTATTATTATCAAAACGAGCTATTGGGGCGACTGTTGGAGGCGCTTTCTCAAAGCTGCCCAACCTTATCAAGGTATTCAGGAGGGATGGGGAGTGGTGAAATGGGAAAACCATGCAATCAGGTGATGGTGATAGCGTCACCTTTACACACGGTAGGACGAAGATGCCGCAGTCGAAGCCGCGTCAACAAACACGCGCCGATAGCAAAAGAGGAGGAACGAGAGTGAAAAAAGAGGGAAGGGGGTGGGGGGGGGGGCGGGTTATGGGTGAAATGAGGGGGAAACGTGATGTACTGTTTTTCTTTTTCAAACTTTTTGCCACATTTCCCGTTTTTTCTTTCGTCTGTGTTTTAATTATTCTTCAGCCCTTTCCTAACAGCTACTTTTCAATTTCTTTCCCCGCAAACAGAACCTCGTACGCTACGTGTTCCAGAATCAGCACAAGCTGATCCAGCAGCTGCTGGTGCAGGGTGGACCGGTGCGTGCATGCAGCGGGCACGGCGGCACGCAGCAACAAGCCCAGCTGCGGGTGGAGGAGGACGATAACTTCCCCAAGATTGCCGAGGTGCCGCCGCTAGCGGCACCGTTCCCGATGACGATCGAACATGCGGCCGACGTGGGAGAACAGTTCAAGGTACGGCCAGAGCGGAATGGCGACGGCGGCCGGTTGGCGGCCGTACATGTTTGATGGCGTCGTAGAGGCGTAGAACAACGCAACAGGACAAAAAAAGAAACCGGACCAATATCCCCGGAGAGTAGAGGGGTCAATGAAATTCCGTGCCAGTCGGGCCGTGGCGTCGCGCGAATGCAAATCGGATCGCACGCCGCCGTGCGCGCTGGCTCGATCGAACCCCCTTCACACACACGCCGGTGAACTTGACCCTCGGGGAGCTCTTGTGCGCGGTGGATGGAATTAAAAGGGGTATCCATCCCGATCGGGCGGGCCTACATTGCGAAACTGGAAGCGCCTAGGTTTAACGATTAGCATACCTGGCGCTACCTTTGTATTTTGATTGCGAAATGCTCCGTTGCGCAGACCGAAGATATTCTCAGTTGTCTCTCAATTTGTCACCTCAACTTTTTTTTTTAATTTTCAACTGATTCCGGGTTTTTCTTTTTTTTTTCTTTTTGGCAGTATTCCGATCTCAGCGTTCGCTTGGCGGCACCGCACCAGCTCAACCCGAAGCCGGACGTGGACGACCTAGCGTTCGGCAAGTACTTTACCGACCACATGCTGAAGGTGCCGTACCACCGCCGGCTCGGCGGCTGGCAGAAGCCGGAAATTACGCCGATGGAAAACCTTAACCTGCACCCAGCGGCAAAGGTGTTCCACTACGCGATCGAGGTAAGCTCCAGGACGGCACAGAGATCGTAAACTCTTTTGCCAGAAAAACTAACCTTCTTGTCTTGTTTGCGCTCTCCCCTTCCCCTGCAGCTGTTTGAAGGCATGAAAGCATACCGTGGCTACGATGGCAAGATTCGCTTGTTCCGACCGGAGATGAACATGGCGCGCATGAACGTTACCGCCTACCGGTCCGGTCTGCCCACGTTCGAGGGCGAGGAGCTGATCAAGGCGATGGCCCGGCTGGTCATGATCGATTCCGAATGGGTACCGCACACCGAATCGGCCAGTCTGTACATCCGCCCGACCCTGATCGGCATTGAGGTAAGTCAGTGGGGCGGCAGTTTGCATTTCCACGCAGGTTTCATGCTGATAATTGTTGTTAATTGGCTTTCTTCTATGTGATCCCTTCCACCACCCAACAGCCAACGCTAGGTGTTGCTTCTTCCGATTCTGCCCTGCTCTACACGATCCTGTCGCCCGTCGGACCGTACTTCAAGCCGGGCGCTAAGGGGTTGAAGCTGTACGCCGAACCGAAGTACACGCGGGCATGGCCGGGTGGTGTCGGTGACCGGAAGGTCGGCTCCAACTACGGACCGACGATCCACGTGCAGCAGGAGGCTCTGCGGCACGGTTGCCACCAGGTGCTGTGGCTGTACGGCGATGACCATCAGCTGACAGAGGTCGGCGTCATGAATATCTTCATGCTGTACATGAAGGAGAACGGAGGTACGCGGGCGGGCTTGTTTACCCCAAAAATCCCTTTTCTTTCAAGAGTCCCTAATCAATATAACAACTTTATCTCTCTTTCTCTCTCTCTCTCTCTCTCTCTCTCTCTCTCTCTCTCTCTCTCTCTCTCGCTCTCTCTCTCTCGCTCTTTCTATTGCACACCTACAGAGCGCGAGCTGCTAACACCTCCGCTGAACGGTCTCATCCTGCCCGGCATCACGCGCGACTCGATCATCCGCCTGTGCCACCAGTGGGGTGAATTTTCCGTCCGCGAGCAAAAATTCACCATGCCCGAGATCAAGAAGCTGTCCAAGCAGGGACGGGTAAGTGTGCATTCGGAACCAGTCAGCATCTGCTGACCATCGCCATTCTGACATCCTTTCATGTCTCTCTCTCTCTCTCTTTCCAAACAGCTACTGGAACTGTTCGGCGCAGGTACGGCAGCCGTCATCAGCCCGATCGAGCACATCTCGTACATGGGTGAGGAGATCCACGTGCCAACGGAAAGCCACGACAACCCGCTGTATCGGCGGTTGTACAACACACTTACCGACATTCAGTACGGTAAGCTGGATCATCCGTGGGCCTACGTCATAGACTGAAGTGAGTTAGCGTGGGTGTCACGTTTAATGATCCTCCCCGCGACAAGCAGGACCATCCAGTAGGTTCAGCAGCAACCCTACGCTGTCCTTCCCAATTCCAAAACTACCCCCCCCCCCTCCCCTCTTACAGGTTTTGGAAGTCCTGCAGCTACGGCCAGCTACACTCCTACTATCCTCTCTGTATATACTATATATTGTTTCTTAGTACAGTAAGTCATTGCGTCTCTCTCGGTACCTCGCTCTCAGATACGTTTAGCGGACACACAAAAATTAGCGCCTTCCTTTGCCCTATTGTAACCACCAATGTCTAATGATCTTCATCCGGTTCAAGTGTTCTTCTTCTGCATCCGACACCCTATCCTTTCGCATCCGCATCTCCCGGCCCGGTTACATG
-            #   utr5 = str(g.getLongestCdsTranscript().Utr5)
-            #           CCAGTGTCGAATAGCTTCTTCAGGAGTGAACACAAGCTCAAGCCCGCCTTGGCCTTCTCCTCGCTCGAGATCAGCAAAACGAAGCAAACAACAAACAACAGAACGCGCCAGAACTGCAGCGAGCACGAGTGTCCTAACACGCGAAAAGAAAGATTTCACTTTTTTTTGGTTTTTGCAAGCAATCACTCATCGTTGTGTAAAACAAAACAAAAAAAAACAAGAGAGAGAGAACGATATTACTAGCAAAAAAGGCAAAGCTAGGTGACAGCCCGACGCCTACAGTGAAGCATCAATCGCACCCTCATATCCCGCTGAAAGGAAACATCGAAGGCGGTGCGTGCCATCCTAAACGGTAGACAACTCCACCCTCACACCCCAAAACACAGAGCGCATCAAG
-            #   Notice this sequence and the tran sequence dont match...?
+            transcript          = gene.getLongestCdsTranscript()
+            seq_transcript      = str(transcript.Seq)
+            location_transcript = transcript.Location
 
-            # seq_transcript      = str(gene.getLongestCdsTranscript().Seq)
-            # seq_utr             = str(gene.getLongestCdsTranscript().Utr5)
+            print('\t\tUTR Synthetic')
+            sample_type = 'Synthetic'
 
-            # rev_seq_transcript  = seq_transcript[::-1]
-            # rev_seq_utr         = seq_utr[::-1]
+        # ORIENTATION?
+            # (-) strand
+            if location_transcript.Strand   == -1:
+                print('\t\t-')
+                location_sample = location_transcript.resized( 0-sample_range       , 0-len(seq_transcript) )  # (shift to transcript_end, shift to sampling range)
+            # (+) strand
+            else:
+                print('\t\t+')
+                location_sample = location_transcript.resized( 0+len(seq_transcript), 0+sample_range )  # (shift to transcript_end, shift to sampling range)
 
-            # matcher             = difflib.SequenceMatcher(a=rev_seq_transcript, b=rev_seq_utr) # Matches coordinates of a string and its substring
-            # match               = matcher.find_longest_match(0, len(matcher.a), 0, len(matcher.b))
-
-            # mirror = len(rev_seq_transcript)-match.a+1
-
-            # location_sample     = gene.getLongestCdsTranscript().Location.resized(  match.a,   # <- where the utr begins amtching                         
-            #                                                                         match.b+(sample_range-match.size)) # <- where the utr needs to extend for specified sample_range
-            # location_transcript = gene.getLongestCdsTranscript().Location.resized(0,match.a)   # <- truncate the utr away
-            # seq_transcript_noUtr= str(ensembl_genome.getRegion(location_transcript).Seq)
-            # seq_sample          = str(ensembl_genome.getRegion(location_sample).Seq)
-
-            # gene_exons          = sorted(list(itertools.chain(*gene_exons)),key=attrgetter('Start')) # flattens from: 2d->1d
-            # gene_limiting_exon  = gene_exons[0]     # exon closest to the 5' end of sample
-            # location_sample     = gene_limiting_exon.resized(-sample_range-1,-len(gene_limiting_exon)-1) # focus on the sampled region, #TODO: check if off by 1 @@@@@@@@@@@
+            seq_sample     = str(ensembl_genome.getRegion( location_sample ).Seq )
+            seq_transcript = str(ensembl_genome.getRegion( location_transcript ).Seq )
 
         elif sample_direction=='downstream':
             transcript          = gene.getLongestCdsTranscript()
@@ -160,6 +148,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
         # MODE 1: If annotated UTR then keep it
             location_sample = location_utr 
             seq_sample      = seq_utr
+            seq_gene        = seq_transcript_noUtr
         # MODE 2: Maintain Constant Sampling Length // Rob & Mike dont like it
             # location_sample = location_utr.resized(0,200-len(location_utr)) # e.g. if annotaed utr = 100bp, we add +100 = 200bp // or if utr = 300bp, we subtract 100bp = 200bp
             # seq_sample          = str(ensembl_genome.getRegion(location_sample).Seq)
@@ -174,7 +163,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
                 sample_type = 'Synthetic'
 
     # INITIATE STORAGE:         ANDY: concatenate just the limiting exon sequence to the sampleseq?
-        sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(seq_transcript_noUtr),'sample_location':str(),'gene_location':':'.join(str(location_transcript_noUtr).split(':')[2:]),'sample_type':sample_type}
+        sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(seq_gene),'sample_location':str(),'gene_location':':'.join(str(location_transcript_noUtr).split(':')[2:]),'sample_type':sample_type}
 
     # FEATURES OVERLAP WITH SAMPLE?
         overlaps_flag = None 
@@ -243,42 +232,35 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
             #
 
         # Which ORIENTATION do we truncate from: 
-            # 3'-to-5' direction:                           <=i.e. gene is on the right hand side of the sample
+            # a) 3'-to-5' direction:                           <=i.e. gene is on the right hand side of the sample
             sample_completeOverlap_flag = None
             if (sample_direction == 'upstream' and location_sample.Strand == +1) or (sample_direction == 'downstream' and location_sample.Strand == -1):
-            #if (sample_direction == 'upstream'):
                 overlap_locations   = sorted(overlap_locations,key=attrgetter('End'))   # Sort by 'End' <= 3' of feature vs. 5' of sample
                 overlap_limit       = overlap_locations[-1]                             # limiting overlapping feature beyond which there are no overlaps w/i sample
-            # Overlap spans entire sample?
+            # Overlap SPANS entire sample?
                 # YES:  truncate all
                 if overlap_limit.End > location_sample.End:
                     print('\t\t\t\t\tcomplete overlap!')
-                    sample_completeOverlap_flag = True
-                    location_sample_truncated = location_sample.copy()
+                    sample_completeOverlap_flag     = True
+                    location_sample_truncated       = location_sample.copy()
                     location_sample_truncated.Start = location_sample_truncated.End
                 # NO:   leave the remainder
                 else:
                     print('\t\t\t\t\tpartial overlap!')
                     location_sample_truncated = location_sample.resized( 0+(overlap_limit.End-location_sample.Start) , 0 ) # Truncate the sampled upstream sequence (promoter to prevent overlap)
-            # 5'-to-3' direction:                           <=i.e. gene is on the left hand side of the sample
+            # b) 5'-to-3' direction:                           <=i.e. gene is on the left hand side of the sample
             elif (sample_direction == 'downstream' and location_sample.Strand == +1) or (sample_direction == 'upstream' and location_sample.Strand == -1):
-            #elif (sample_direction == 'downstream'):
                 overlap_locations   = sorted(overlap_locations,key=attrgetter('Start')) # 'End' <= 3' of feature vs. 5' of sample
                 overlap_limit       = overlap_locations[0]
 
                 if overlap_limit.Start < location_sample.Start:
                     print('\t\t\t\t\tcomplete overlap!')
-                    sample_completeOverlap_flag = True
-                    location_sample_truncated   = location_sample.copy() 
-                    # try:
-                    location_sample_truncated.End = location_sample_truncated.Start
-                    # except AttributeError:
-                    #     print(location_sample_truncated)
-                    #     return location_sample_truncated
+                    sample_completeOverlap_flag     = True
+                    location_sample_truncated       = location_sample.copy() 
+                    location_sample_truncated.End   = location_sample_truncated.Start
                 else:
                     print('\t\t\t\t\tpartial overlap!')
                     location_sample_truncated = location_sample.resized( 0 , 0-(location_sample.End-overlap_limit.Start) ) # Truncate the sampled upstream sequence (promoter to prevent overlap)
-
             # if location_sample.Strand == -1:
             #     return overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr, ensembl_genome
 
@@ -323,9 +305,7 @@ def sampleSequences_write(ensembl_genome, sample_read, fasta_it=True, pickle_it=
         if include_genes:   # concatenate sample_seq to gene_seq?
             gene_seq        = sample_data[geneId]['gene_seq']
             sample_seq      = sample_data[geneId]['truncated']
-
             total_seq       = gene_seq+sample_seq 
-            
             gene_length     = len(gene_seq)
             sample_length   = len(sample_seq)
             header = geneId+'\tGeneCoord:'+sample_data[geneId]['gene_location']+'\tUtrCoord:'+sample_data[geneId]['sample_location']+'\tGeneLength:'+str(gene_length)+'\tUtrLength:'+str(sample_length)+'\tUtrType:'+str(sample_data[geneId]['sample_type'])
@@ -372,7 +352,7 @@ def sampleAllSpecies(species_list,sample_directions):
         for species in species_list:
             print(species)
             genome          = setupGenome(              species, db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-            samples_read    = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=500, take_annotated_utr=False, sample_data={}, sample_seqs={}, test_it=False)
+            samples_read    = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=500, take_annotated_utr=True, sample_data={}, sample_seqs={}, test_it=False)
             samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
             import pprint
             pprint.pprint(samples_write[1]) # show the header
@@ -402,15 +382,15 @@ species_list = [    'Aedes aegypti',
                 #,'Anopheles stephensiI',           # this is broken..?
                 #'Anopheles stephensi'              # ''
                 ]
-# sample_directions = ['downstream']
-# sampleAllSpecies(species_list,sample_directions)
+sample_directions = ['downstream']
+sampleAllSpecies(species_list,sample_directions)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # @TESTING
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=500, take_annotated_utr=True, sample_data={}, sample_seqs={}, test_it=False)
-samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
+# genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
+# samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=500, take_annotated_utr=True, sample_data={}, sample_seqs={}, test_it=False)
+# samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
 
-#overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr
+# #overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr
