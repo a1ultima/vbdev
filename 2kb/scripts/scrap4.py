@@ -242,6 +242,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
 
         # Which orientation do we truncate from:
             # 3'-to-5' direction:
+            sample_completeOverlap_flag = None
             if (sample_direction == 'upstream' and location_sample.Strand == +1) or (sample_direction == 'downstream' and location_sample.Strand == -1):
             #if (sample_direction == 'upstream'):
                 overlap_locations   = sorted(overlap_locations,key=attrgetter('End'))   # Sort by 'End' <= 3' of feature vs. 5' of sample
@@ -250,7 +251,9 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
                 # YES:  truncate all
                 if overlap_limit.End > location_sample.End:          # if overlapping feature spans the entire sample
                     print('\t\t\t\t\tcomplete overlap!')
-                    location_sample_truncated = None
+                    sample_completeOverlap_flag = True
+                    location_sample_truncated = location_sample.copy()
+                    location_sample_truncated.Start = location_sample_truncated.End
                 # NO:   leave the remainder
                 else:
                     print('\t\t\t\t\tpartial overlap!')
@@ -263,7 +266,13 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
 
                 if overlap_limit.Start < location_sample.Start:      # if overlapping feature spans the entire sample
                     print('\t\t\t\t\tcomplete overlap!')
-                    location_sample_truncated = None
+                    sample_completeOverlap_flag = True
+                    location_sample_truncated   = location_sample.copy() 
+                    # try:
+                    location_sample_truncated.End = location_sample_truncated.Start
+                    # except AttributeError:
+                    #     print(location_sample_truncated)
+                    #     return location_sample_truncated
                 else:
                     print('\t\t\t\t\tpartial overlap!')
                     location_sample_truncated = location_sample.resized( 0 , 0-(location_sample.End-overlap_limit.Start) ) # Truncate the sampled upstream sequence (promoter to prevent overlap)
@@ -271,12 +280,17 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
             # if location_sample.Strand == -1:
             #     return overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr, ensembl_genome
 
-            sample_seqs[geneId]['sample_location']              = ':'.join(str(location_sample).split(':')[2:]) # genome coordinates summary
-            sample_seqs[geneId]['untruncated']                  = str(ensembl_genome.getRegion(location_sample).Seq)
-            if location_sample_truncated:
-                sample_seqs[geneId]['truncated']                = str(ensembl_genome.getRegion(location_sample_truncated).Seq)
+        # HOW MUCH OVERLAP?
+            # COMPLETE
+            if sample_completeOverlap_flag:
+                sample_seqs[geneId]['untruncated']      = str(ensembl_genome.getRegion(location_sample).Seq)            # untruncated asmple sequence
+                sample_seqs[geneId]['truncated']        = ''                                                            # No sample sequence due to complete overlap
+                sample_seqs[geneId]['sample_location']  = ':'.join(str(location_sample_truncated).split(':')[2:])       # genome coordinates summary
+            # PARTIAL
             else:
-                sample_seqs[geneId]['truncated']                = ''
+                sample_seqs[geneId]['untruncated']      = str(ensembl_genome.getRegion(location_sample).Seq)            
+                sample_seqs[geneId]['truncated']        = str(ensembl_genome.getRegion(location_sample_truncated).Seq)  # truncated sample sequence
+                sample_seqs[geneId]['sample_location']  = ':'.join(str(location_sample_truncated).split(':')[2:])       
 
     #return sample_data, sample_seqs    #ANDY_01/27
     #return sample_seqs, sample_direction, sample_failures  # yields the dictionary
@@ -308,11 +322,11 @@ def sampleSequences_write(ensembl_genome, sample_read, fasta_it=True, pickle_it=
             gene_seq        = sample_data[geneId]['gene_seq']
             sample_seq      = sample_data[geneId]['truncated']
 
-
             if sample_direction == 'downstream':
                 total_seq   = gene_seq+sample_seq 
             elif sample_direction == 'upstream':
                 total_seq   = sample_seq+gene_seq
+
             gene_length     = len(gene_seq)
             sample_length   = len(sample_seq)
             header = geneId+'\tGeneCoord:'+sample_data[geneId]['gene_location']+'\tUtrCoord:'+sample_data[geneId]['sample_location']+'\tGeneLength:'+str(gene_length)+'\tUtrLength:'+str(sample_length)+'\tUtrType:'+str(sample_data[geneId]['sample_type'])
@@ -322,6 +336,7 @@ def sampleSequences_write(ensembl_genome, sample_read, fasta_it=True, pickle_it=
             header = geneId+'\tUtrCoord:'+sample_data[geneId]['sample_location']+'\tUtrLength:'+str(total_length)+'\tUtrType:'+str(sample_data[geneId]['sample_type'])
 
         samples[header] = total_seq
+
     if pickle_it:
         import pickle
         pickle_path     = '../data/sample_seqs/pickled/'
@@ -359,7 +374,7 @@ def sampleAllSpecies(species_list,sample_directions):
             print(species)
             genome          = setupGenome(              species, db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
             samples_read    = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=500, take_annotated_utr=False, sample_data={}, sample_seqs={}, test_it=False)
-            samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=True)
+            samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
             import pprint
             pprint.pprint(samples_write[1]) # show the header
 
@@ -388,15 +403,15 @@ species_list = [    'Aedes aegypti',
                 #,'Anopheles stephensiI',           # this is broken..?
                 #'Anopheles stephensi'              # ''
                 ]
-# sample_directions = ['downstream']
-# sampleAllSpecies(species_list,sample_directions)
+#sample_directions = ['downstream']
+#sampleAllSpecies(species_list,sample_directions)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # TESTING
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=500, sample_data={}, sample_seqs={}, test_it=True)
+samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=500, sample_data={}, sample_seqs={}, test_it=False)
 
 #overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr
 
