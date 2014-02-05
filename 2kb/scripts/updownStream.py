@@ -52,6 +52,8 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
     genes   = ensembl_genome.getGenesMatching(BioType='protein_coding')   # queries ensembl genome for all protein coding genes
     geneIds = [gene.StableId for gene in genes]  # grab all gene ids
     
+    annotated_sample_flag = None
+    
     if test_it == True:
         geneIds = geneIds[0:100]    # ANDY: testing for just 100
 
@@ -84,8 +86,11 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
                 #print('\t\t+')
                 location_sample = location_transcript.resized( 0+len(seq_transcript), 0+sample_range )  # (shift to transcript_end, shift to sampling range)
 
-            seq_sample  = str(ensembl_genome.getRegion( location_sample ).Seq )
-            seq_gene    = str(ensembl_genome.getRegion( location_transcript ).Seq )
+            location_gene   = location_transcript
+            seq_gene        = str(ensembl_genome.getRegion( location_transcript ).Seq )
+            
+            location_sample = location_sample
+            seq_sample      = str(ensembl_genome.getRegion( location_sample ).Seq )
 
         elif sample_direction=='downstream':
             transcript          = gene.getLongestCdsTranscript()
@@ -94,11 +99,11 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
             location_transcript = transcript.Location
 
         # TAKE ANNOTAED UTR? If so is it AVAILABLE?
-            annotated_utr_flag = None
+            # annotated_sample_flag = None
             # YES UTR: 
             if take_annotated_utr and len(seq_utr)>3:
                 #print('\t\tUTR annotated')
-                annotated_utr_flag = True  # if UTR is annotated, no need to check for overlapping features
+                annotated_sample_flag = True  # if UTR is annotated, no need to check for overlapping features
                 utr_query       = re.compile(seq_utr)
                 utr_match_all   = [m.start() for m in utr_query.finditer(seq_transcript)]
             # UTR matches to Transcript?
@@ -135,7 +140,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
             # NO UTR:
             else:
                 #print('\t\tUTR Synthetic')
-                annotated_utr_flag = False
+                annotated_sample_flag = False
                 if location_transcript.Strand   == -1:
                     #print('\t\t-')
                     location_utr                = location_transcript.resized( 0-sample_range       , 0-len(seq_transcript) )  # (shift to transcript_end, shift to sampling range)
@@ -149,6 +154,8 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
         # MODE 1: If annotated UTR then keep it
             location_sample = location_utr 
             seq_sample      = seq_utr
+
+            location_gene   = location_transcript_noUtr
             seq_gene        = seq_transcript_noUtr
         # MODE 2: Maintain Constant Sampling Length // Rob & Mike dont like it
             # location_sample = location_utr.resized(0,200-len(location_utr)) # e.g. if annotaed utr = 100bp, we add +100 = 200bp // or if utr = 300bp, we subtract 100bp = 200bp
@@ -158,17 +165,17 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
             # location_sample     = gene_limiting_exon.resized(+len(gene_limiting_exon)+1,+sample_range+1) 
 
             sample_type = None
-            if annotated_utr_flag:          # Labels the utr according to whether it was already annotated or synthesized by us
+            if annotated_sample_flag:          # Labels the utr according to whether it was already annotated or synthesized by us
                 sample_type = 'Annotated'
             else:
                 sample_type = 'Synthetic'
 
     # INITIATE STORAGE:         ANDY: concatenate just the limiting exon sequence to the sampleseq?
-        sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(seq_gene),'sample_location':str(),'gene_location':':'.join(str(location_transcript_noUtr).split(':')[2:]),'sample_type':sample_type}
+        sample_seqs[geneId] = {'untruncated':str(),'truncated':str(),'gene_seq':str(seq_gene),'sample_location':str(),'gene_location':':'.join(str(location_gene).split(':')[2:]),'sample_type':sample_type}
 
     # FEATURES OVERLAP WITH SAMPLE?
         overlaps_flag = None 
-        if annotated_utr_flag:      # If the UTR is annotated we assume there are no overlaps
+        if annotated_sample_flag:      # If the UTR is annotated we assume there are no overlaps
             overlaps_flag = False           
         else:                       # Else we are using a syntehtic UTR and need to test if there are overlaps 
             overlap_features = [feature for feature in ensembl_genome.getFeatures(region=location_sample,feature_types='gene') if not feature.StableId==geneId] # do any features overlap with our sample
