@@ -56,31 +56,32 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
         geneIds = geneIds[0:100]    # ANDY: testing for just 100
 
     for count,geneId in enumerate(geneIds):
-        print '\t'+str(count)+' '+geneId
+        if count%10==0:
+            print '\t'+str(count)+' '+geneId
         gene        = ensembl_genome.getGeneByStableId(StableId=geneId) # select gene
         #geneLocation= gene.Location # coordinates for whole gene
 
     # EXON TARGET               # Sampling starts from the limiting exon of the current gene  and spans according to sample_range
         if sample_direction=='upstream':
 
-            print ('Upstream is not finished yet')
-            return None
+            #print ('Upstream is not finished yet')
+            #return None
 
             transcript          = gene.getLongestCdsTranscript()
             seq_transcript      = str(transcript.Seq)
             location_transcript = transcript.Location
 
-            print('\t\tUTR Synthetic')
+            #print('\t\tUTR Synthetic')
             sample_type = 'Synthetic'
 
         # ORIENTATION?
             # (-) strand
-            if location_transcript.Strand   == -1:
-                print('\t\t-')
+            if location_transcript.Strand == -1:
+                #print('\t\t-')
                 location_sample = location_transcript.resized( 0-sample_range       , 0-len(seq_transcript) )  # (shift to transcript_end, shift to sampling range)
             # (+) strand
             else:
-                print('\t\t+')
+                #print('\t\t+')
                 location_sample = location_transcript.resized( 0+len(seq_transcript), 0+sample_range )  # (shift to transcript_end, shift to sampling range)
 
             seq_sample     = str(ensembl_genome.getRegion( location_sample ).Seq )
@@ -96,51 +97,51 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
             annotated_utr_flag = None
             # YES UTR: 
             if take_annotated_utr and len(seq_utr)>3:
-                print('\t\tUTR annotated')
+                #print('\t\tUTR annotated')
                 annotated_utr_flag = True  # if UTR is annotated, no need to check for overlapping features
                 utr_query       = re.compile(seq_utr)
                 utr_match_all   = [m.start() for m in utr_query.finditer(seq_transcript)]
             # UTR matches to Transcript?
                 # YES MATCH:
                 if utr_match_all:
-                    print('\t\t\tUTR Matched')
+                    #print('\t\t\tUTR Matched')
                     if not len(utr_match_all) == 1:
-                        print('\t\t\t\tMultiple times')
+                        #print('\t\t\t\tMultiple times')
                         sample_failures.append((geneId,'UTR matches multiple times to transcript...'))
                     utr_match_start = utr_match_all[-1] # Takes last matching instance as the start of match
                 # NO MATCH:  -->  Rare intronic transcript detected
                 else:
-                    print('\t\t\tUTR Not Matched')
+                    #print('\t\t\tUTR Not Matched')
                     #sample_failures.append((geneId,'UTR3 failed to match back to the transcript...'))
                     utr_match_length = len(seq_utr) # Incrementaly chops utr from 3'->5' direction until it matches to seq_transcript
                     while seq_utr[:utr_match_length] not in seq_transcript:
                         utr_match_length -= 1
                     seq_utr_chopped = seq_utr[:utr_match_length]
-                    print(len(seq_utr_chopped))     # If the length of chopped utr is too small... ??
+                    #print(len(seq_utr_chopped))     # If the length of chopped utr is too small... ??
                     if len(seq_utr_chopped)<20:
                         sample_failures.append((geneId,'UTR is short yet does not match to transcript...'))
                     utr_query       = re.compile(seq_utr_chopped)
                     utr_match_all   = [m.start() for m in utr_query.finditer(seq_transcript)]
                     utr_match_start = utr_match_all[-1]
                 if location_transcript.Strand   == -1:
-                    print('\t\t-')
+                    #print('\t\t-')
                     location_utr                = location_transcript.resized( 0                    , 0-utr_match_start )  # (shift to utr_start, shift to utr_end)
                     location_transcript_noUtr   = location_transcript.resized( 0+len(seq_utr)       , 0 )                  # truncate the utr away
                 else:
-                    print('\t\t+')
+                    #print('\t\t+')
                     location_utr                = location_transcript.resized( 0+utr_match_start    , 0 )                  # (shift to utr_start, shift to utr_end)
                     location_transcript_noUtr   = location_transcript.resized( 0                    , 0-len(seq_utr) )     # truncate the utr away
                 seq_transcript_noUtr            = str(ensembl_genome.getRegion( location_transcript_noUtr).Seq)
             # NO UTR:
             else:
-                print('\t\tUTR Synthetic')
+                #print('\t\tUTR Synthetic')
                 annotated_utr_flag = False
                 if location_transcript.Strand   == -1:
-                    print('\t\t-')
+                    #print('\t\t-')
                     location_utr                = location_transcript.resized( 0-sample_range       , 0-len(seq_transcript) )  # (shift to transcript_end, shift to sampling range)
                     location_transcript_noUtr   = location_transcript
                 else:
-                    print('\t\t+')
+                    #print('\t\t+')
                     location_utr                = location_transcript.resized( 0+len(seq_transcript), 0+sample_range )  # (shift to transcript_end, shift to sampling range)
                     location_transcript_noUtr   = location_transcript
                 seq_transcript_noUtr            = str(ensembl_genome.getRegion( location_transcript_noUtr ).Seq )
@@ -193,12 +194,12 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
     # SAMPLE TRUNCATION PROCEDURES
         # a) NO OVERLAPS?  =>   Store whole sample
         if not overlaps_flag:            # keep full sample & skip to next loop if no features are found
-            print('\t\tNo Relevant Overlaps')
+            #print('\t\tNo Relevant Overlaps')
             sample_seqs[geneId]['untruncated']      = sample_seqs[geneId]['truncated'] = seq_sample
             sample_seqs[geneId]['sample_location']  = ':'.join(str(location_sample).split(':')[2:]) # genome coordinates summary
         # b) OVERLAPS?     =>   Truncate sample accordingly
         else:
-            print('\t\tYes Relevant Overlaps')
+            #print('\t\tYes Relevant Overlaps')
             #===============================================================================================================
             # TRUNCATION STEP 1:  find the overlapping exon nearest to the sample-gene boundary, i.e. the "limiting exon"
             #===============================================================================================================
@@ -240,13 +241,13 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
             # Overlap SPANS entire sample?
                 # YES:  truncate all
                 if overlap_limit.End > location_sample.End:
-                    print('\t\t\t\t\tcomplete overlap!')
+                    #print('\t\t\t\t\tcomplete overlap!')
                     sample_completeOverlap_flag     = True
                     location_sample_truncated       = location_sample.copy()
                     location_sample_truncated.Start = location_sample_truncated.End
                 # NO:   leave the remainder
                 else:
-                    print('\t\t\t\t\tpartial overlap!')
+                    #print('\t\t\t\t\tpartial overlap!')
                     location_sample_truncated = location_sample.resized( 0+(overlap_limit.End-location_sample.Start) , 0 ) # Truncate the sampled upstream sequence (promoter to prevent overlap)
             # b) 5'-to-3' direction:                           <=i.e. gene is on the left hand side of the sample
             elif (sample_direction == 'downstream' and location_sample.Strand == +1) or (sample_direction == 'upstream' and location_sample.Strand == -1):
@@ -254,12 +255,12 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
                 overlap_limit       = overlap_locations[0]
 
                 if overlap_limit.Start < location_sample.Start:
-                    print('\t\t\t\t\tcomplete overlap!')
+                    #print('\t\t\t\t\tcomplete overlap!')
                     sample_completeOverlap_flag     = True
                     location_sample_truncated       = location_sample.copy() 
                     location_sample_truncated.End   = location_sample_truncated.Start
                 else:
-                    print('\t\t\t\t\tpartial overlap!')
+                    #print('\t\t\t\t\tpartial overlap!')
                     location_sample_truncated = location_sample.resized( 0 , 0-(location_sample.End-overlap_limit.Start) ) # Truncate the sampled upstream sequence (promoter to prevent overlap)
             # if location_sample.Strand == -1:
             #     return overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr, ensembl_genome
