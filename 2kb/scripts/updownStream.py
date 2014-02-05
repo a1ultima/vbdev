@@ -58,7 +58,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
     for count,geneId in enumerate(geneIds):
         if count%10==0:
             print '\t'+str(count)+' '+geneId
-        gene        = ensembl_genome.getGeneByStableId(StableId=geneId) # select gene
+        gene = ensembl_genome.getGeneByStableId(StableId=geneId) # select gene
         #geneLocation= gene.Location # coordinates for whole gene
 
     # EXON TARGET               # Sampling starts from the limiting exon of the current gene  and spans according to sample_range
@@ -84,8 +84,8 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
                 #print('\t\t+')
                 location_sample = location_transcript.resized( 0+len(seq_transcript), 0+sample_range )  # (shift to transcript_end, shift to sampling range)
 
-            seq_sample     = str(ensembl_genome.getRegion( location_sample ).Seq )
-            seq_transcript = str(ensembl_genome.getRegion( location_transcript ).Seq )
+            seq_sample  = str(ensembl_genome.getRegion( location_sample ).Seq )
+            seq_gene    = str(ensembl_genome.getRegion( location_transcript ).Seq )
 
         elif sample_direction=='downstream':
             transcript          = gene.getLongestCdsTranscript()
@@ -353,7 +353,7 @@ def sampleAllSpecies(species_list,sample_directions):
         for species in species_list:
             print(species)
             genome          = setupGenome(              species, db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-            samples_read    = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=500, take_annotated_utr=True, sample_data={}, sample_seqs={}, test_it=False)
+            samples_read    = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=2000, take_annotated_utr=True, sample_data={}, sample_seqs={}, test_it=False)
             samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
             import pprint
             pprint.pprint(samples_write[1]) # show the header
@@ -383,8 +383,19 @@ species_list = [    'Aedes aegypti',
                 #,'Anopheles stephensiI',           # this is broken..?
                 #'Anopheles stephensi'              # ''
                 ]
-sample_directions = ['downstream']
+
+""" NOTICE:
+
+    - 05/02: sample_range = 2000
+
+
+"""
+
+sample_directions = ['upstream']
 sampleAllSpecies(species_list,sample_directions)
+
+# sample_directions = ['downstream']
+# sampleAllSpecies(species_list,sample_directions)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # @TESTING
@@ -395,3 +406,4 @@ sampleAllSpecies(species_list,sample_directions)
 # samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
 
 # #overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr
+
