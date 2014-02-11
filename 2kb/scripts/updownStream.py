@@ -17,10 +17,10 @@ def setupGenome( species, db_host=None, db_user=None, db_pass=None, db_release=N
     
     Args:
         species     = 'Anopheles gambiae'   #string: this needs to match the mysql databases in vbdev: >mysql -hlocalhost -uvbuser -pSavvas
-        db_host     = 'localhost'                   #string: ^^
-        db_user     = 'vbuser'                      #string: ^^
-        db_pass     = 'Savvas'                      #string: ^^
-        db_release  = 73                            #integer: the realease versions we use are all 73
+        db_host     = 'localhost'           #string: ^^
+        db_user     = 'vbuser'              #string: ^^
+        db_pass     = 'Savvas'              #string: ^^
+        db_release  = 73                    #integer: the realease versions we use are all 73
     """
     if not db_host:
         account=None
@@ -35,7 +35,7 @@ def setupGenome( species, db_host=None, db_user=None, db_pass=None, db_release=N
 #______________________________________________#
 # Sample up/down steam seqs from scanned genes
 #______________________________________________#
-def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_annotated_utr=False, sample_range=500, masking = 'soft', sample_data={}, sample_seqs={}, test_it=False):
+def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_annotated_utr=False, sample_range=500, masking = 'none', sample_data={}, sample_seqs={}, test_it=False):
     """ 
     Notes:
         takes an ensemble_genome via setupGenome() and starts sampling up/downstream sequences from all the genes within
@@ -178,7 +178,8 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
     # FEATURES OVERLAP WITH SAMPLE?
         overlaps_flag = None 
         if annotated_sample_flag:      # If the UTR is annotated we assume there are no overlaps
-            overlaps_flag = False           
+            overlaps_flag = False
+            location_sample_truncated = location_sample        
         else:                       # Else we are using a syntehtic UTR and need to test if there are overlaps 
             overlap_features = [feature for feature in ensembl_genome.getFeatures(region=location_sample,feature_types='gene') if not feature.StableId==geneId] # do any features overlap with our sample
             if overlap_features:        # If there are any overlaps we will need to enter truncation mode --> b) OVERLAPS
@@ -195,10 +196,15 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
                 #   sample:                    5'-------S---------3'+5'-----------G------------------// S = sample, G = gene of sample, | = parts of sample to truncate
                 #
                 overlap_locations = [i for i in overlap_locations if (i.Start < location_sample.End) and (i.End > location_sample.Start)] # remove "too-far-downstream" features
+
+                # TODO put here? location_sample_truncated = location_sample
+
                 if overlap_locations==[]:   # If there are no viable overlaps (i.e. all overlaps were "beyond") then we keep the entire sample --> a) NO OVERLAPS
                     overlaps_flag = False
+                    location_sample_truncated = location_sample
             else:
                 overlaps_flag = False       # Else we keep the entire sample --> a) NO OVERLAPS
+                location_sample_truncated = location_sample
 
     # SAMPLE TRUNCATION PROCEDURES
         # a) NO OVERLAPS?  =>   Store whole sample
@@ -286,30 +292,38 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
                 sample_seqs[geneId]['truncated']        = str(ensembl_genome.getRegion(location_sample_truncated).Seq)  # truncated sample sequence
                 sample_seqs[geneId]['sample_location']  = ':'.join(str(location_sample_truncated).split(':')[2:])      
 
-        # MASKING PROCEDURE?
-            # YES
-            if not masking=='none':
-                sample_location     = sample_seqs[geneId]['sample_location']
-                sample_seq          = list(sample_seqs[geneId]['truncated'])
-                repeats             = ensembl_genome.getFeatures(region=location_sample,feature_types='repeat')
-                repeats_regions     = [(i.Location.makeRelativeTo(location_sample).Start,i.Location.makeRelativeTo(location_sample).End) for i in repeats]
-                
-                # Iterate masking:
-                for region in repeats_regions:
-                    # Are repeat.Location's start or end out of bounds? --> restrict them to sample_locations limits if so
-                    if region[0] < sample_location.Start:
-                        region[0] = sample_location.Start
-                    if region[1] > sample_location.End:
-                        region[1] = sample_location.End
-                    # Replace all repeating sequence by appropriate masks
-                    if masking=='hard':
-                        sample_seq[region[0]:region[1]+1] = 'X'*(len(sample_seq[region[0]:region[1]+1]))
-                    elif masking=='soft':
-                        sample_seq[region[0]:region[1]+1] = [letter.lower for letter in sample_seq[region[0]:region[1]+1]]
-                sample_seqs[geneId]['truncated'] = ''.join(sample_seq)
+    # MASKING PROCEDURE?
+        # YES
+        if not masking=='none':
+            if overlaps_flag:
+                location_sample = location_sample_truncated
+            else:
+                location_sample = location_sample
 
-    #return sample_data, sample_seqs    #ANDY_01/27
-    #return sample_seqs, sample_direction, sample_failures  # yields the dictionary
+            sample_seq          = list(sample_seqs[geneId]['truncated'])
+            repeats             = ensembl_genome.getFeatures(region=location_sample,feature_types='repeat')
+            repeats_regions     = [[i.Location.makeRelativeTo(location_sample).Start,i.Location.makeRelativeTo(location_sample).End] for i in repeats]
+            
+            #return location_sample, sample_seq, repeats_regions
+
+            # Iterate masking:
+            for region in repeats_regions:
+                #print(region)
+                # Are repeat.Location's start or end out of bounds? --> restrict them to sample_locations limits if so
+                if region[0]<0:
+                    region[0]=0
+                if region[1]>len(sample_seq):     # TODO: is len() the actual matcher? 
+                    region[1]=len(sample_seq)
+                #print(region)
+                # Replace all repeating sequence by appropriate masks
+                if masking=='hard':
+                    sample_seq[region[0]:region[1]+1]='N'*(len(sample_seq[region[0]:region[1]+1])) # PyCogent is not happy with X
+                elif masking=='soft':
+                    sample_seq[region[0]:region[1]+1]=[letter.lower() for letter in sample_seq[region[0]:region[1]+1]]
+            sample_seqs[geneId]['truncated']=''.join(sample_seq)
+
+            #return repeats_regions, sample_seq
+
     return sample_seqs, sample_direction, sample_failures  # yields the dictionary      # ANDY_02/03: 
 
 #______________________________________________#
@@ -384,8 +398,8 @@ def sampleAllSpecies(species_list,sample_directions):
         for species in species_list:
             print(species)
             genome              = setupGenome(              species, db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-            samples_read        = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=2000, take_annotated_utr=False, masking = 'soft', sample_data={}, sample_seqs={}, test_it=False)
-            samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
+            samples_read        = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=2000, take_annotated_utr=False, masking = 'hard', sample_data={}, sample_seqs={}, test_it=False)
+            samples_write   = sampleSequences_write(        genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
             import pprint
             pprint.pprint(samples_write[1]) # show the header
 
@@ -418,12 +432,13 @@ species_list = [    'Aedes aegypti',
 """ NOTICE:
 
     - 05/02: sample_range 		= 2000
-    - 06.02: take_annotated_utr = False
+    - 06/02: take_annotated_utr = False
+    - 10/02: masking = 'none'
 
 """
 
-# sample_directions = ['upstream']
-# sampleAllSpecies(species_list,sample_directions)
+sample_directions = ['upstream']
+sampleAllSpecies(species_list,sample_directions)
 
 # sample_directions = ['downstream']
 # sampleAllSpecies(species_list,sample_directions)
@@ -433,8 +448,8 @@ species_list = [    'Aedes aegypti',
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 # genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-# samples_read    = sampleSequences_read (    genome, sample_direction='downstream', sample_range=500, take_annotated_utr=True, masking = 'soft', sample_data={}, sample_seqs={}, test_it=False)
-# samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
+# samples_read    = sampleSequences_read (    genome, sample_direction='upstream', sample_range=2000, take_annotated_utr=False, masking = 'hard', sample_data={}, sample_seqs={}, test_it=True)
+#samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
 
 # #overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr
 
