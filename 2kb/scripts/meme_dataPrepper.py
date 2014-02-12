@@ -80,6 +80,7 @@ file_in         = open(file_in_name)                   # Open file for reading a
 
 print 'reading file...'
 collection = []
+coords_shared_geneIds = []
 count = 0
 while True:
     count = count + 1
@@ -97,7 +98,7 @@ while True:
 
         if utrCoord_noStrand in coords_shared:
             utrCoord_onlyStrand = utrCoord[2]
-
+            coords_shared_geneIds.append(header.split('\t')[0].replace('>',''))
             # ORIENTATION OPTION 1 :                                ----v   which of these options is correct? / Hint: think about the revcomp as seqs exit the db
             sequence = sequence[(len(sequence)/2):] # this works, since the rightermost end of the seq = gene, so we must sample from the end in
             # sequence = sequence[0:(len(sequence)/2)] # this fails
@@ -111,6 +112,17 @@ while True:
             #     sequence = sequence[0:(len(sequence)/2)+1]
 
         file_out.write(header+sequence+'\n')
+
+file_in.close()
+file_out.close()
+
+
+
+
+
+# ================================================================
+# OLD METHODS:
+# ================================================================
 
 # Original
 # print 'reading file...'
@@ -126,6 +138,3 @@ while True:
 #         continue
 #     else:
 #         file_out.write(header+sequence)
-
-file_in.close()
-file_out.close()
