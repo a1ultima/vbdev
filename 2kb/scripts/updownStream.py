@@ -60,8 +60,8 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
     annotated_sample_flag = None
     
     if test_it == True:
-        #geneIds = geneIds[0:10]    # ANDY: testing for just 100
-        geneIds = ['AGAP000002']
+        geneIds = geneIds[0:10]    # ANDY: testing for just 100
+        #geneIds = ['AGAP000002']
 
     for count,geneId in enumerate(geneIds):
         if not test_it:
@@ -88,12 +88,12 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
             if location_transcript.Strand == -1:
                 if test_it:
                     print('\t\t-')
-                location_sample = location_transcript.resized( 0-sample_range       , 0-len(seq_transcript) )  # (shift to transcript_end, shift to sampling range)
+                location_sample = location_transcript.resized( 0+len(seq_transcript), 0+sample_range )  # (shift to transcript_end, shift to sampling range)
             # (+) strand
             else:
                 if test_it:
                     print('\t\t+')
-                location_sample = location_transcript.resized( 0+len(seq_transcript), 0+sample_range        )  # (shift to transcript_end, shift to sampling range)
+                location_sample = location_transcript.resized( 0-sample_range       , 0-len(seq_transcript) )  # (shift to transcript_end, shift to sampling range)
 
             location_gene   = location_transcript
             seq_gene        = str(ensembl_genome.getRegion( location_transcript ).Seq)
@@ -478,8 +478,8 @@ species_list = [    'Aedes aegypti',
 
 """
 
-#sample_directions = ['upstream']
-#sampleAllSpecies(species_list,sample_directions)
+# sample_directions = ['upstream']
+# sampleAllSpecies(species_list,sample_directions)
 
 # sample_directions = ['downstream']
 # sampleAllSpecies(species_list,sample_directions)
@@ -488,9 +488,9 @@ species_list = [    'Aedes aegypti',
 # @TESTING
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-samples_read    = sampleSequences_read (    genome, sample_direction='upstream', sample_range=2000, take_annotated_utr=False, masking = 'none', sample_data={}, sample_seqs={}, test_it=True)
-samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
+# genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
+# samples_read    = sampleSequences_read (    genome, sample_direction='upstream', sample_range=2000, take_annotated_utr=False, masking = 'none', sample_data={}, sample_seqs={}, test_it=True)
+# samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
 
 # #overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr
 
