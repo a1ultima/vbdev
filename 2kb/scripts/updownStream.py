@@ -5,6 +5,9 @@ import itertools
 #import difflib
 import re
 
+
+# TODOs -->                                                                                                                                 # v-- TODOs align HERE --v
+
 # DEFINE FUNCTIONS
 
 #______________________________________________#
@@ -50,49 +53,52 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
     """
 
     print 'Sampling sequences: '+str(sample_range)+'bp '+sample_direction+'...'
-    sample_failures     = []
-    genes                   = ensembl_genome.getGenesMatching(BioType='protein_coding')   # queries ensembl genome for all protein coding genes
-    geneIds                 = [gene.StableId for gene in genes]  # grab all gene ids
+    sample_failures = []
+    genes           = ensembl_genome.getGenesMatching(BioType='protein_coding')   # queries ensembl genome for all protein coding genes
+    geneIds         = [gene.StableId for gene in genes]  # grab all gene ids
     
     annotated_sample_flag = None
     
     if test_it == True:
-        geneIds = geneIds[0:100]    # ANDY: testing for just 100
+        #geneIds = geneIds[0:10]    # ANDY: testing for just 100
+        geneIds = ['AGAP000002']
 
     for count,geneId in enumerate(geneIds):
-        if count%10==0:
+        if not test_it:
+            if count%10==0:
+                print '\t'+str(count)+' '+geneId
+        else:
             print '\t'+str(count)+' '+geneId
         gene = ensembl_genome.getGeneByStableId(StableId=geneId) # select gene
-        #geneLocation= gene.Location # coordinates for whole gene
+        #geneLocation= gene.Location    # coordinates for whole gene
 
-    # EXON TARGET               # Sampling starts from the limiting exon of the current gene  and spans according to sample_range
+    # EXON TARGET                       # Sampling starts from the limiting exon of the current gene  and spans according to sample_range
         if sample_direction=='upstream':
-
-            #print ('Upstream is not finished yet')
-            #return None
 
             transcript          = gene.getLongestCdsTranscript()
             seq_transcript      = str(transcript.Seq)
             location_transcript = transcript.Location
+            sample_type         = 'Synthetic'                   # for upstream sampling, we purely synthesize the data - no care for annotated
 
-            #print('\t\tUTR Synthetic')
-            sample_type = 'Synthetic'
+            if test_it:
+                print('\t\tUTR Synthetic')
 
         # ORIENTATION?
             # (-) strand
             if location_transcript.Strand == -1:
-                #print('\t\t-')
+                if test_it:
+                    print('\t\t-')
                 location_sample = location_transcript.resized( 0-sample_range       , 0-len(seq_transcript) )  # (shift to transcript_end, shift to sampling range)
             # (+) strand
             else:
-                #print('\t\t+')
-                location_sample = location_transcript.resized( 0+len(seq_transcript), 0+sample_range )  # (shift to transcript_end, shift to sampling range)
+                if test_it:
+                    print('\t\t+')
+                location_sample = location_transcript.resized( 0+len(seq_transcript), 0+sample_range        )  # (shift to transcript_end, shift to sampling range)
 
             location_gene   = location_transcript
-            seq_gene        = str(ensembl_genome.getRegion( location_transcript ).Seq )
-            
+            seq_gene        = str(ensembl_genome.getRegion( location_transcript ).Seq)
             location_sample = location_sample
-            seq_sample      = str(ensembl_genome.getRegion( location_sample ).Seq )
+            seq_sample      = str(ensembl_genome.getRegion( location_sample     ).Seq)
 
         elif sample_direction=='downstream':
             transcript          = gene.getLongestCdsTranscript()
@@ -101,54 +107,73 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
             location_transcript = transcript.Location
 
         # TAKE ANNOTAED UTR? If so is it AVAILABLE?
-            # annotated_sample_flag = None
             # YES UTR: 
             if take_annotated_utr and len(seq_utr)>3:
-                #print('\t\tUTR annotated')
-                annotated_sample_flag   = True  # if UTR is annotated, no need to check for overlapping features
-                utr_query                       = re.compile(seq_utr)
-                utr_match_all                   = [m.start() for m in utr_query.finditer(seq_transcript)]
+                if test_it:
+                    print('\t\tUTR annotated')
+                annotated_sample_flag = True  # if UTR is annotated, no need to check for overlapping features
+                utr_query      = re.compile(seq_utr)
+                utr_match_all  = [m.start() for m in utr_query.finditer(seq_transcript)]
             # UTR matches to Transcript?
-                # YES MATCH:
+                # YES:
                 if utr_match_all:
-                    #print('\t\t\tUTR Matched')
+                    if test_it:
+                        print('\t\t\tUTR Matched')
                     if not len(utr_match_all) == 1:
-                        #print('\t\t\t\tMultiple times')
+                        if test_it:
+                            print('\t\t\t\tMultiple times')
                         sample_failures.append((geneId,'UTR matches multiple times to transcript...'))
                     utr_match_start = utr_match_all[-1] # Takes last matching instance as the start of match
-                # NO MATCH:  -->  Rare intronic transcript detected
+                # NO:  Rare intronic transcript detected
                 else:
-                    #print('\t\t\tUTR Not Matched')
+                    if test_it:
+                        print('\t\t\tUTR Not Matched')
                     #sample_failures.append((geneId,'UTR3 failed to match back to the transcript...'))
-                    utr_match_length = len(seq_utr) # Incrementaly chops utr from 3'->5' direction until it matches to seq_transcript
+
+                    # CHOPPER MATCHER:  rare intronic exon prevents the annotated Utr from matching to it, so we chop the UTR from 5' to 3' until we can match back to seq_transcript
+                    #
+                    # seq_transcript:         -------TTG~~~TAG 
+                    #
+                    # annotated utr:                 TTGTAG     <= this cannot match to seq_transcript
+                    #
+                    # chopped utr:                   TTGTA >8   ...chopping away...
+                    #                                TTGT >8  
+                    #                                TTG >8     <= this can match batck!
+                    #
+                    utr_match_length = len(seq_utr)
                     while seq_utr[:utr_match_length] not in seq_transcript:
                         utr_match_length -= 1
                     seq_utr_chopped = seq_utr[:utr_match_length]
-                    #print(len(seq_utr_chopped))     # If the length of chopped utr is too small... ??
                     if len(seq_utr_chopped)<20:
                         sample_failures.append((geneId,'UTR is short yet does not match to transcript...'))
                     utr_query       = re.compile(seq_utr_chopped)
                     utr_match_all   = [m.start() for m in utr_query.finditer(seq_transcript)]
                     utr_match_start = utr_match_all[-1]
-                if location_transcript.Strand   == -1:
-                    #print('\t\t-')
+
+                if location_transcript.Strand == -1:
+                    if test_it:
+                        print('\t\t-')
                     location_utr                = location_transcript.resized( 0                    , 0-utr_match_start )  # (shift to utr_start, shift to utr_end)
                     location_transcript_noUtr   = location_transcript.resized( 0+len(seq_utr)       , 0 )                  # truncate the utr away
                 else:
-                    #print('\t\t+')
+                    if test_it:
+                        print('\t\t+')
                     location_utr                = location_transcript.resized( 0+utr_match_start    , 0 )                  # (shift to utr_start, shift to utr_end)
                     location_transcript_noUtr   = location_transcript.resized( 0                    , 0-len(seq_utr) )     # truncate the utr away
                 seq_transcript_noUtr            = str(ensembl_genome.getRegion( location_transcript_noUtr).Seq)
             # NO UTR:
             else:
-                #print('\t\tUTR Synthetic')
+                if test_it:
+                    print('\t\tUTR Synthetic')
                 annotated_sample_flag = False
-                if location_transcript.Strand   == -1:
-                    #print('\t\t-')
+                if location_transcript.Strand == -1:
+                    if test_it:
+                        print('\t\t-')
                     location_utr                = location_transcript.resized( 0-sample_range       , 0-len(seq_transcript) )  # (shift to transcript_end, shift to sampling range)
                     location_transcript_noUtr   = location_transcript
                 else:
-                    #print('\t\t+')
+                    if test_it:
+                        print('\t\t+')
                     location_utr                = location_transcript.resized( 0+len(seq_transcript), 0+sample_range )  # (shift to transcript_end, shift to sampling range)
                     location_transcript_noUtr   = location_transcript
                 seq_transcript_noUtr            = str(ensembl_genome.getRegion( location_transcript_noUtr ).Seq )
@@ -167,7 +192,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
             # location_sample     = gene_limiting_exon.resized(+len(gene_limiting_exon)+1,+sample_range+1) 
 
             sample_type = None
-            if annotated_sample_flag:          # Labels the utr according to whether it was already annotated or synthesized by us
+            if annotated_sample_flag:       # Labels the utr according to whether it was already annotated or synthesized by us
                 sample_type = 'Annotated'
             else:
                 sample_type = 'Synthetic'
@@ -177,11 +202,14 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
 
     # FEATURES OVERLAP WITH SAMPLE?
         overlaps_flag = None 
-        if annotated_sample_flag:      # If the UTR is annotated we assume there are no overlaps
+        # NO    - since annotated samples means we assume no overlaps
+        if annotated_sample_flag: 
             overlaps_flag = False
-            location_sample_truncated = location_sample        
-        else:                       # Else we are using a syntehtic UTR and need to test if there are overlaps 
+            location_sample_truncated = location_sample
+        # MAYBE - it's not annotated, so let's check if our synthetic sample has overlaps...
+        else:
             overlap_features = [feature for feature in ensembl_genome.getFeatures(region=location_sample,feature_types='gene') if not feature.StableId==geneId] # do any features overlap with our sample
+            # YES but - so we've found overlapping genes, but specifically do any of their Exons overlap..?
             if overlap_features:        # If there are any overlaps we will need to enter truncation mode --> b) OVERLAPS
                 overlaps_flag = True
                 overlap_exons       = [[[exon for exon in transcript.Exons] for transcript in transcripts] for transcripts in [feature.Transcripts for feature in overlap_features]] # exons Of Transcripts Of Features
@@ -195,88 +223,99 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
                 #                              |||        |||||            xxxx           xxxx   		notice we dont want the xxx's to truncate away our Sample
                 #   sample:                    5'-------S---------3'+5'-----------G------------------// S = sample, G = gene of sample, | = parts of sample to truncate
                 #
-                overlap_locations = [i for i in overlap_locations if (i.Start < location_sample.End) and (i.End > location_sample.Start)] # remove "too-far-downstream" features
+                overlap_locations = [i for i in overlap_locations if (i.Start < location_sample.End) and (i.End > location_sample.Start)]   # remove "too-far-downstream" features
 
-                # TODO put here? location_sample_truncated = location_sample
-
-                if overlap_locations==[]:   # If there are no viable overlaps (i.e. all overlaps were "beyond") then we keep the entire sample --> a) NO OVERLAPS
+                                                                                                                                            # TODO put here? location_sample_truncated = location_sample
+                # NO - the gene overlaps but not with any Exons of those genes!
+                if overlap_locations==[]:   # If there are no viable overlaps (i.e. all overlaps were "beyond") then we keep the entire sample --> NO OVERLAPS
                     overlaps_flag = False
-                    location_sample_truncated = location_sample
+                    location_sample_truncated = location_sample                                                                         # TODO do we need an else here..?
+            # NO - no genes overlap!
             else:
                 overlaps_flag = False       # Else we keep the entire sample --> a) NO OVERLAPS
                 location_sample_truncated = location_sample
 
-    # SAMPLE TRUNCATION PROCEDURES
-        # a) NO OVERLAPS?  =>   Store whole sample
-        if not overlaps_flag:            # keep full sample & skip to next loop if no features are found
-            #print('\t\tNo Relevant Overlaps')
+    # SAMPLE TRUNCATION PROCEDURES:
+        # NO OVERLAPS?  =>   Store whole sample, untouched...
+        if not overlaps_flag:
+            if test_it:
+                print('\t\tRelevant Overlaps:  NO')
             sample_seqs[geneId]['untruncated']      = sample_seqs[geneId]['truncated'] = seq_sample
             sample_seqs[geneId]['sample_location']  = ':'.join(str(location_sample).split(':')[2:]) # genome coordinates summary
-        # b) OVERLAPS?     =>   Truncate sample accordingly
+        # OVERLAPS?     =>   Truncate sample accordingly...
         else:
-            #print('\t\tYes Relevant Overlaps')
+            if test_it:
+                print('\t\tRelevant Overlaps:  YES')
             #===============================================================================================================
             # TRUNCATION STEP 1:  find the overlapping exon nearest to the sample-gene boundary, i.e. the "limiting exon"
             #===============================================================================================================
-            #
+            #v--- a)/b) refers to the two main classes of routine for overlap truncation depending on whether ---v
             #   overlapping exons:                            5'---3' 5'---3' 5'---3'
             #                                                >>>|||<<<         |||
-            #   sample:                       //---G---3'+5'---S---3'          |||                    <=downstream +1 or upstream -1 sample
+            #b) sample:                       //---G---3'+5'---S---3'          |||                      <=downstream +1 or upstream -1 sample
             # OR                                                            >>>|||<<<            
-            #   sample:                                                      5'---S---3'+5'---G---//  <=downstream -1 or upstream +1 sample
+            #a) sample:                                                      5'---S---3'+5'---G---//    <=downstream -1 or upstream +1 sample
             #
             #   ...so after sorting we grab the limiting exon...
             #
-            #   limiting exon:                                5'---3' 
+            #b) limiting exon:                                5'---3' 
             # OR                                                                         ...these will then feed into STEP 2
-            #   limiting exon:                                                5'---3'
+            #a) limiting exon:                                                5'---3'
             #
             #===============================================================================================================
             # TRUNCATION STEP 2:  using the 'limiting exon' truncate the overlapping sample so it no longer ovelerlaps
             #===============================================================================================================
             #   limiting exon:                        5'------------3'      
             #                                           |||||   |||||  
-            #   sample:                                 |||||   5'---S---3'+5'---G---//   <= downstream -1 or upstream +1 sample
+            #a) sample:                                 |||||   5'---S---3'+5'---G---//                 <= downstream -1 or upstream +1 sample
             # OR                                        |||||
-            #   sample:                //---G---3'+5'---S---3'                             <= downstream +1 or upstream -1 sample                                  
+            #b) sample:                //---G---3'+5'---S---3'                                          <= downstream +1 or upstream -1 sample                                  
             #
             #   ...so after truncation we have...
             #   
-            #   sample:                           ---S....
+            #a) sample:                              ---S....                   ... = truncated
             # OR
-            #   sample:                                     ....S---
+            #b) sample:                                          ....S---
             #
 
         # Which ORIENTATION do we truncate from: 
             # a) 3'-to-5' direction:                           <=i.e. gene is on the right hand side of the sample
             sample_completeOverlap_flag = None
             if (sample_direction == 'upstream' and location_sample.Strand == +1) or (sample_direction == 'downstream' and location_sample.Strand == -1):
-                overlap_locations   = sorted(overlap_locations,key=attrgetter('End'))   # Sort by 'End' <= 3' of feature vs. 5' of sample
-                overlap_limit       = overlap_locations[-1]                             # limiting overlapping feature beyond which there are no overlaps w/i sample
+
+                overlap_locations = sorted(overlap_locations,key=attrgetter('End'))   # Sort by 'End' <= 3' of feature vs. 5' of sample
+                overlap_limit     = overlap_locations[-1]                             # limiting overlapping feature beyond which there are no overlaps w/i sample
+
             # Overlap SPANS entire sample?
                 # YES:  truncate all
                 if overlap_limit.End > location_sample.End:
-                    #print('\t\t\t\t\tcomplete overlap!')
-                    sample_completeOverlap_flag     = True
+                    if test_it:
+                        print('\t\t\t\t\tcomplete overlap!')
+                    sample_completeOverlap_flag = True
                     location_sample_truncated       = location_sample.copy()
                     location_sample_truncated.Start = location_sample_truncated.End
                 # NO:   leave the remainder
                 else:
-                    #print('\t\t\t\t\tpartial overlap!')
+                    if test_it:
+                        print('\t\t\t\t\tpartial overlap!')
                     location_sample_truncated = location_sample.resized( 0+(overlap_limit.End-location_sample.Start) , 0 ) # Truncate the sampled upstream sequence (promoter to prevent overlap)
             # b) 5'-to-3' direction:                           <=i.e. gene is on the left hand side of the sample
             elif (sample_direction == 'downstream' and location_sample.Strand == +1) or (sample_direction == 'upstream' and location_sample.Strand == -1):
+
                 overlap_locations   = sorted(overlap_locations,key=attrgetter('Start')) # 'End' <= 3' of feature vs. 5' of sample
                 overlap_limit       = overlap_locations[0]
 
                 if overlap_limit.Start < location_sample.Start:
-                    #print('\t\t\t\t\tcomplete overlap!')
-                    sample_completeOverlap_flag     = True
+                    if test_it:
+                        print('\t\t\t\t\tcomplete overlap!')
+                    sample_completeOverlap_flag = True
                     location_sample_truncated       = location_sample.copy() 
                     location_sample_truncated.End   = location_sample_truncated.Start
                 else:
-                    #print('\t\t\t\t\tpartial overlap!')
+                    if test_it:
+                        print('\t\t\t\t\tpartial overlap!')
                     location_sample_truncated = location_sample.resized( 0 , 0-(location_sample.End-overlap_limit.Start) ) # Truncate the sampled upstream sequence (promoter to prevent overlap)
+
             # if location_sample.Strand == -1:
             #     return overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr, ensembl_genome
 
@@ -295,34 +334,36 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
     # MASKING PROCEDURE?
         # YES
         if not masking=='none':
+
             if overlaps_flag:
-                location_sample = location_sample_truncated
+                if sample_completeOverlap_flag:
+                    continue
+                else:
+                    location_sample = location_sample_truncated
             else:
                 location_sample = location_sample
 
             sample_seq          = list(sample_seqs[geneId]['truncated'])
             repeats             = ensembl_genome.getFeatures(region=location_sample,feature_types='repeat')
             repeats_regions     = [[i.Location.makeRelativeTo(location_sample).Start,i.Location.makeRelativeTo(location_sample).End] for i in repeats]
-            
-            #return location_sample, sample_seq, repeats_regions
 
-            # Iterate masking:
+            # MASK against each repeat:
             for region in repeats_regions:
-                #print(region)
                 # Are repeat.Location's start or end out of bounds? --> restrict them to sample_locations limits if so
                 if region[0]<0:
                     region[0]=0
                 if region[1]>len(sample_seq):     # TODO: is len() the actual matcher? 
                     region[1]=len(sample_seq)
-                #print(region)
-                # Replace all repeating sequence by appropriate masks
                 if masking=='hard':
                     sample_seq[region[0]:region[1]+1]='N'*(len(sample_seq[region[0]:region[1]+1])) # PyCogent is not happy with X
                 elif masking=='soft':
                     sample_seq[region[0]:region[1]+1]=[letter.lower() for letter in sample_seq[region[0]:region[1]+1]]
             sample_seqs[geneId]['truncated']=''.join(sample_seq)
 
-            #return repeats_regions, sample_seq
+            #print(sample_seq)
+
+        # NO
+        # ...then move on...
 
     return sample_seqs, sample_direction, sample_failures  # yields the dictionary      # ANDY_02/03: 
 
@@ -398,7 +439,7 @@ def sampleAllSpecies(species_list,sample_directions):
         for species in species_list:
             print(species)
             genome              = setupGenome(              species, db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-            samples_read        = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=2000, take_annotated_utr=False, masking = 'hard', sample_data={}, sample_seqs={}, test_it=False)
+            samples_read        = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=500, take_annotated_utr=True, masking = 'hard', sample_data={}, sample_seqs={}, test_it=False)
             samples_write   = sampleSequences_write(        genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
             import pprint
             pprint.pprint(samples_write[1]) # show the header
@@ -433,12 +474,12 @@ species_list = [    'Aedes aegypti',
 
     - 05/02: sample_range 		= 2000
     - 06/02: take_annotated_utr = False
-    - 10/02: masking = 'none'
+    - 10/02: masking            = 'hard'
 
 """
 
-sample_directions = ['upstream']
-sampleAllSpecies(species_list,sample_directions)
+#sample_directions = ['upstream']
+#sampleAllSpecies(species_list,sample_directions)
 
 # sample_directions = ['downstream']
 # sampleAllSpecies(species_list,sample_directions)
@@ -447,9 +488,9 @@ sampleAllSpecies(species_list,sample_directions)
 # @TESTING
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-# genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-# samples_read    = sampleSequences_read (    genome, sample_direction='upstream', sample_range=2000, take_annotated_utr=False, masking = 'hard', sample_data={}, sample_seqs={}, test_it=True)
-#samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
+genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
+samples_read    = sampleSequences_read (    genome, sample_direction='upstream', sample_range=2000, take_annotated_utr=False, masking = 'none', sample_data={}, sample_seqs={}, test_it=True)
+samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
 
 # #overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr
 
