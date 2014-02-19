@@ -414,7 +414,7 @@ def sampleSequences_write(ensembl_genome, sample_read, fasta_it=True, pickle_it=
         samples_fasta   = LoadSeqs(data=samples,moltype=DNA,aligned=False).toFasta()
         fasta_file.write(samples_fasta)
         fasta_file.close()
-# SUMMARY STATS
+ # SUMMARY STATS
     if include_genes:
         headers = [i.split('\t') for i in samples.keys()]
         samplelength_distribution = [int(i[4].replace('UtrLength:','')) for i in headers]
@@ -439,7 +439,7 @@ def sampleAllSpecies(species_list,sample_directions):
         for species in species_list:
             print(species)
             genome              = setupGenome(              species, db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-            samples_read        = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=500, take_annotated_utr=True, masking = 'hard', sample_data={}, sample_seqs={}, test_it=False)
+            samples_read        = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=2000, take_annotated_utr=False, masking = 'hard', sample_data={}, sample_seqs={}, test_it=False)
             samples_write   = sampleSequences_write(        genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
             import pprint
             pprint.pprint(samples_write[1]) # show the header
@@ -478,8 +478,8 @@ species_list = [    'Aedes aegypti',
 
 """
 
-# sample_directions = ['upstream']
-# sampleAllSpecies(species_list,sample_directions)
+sample_directions = ['upstream']
+sampleAllSpecies(species_list,sample_directions)
 
 # sample_directions = ['downstream']
 # sampleAllSpecies(species_list,sample_directions)
