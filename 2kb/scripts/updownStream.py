@@ -465,11 +465,10 @@ species_list = [    'Aedes aegypti',
                 'Anopheles merus',
                 'Anopheles minimus',
                 'Anopheles quadriannulatus',
-                'Anopheles sinensis'
-                #,'Anopheles stephensiI',           # this is broken..?
-                #'Anopheles stephensi'              # ''
+                'Anopheles sinensis',
+                'Anopheles stephI',           # this is the renamed stephensiI db
+                'Anopheles stephensi'
                 ]
-
 """ NOTICE:
 
     - 05/02: sample_range 		= 2000
