@@ -1,8 +1,8 @@
-aedes_aegypti
-anopheles_albimanus
-anopheles_arabiensis
-anopheles_atroparvus
-anopheles_christyi
+#aedes_aegypti
+#anopheles_albimanus
+#anopheles_arabiensis
+#anopheles_atroparvus
+#anopheles_christyi
 anopheles_culicifacies
 anopheles_darlingi
 anopheles_dirus
@@ -16,5 +16,5 @@ anopheles_merus
 anopheles_minimus
 anopheles_quadriannulatus
 anopheles_sinensis
-anopheles_stephi #this is the renamed stephensii db
+#anopheles_stephI
 anopheles_stephensi
