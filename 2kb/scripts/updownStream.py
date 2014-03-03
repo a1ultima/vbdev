@@ -1,10 +1,10 @@
 # IMPORT
-from operator import attrgetter
-import itertools
+# from operator import attrgetter
+# import itertools
+# import species # species.generate_list() method creates a python list with names of species corresponding to MySQL EnsEMBL databases
 
-#import difflib
-import re
-
+# #import difflib
+# import re
 
 # TODOs -->                                                                                                                                 # v-- TODOs align HERE --v
 
@@ -24,6 +24,7 @@ def setupGenome( species, db_host=None, db_user=None, db_pass=None, db_release=N
         db_user     = 'vbuser'              #string: ^^
         db_pass     = 'Savvas'              #string: ^^
         db_release  = 73                    #integer: the realease versions we use are all 73
+
     """
     if not db_host:
         account=None
@@ -31,8 +32,9 @@ def setupGenome( species, db_host=None, db_user=None, db_pass=None, db_release=N
         db_release=73
     from cogent.db.ensembl import HostAccount, Genome, Species
     account = HostAccount(db_host,db_user,db_pass)
-    Species.amendSpecies(species,species)
-    genome = Genome(Species=species,Release=db_release,account=account)
+    species_latin = species.replace('_',' ')
+    Species.amendSpecies(species_latin,species_latin)
+    genome = Genome(Species=species_latin,Release=db_release,account=account)
     return genome
 
 #______________________________________________#
@@ -50,18 +52,22 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
         sample_range        = 2000  # no. of bases to sample up/downstream  # int:          how many bp of sequence to sample?
         masking             = 'soft'                                        # string:       'soft' / 'hard' / 'none'  what kind of masking procedure do we use?
         sample_data         = {}                                            # dictionary:   starts from scratch (default) or recurse upon previous data 
+
+    Dependencies:
+        <--
+            setupGenome()
     """
+    from operator import attrgetter
+    import itertools
+    import re
 
     print 'Sampling sequences: '+str(sample_range)+'bp '+sample_direction+'...'
     sample_failures = []
     genes           = ensembl_genome.getGenesMatching(BioType='protein_coding')   # queries ensembl genome for all protein coding genes
     geneIds         = [gene.StableId for gene in genes]  # grab all gene ids
-    
     annotated_sample_flag = None
-    
     if test_it == True:
         geneIds = geneIds[0:10]    # ANDY: testing for just 100
-        #geneIds = ['AGAP000002']
 
     for count,geneId in enumerate(geneIds):
         if not test_it:
@@ -70,7 +76,6 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
         else:
             print '\t'+str(count)+' '+geneId
         gene = ensembl_genome.getGeneByStableId(StableId=geneId) # select gene
-        #geneLocation= gene.Location    # coordinates for whole gene
 
     # EXON TARGET                       # Sampling starts from the limiting exon of the current gene  and spans according to sample_range
         if sample_direction=='upstream':
@@ -370,7 +375,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
 #______________________________________________#
 # write sequences into either a pickle or fasta
 #______________________________________________#
-def sampleSequences_write(ensembl_genome, sample_read, fasta_it=True, pickle_it=True, include_genes=False):
+def sampleSequences_write(ensembl_genome, sample_read, fasta_it=True, pickle_it=True, include_genes=False, dataPath_out = '../data/sample_seqs/fasta/'):
     """ 
     Notes:
         Stores into files (either .fasta or .p) the sampled sequence data that was generated into a dict by sampleSequences_read()
@@ -381,6 +386,12 @@ def sampleSequences_write(ensembl_genome, sample_read, fasta_it=True, pickle_it=
         fasta_it        = True                                                  # bool: generate a fasta file for all seqs? 
         pickle_it       = False                                              # bool: store a python dict with all the sequences as file?
         include_genes   = False                             # bool: concatenate sampled seqs onto gene seqs?
+
+    Dependencies:
+        <--
+            sampleSequences_read()
+                <--
+                    setupGenome()
     """
     samples         = {}
     sample_data     = sample_read[0]
@@ -388,7 +399,6 @@ def sampleSequences_write(ensembl_genome, sample_read, fasta_it=True, pickle_it=
     geneIds         = sample_data.keys()
     species         = ensembl_genome.Species.replace(' ','_').lower()
     for geneId in geneIds:
-
         if include_genes:   # concatenate sample_seq to gene_seq?
             gene_seq        = sample_data[geneId]['gene_seq']
             sample_seq      = sample_data[geneId]['truncated']
@@ -400,16 +410,14 @@ def sampleSequences_write(ensembl_genome, sample_read, fasta_it=True, pickle_it=
             total_seq       = sample_data[geneId]['truncated']
             total_length    = len(total_seq)
             header = geneId+'\tUtrCoord:'+sample_data[geneId]['sample_location']+'\tUtrLength:'+str(total_length)+'\tUtrType:'+str(sample_data[geneId]['sample_type'])
-
         samples[header] = total_seq
-
     if pickle_it:
         import pickle
         pickle_path     = '../data/sample_seqs/pickled/'
         pickle.dump(samples,open(pickle_path+species+'_'+sample_direction+'.p','wb'))
     if fasta_it:
         from cogent import LoadSeqs, DNA
-        fasta_path      = '../data/sample_seqs/fasta/'
+        fasta_path      = dataPath_out  #'../data/sample_seqs/fasta/'
         fasta_file      = open(fasta_path+species+'_'+sample_direction+'.fasta','wb')
         samples_fasta   = LoadSeqs(data=samples,moltype=DNA,aligned=False).toFasta()
         fasta_file.write(samples_fasta)
@@ -427,20 +435,37 @@ def sampleSequences_write(ensembl_genome, sample_read, fasta_it=True, pickle_it=
 #______________________________________________#
 # samples from a list of genomes
 #______________________________________________#
-def sampleAllSpecies(species_list,sample_directions):
+def sampleAllSpecies(speciesFile='./species_list.txt',sample_directions=['upstream','downstream'], dataPath_out='../data/sample_seqs/fasta/', sample_range=2000, take_annotated_utr=False, masking='hard'):
     """
     Notes:
         samples sequences up/downstream from each gene of each genome of a list of species generating fasta files
     Args:
         species_list        = ['Anopheles gambiae', 'Aedes aegypti']    #list: species names to sample from
         sample_directions   = ['upstream','downstream']                 #list: list of directions to sample seqs from
+
+    Dependencies:
+        --> 
+            data/sample_seqs/fasta/<species_name>_<up/down>stream.fasta  
+                -->
+                    meme_dataPrepper.py
+                    meme_bgfileGen.py 
+        <-- 
+            speciesManage.generate_list.py
+            sampleSequences_write()
+                <--
+                    sampleSequences_read()
+                        <--
+                            setupGenome()
     """
+    import speciesManage # species.generate_list() method creates a python list with names of species corresponding to MySQL EnsEMBL databases
+    species_list = speciesManage.generate_list(speciesFile) # generates a list of species names corresponding to EnsEMBl MySQL db names
+
     for sample_direction in sample_directions:
         for species in species_list:
             print(species)
-            genome              = setupGenome(              species, db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
-            samples_read        = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=2000, take_annotated_utr=False, masking = 'hard', sample_data={}, sample_seqs={}, test_it=False)
-            samples_write   = sampleSequences_write(        genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
+            genome          = setupGenome(              species, db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
+            samples_read    = sampleSequences_read (    genome, sample_direction=sample_direction, sample_range=sample_range, take_annotated_utr=take_annotated_utr, masking = masking, sample_data={}, sample_seqs={}, test_it=False)
+            samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
             import pprint
             pprint.pprint(samples_write[1]) # show the header
 
@@ -448,40 +473,43 @@ def sampleAllSpecies(species_list,sample_directions):
 # RUN
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-species_list = [    'Aedes aegypti',
-                'Anopheles albimanus',
-                'Anopheles arabiensis',
-                'Anopheles atroparvus',
-                'Anopheles christyi',
-                'Anopheles culicifacies',
-                'Anopheles darlingi',
-                'Anopheles dirus',
-                'Anopheles epiroticus',
-                'Anopheles farauti',
-                'Anopheles funestus',
-                'Anopheles gambiae',
-                'Anopheles maculatus',
-                'Anopheles melas',
-                'Anopheles merus',
-                'Anopheles minimus',
-                'Anopheles quadriannulatus',
-                'Anopheles sinensis',
-                'Anopheles stephI',           # this is the renamed stephensiI db
-                'Anopheles stephensi'
-                ]
 """ NOTICE:
-
     - 05/02: sample_range 		= 2000
     - 06/02: take_annotated_utr = False
     - 10/02: masking            = 'hard'
-
 """
 
-sample_directions = ['upstream']
-sampleAllSpecies(species_list,sample_directions)
+if __name__ == "__main__":
+    import sys
+# Deal with MISSING ARGS:
+    try: 
+        speciesFile = sys.argv[1]
+    except IndexError:
+        speciesFile = './species_list.txt' # default
+    try:
+        sample_directions = sys.argv[2]
+    except IndexError:
+        sample_directions = ['upstream']
+    try:
+        dataPath_out = sys.argv[3]
+    except IndexError:
+        dataPath_out = '../data/sample_seqs/fasta/'
+    try:
+       sample_range = sys.argv[4]
+    except IndexError:
+        sample_range = 2000
+    try:
+        take_annotated_utr = sys.argv[5]
+    except IndexError:
+        take_annotated_utr = False
+    try:
+        masking = sys.argv[6]
+    except IndexError:
+        masking = 'hard'
 
-# sample_directions = ['downstream']
-# sampleAllSpecies(species_list,sample_directions)
+# RUN MAIN:
+    sampleAllSpecies( speciesFile, sample_directions, dataPath_out, sample_range, take_annotated_utr, masking) #sampleAllSpecies(speciesFile='./species_list.txt',sample_directions='upstream')
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # @TESTING
