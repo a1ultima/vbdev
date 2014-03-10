@@ -22,6 +22,7 @@ def meme_bfileGenerator( file_in, file_out, bfileGeneratorPath, maskingChar = 'n
                             ]
     
     file_out_tmp_name = file_out.replace('.bg2','_tmp.bg2')
+    
     subprocess.call( bfileGenerator_cmd,stdout=open(file_out_tmp_name,'w') ) # generte bfile
 
     # PRUNE OUT MASKING 'N's    <= meme prohibits 'N's in the -bfile, so we must prune em out
