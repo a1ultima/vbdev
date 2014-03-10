@@ -365,8 +365,6 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
                     sample_seq[region[0]:region[1]+1]=[letter.lower() for letter in sample_seq[region[0]:region[1]+1]]
             sample_seqs[geneId]['truncated']=''.join(sample_seq)
 
-            #print(sample_seq)
-
         # NO
         # ...then move on...
 
@@ -495,15 +493,15 @@ if __name__ == "__main__":
     except IndexError:
         dataPath_out = '../data/sample_seqs/fasta/'
     try:
-       sample_range = sys.argv[4]
+       sample_range = int(sys.argv[4])
     except IndexError:
         sample_range = 2000
     try:
-        take_annotated_utr = sys.argv[5]
+        take_annotated_utr = bool(sys.argv[5])
     except IndexError:
         take_annotated_utr = False
     try:
-        masking = sys.argv[6]
+        masking = str(sys.argv[6])
     except IndexError:
         masking = 'hard'
 
@@ -519,5 +517,4 @@ if __name__ == "__main__":
 # samples_read    = sampleSequences_read (    genome, sample_direction='upstream', sample_range=2000, take_annotated_utr=False, masking = 'none', sample_data={}, sample_seqs={}, test_it=True)
 # samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
 
-# #overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr
-
+# overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr
