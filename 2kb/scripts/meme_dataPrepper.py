@@ -1,5 +1,6 @@
 import subprocess
 import re 
+import os
 
 def memedata_prep( filename_in, filename_out ): 
     """
@@ -34,7 +35,6 @@ def memedata_prep( filename_in, filename_out ):
         startEnd        = utrCoord[1].rpartition('-')   # rpartition ensures: (-800-20) -> '-800','-','20' 
         start           = startEnd[0]
         end             = startEnd[2]
-
         strand          = utrCoord[2]
         headers[geneId] = {'utrCoord':{'chromosome':chromosome,'start':start,'end':end,'strand':strand},'utrLength':utrLength,'utrType':utrType}
     file_in.close()
@@ -104,7 +104,7 @@ def memedata_dust( filename_in, cutoff=2 ):
         DUSTMASKER: low complexity region masker, commandline program installed on vb-dev
 
     Args:
-        cutoff = 5         <= the -level argument proportional to how strict the masking is, 20 is default for the native program, lower => more masking
+        cutoff = 5 <= the -level argument proportional to how strict the masking is, 20 is default for the native program, lower => more masking
     """
     file_dust_tmp_name  = filename_in.split('.')[0]+'_dusted_tmp'+'.'+filename_in.split('.')[1]
     file_dust_name      = filename_in.split('.')[0]+'_dusted'+'.'+filename_in.split('.')[1]
@@ -112,9 +112,8 @@ def memedata_dust( filename_in, cutoff=2 ):
     file_dust_tmp       = open(file_dust_tmp_name,'w')
     subprocess.call([ 'dust', filename_in, str(cutoff)],stdout=file_dust_tmp) # TODO: what value do I use for 'cut-off', here given as 10
     file_dust_tmp.close()
-    print('\t\tConcatenating consective lines of sequence...')
     file_dust_tmp   = open(file_dust_tmp_name)
-    file_dust       = open(file_dust_name,'w')   # Open file for reading
+    file_dust       = open(file_dust_name,'w')   # Concatenating consective lines of sequence...
     seq_united      = 'start'
     while True:
         line = file_dust_tmp.readline()
@@ -143,27 +142,23 @@ def memedata_simpleMask( filename_in ):
 
     """
     print('\t\tMasking low complexity regions: SIMPLE...')
-
     file_in  = open(filename_in)
-    file_out = open(filename_in.split('.')[0]+'_simpleMasked'+'.'+filename_in.split('.')[1],'w')
-
+    file_out = open('..'+filename_in.split('..')[1].split('.')[0]+'_simpleMasked'+'.'+filename_in.split('..')[1].split('.')[1],'w')
     def maskChars(matchobj):
          return len(matchobj.group(0))*'N'
     while True:
         line = file_in.readline()
         if line == "":  # break when finished
             break
-        # Mask where di nucletoide repeats are 8bp long or more
-        di_nucleotides = re.compile(r'(..)\1{4,}')
+        di_nucleotides = re.compile(r'(..)\1{4,}')      # Mask where DI NUCLEOTIDE repeats are 8bp long or more
         mask = di_nucleotides.sub(maskChars,line)
-        # Mask where tri nucletoide repeats are 9bp long or more
-        tri_nucleotides = re.compile(r'(...)\1{3,}')
+        tri_nucleotides = re.compile(r'(...)\1{3,}')    # Mask where TRI NUCLEOTIDE repeats are 9bp long or more
         mask = tri_nucleotides.sub(maskChars,mask)
         file_out.write(mask)
     file_in.close()
     file_out.close()
 
-def allSpecies( speciesFile='./species_list.txt', dataPath_in='home/ab108/0VB/2kb/data/sample_seqs/fasta/masking/', dataPath_out = 'home/ab108/0VB/2kb/data/meme_data/in/', LCR_masking='simple' ): 
+def allSpecies( speciesFile='./species_list.txt', dataPath_in='../data/sample_seqs/fasta/', dataPath_out = '../data/meme_data/in/', LCR_masking='simple' ): 
     """
     Notes:
         prepares the 2kb upstream data for MEME to start processing for every species
@@ -171,30 +166,23 @@ def allSpecies( speciesFile='./species_list.txt', dataPath_in='home/ab108/0VB/2k
     Args:
         species_list = ['Anopheles gambiae', 'Aedes aegypti']    #list: species names to sample from
     """
-    import os
-
     import speciesManage # species.generate_list() method creates a python list with names of species corresponding to MySQL EnsEMBL databases
     species_list = speciesManage.generate_list(speciesFile) # generates a list of species names corresponding to EnsEMBl MySQL db names
 
     for species in species_list:
         print(species)
 
-        species = species.lower().replace(' ','_')
-        home    = os.path.expanduser('~')+'/'
-        os.chdir(home)
+        print(dataPath_in)
 
-        dataPath_in = os.path.expanduser(dataPath_in.replace(home[1:],''))
-        dataPath_out= os.path.expanduser(dataPath_out.replace(home[1:],''))
         filename_in = dataPath_in + species + '_upstream.fasta'
         filename_out= dataPath_out+ species + '_upstream_memeready_all.fasta'
 
         memedata_prep(filename_in,filename_out)
+
         if LCR_masking=='dust':
             memedata_dust(filename_out)
         elif LCR_masking=='simple':
             memedata_simpleMask(filename_out)
-
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # RUN
@@ -207,7 +195,7 @@ def allSpecies( speciesFile='./species_list.txt', dataPath_in='home/ab108/0VB/2k
 
 if __name__ == "__main__":
     import sys
-# Deal with MISSING ARGS:
+    # Deal with MISSING ARGS:
     try: 
         speciesFile = sys.argv[1]
     except IndexError:
@@ -215,17 +203,17 @@ if __name__ == "__main__":
     try:
         dataPath_in = sys.argv[2]
     except IndexError:
-        dataPath_in = 'home/ab108/0VB/2kb/data/sample_seqs/fasta/masking/',
+        dataPath_in = '../data/sample_seqs/fasta/masking/',
     try:
         dataPath_out = sys.argv[3]
     except IndexError:
-        dataPath_out = 'home/ab108/0VB/2kb/data/meme_data/in/'
+        dataPath_out = '../data/meme_data/in/'
     try:
         LCR_masking = sys.argv[4]
     except IndexError:
         LCR_masking = 'simple' # other options: 'dust', 'none'
 
-# RUN MAIN:
+    # RUN MAIN:
     allSpecies( speciesFile, dataPath_in, dataPath_out, LCR_masking )
     print('COMPLETE!')
 
