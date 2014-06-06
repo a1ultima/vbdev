@@ -25,6 +25,8 @@ def memedata_prep( filename_in, filename_out ):
         sequence= file_in.readline()
         if header == '':                    # break when finished
             break
+
+    # tabs of the fi
         header_split    = header.split('\t')
         geneId          = header_split[0].replace('>','')
         utrCoord        = header_split[1].replace('UtrCoord:','').split(':')
@@ -32,11 +34,15 @@ def memedata_prep( filename_in, filename_out ):
         utrType         = header_split[3].replace('UtrType:','').rstrip()
         chromosome      = utrCoord[0]
 
+    # sub-properties of chromosome
         startEnd        = utrCoord[1].rpartition('-')   # rpartition ensures: (-800-20) -> '-800','-','20' 
         start           = startEnd[0]
         end             = startEnd[2]
         strand          = utrCoord[2]
+
+    # dictionary storeage of all headers
         headers[geneId] = {'utrCoord':{'chromosome':chromosome,'start':start,'end':end,'strand':strand},'utrLength':utrLength,'utrType':utrType}
+    
     file_in.close()
 
     # Pulley samples:       shared samples with genes in the same direction 
@@ -52,7 +58,9 @@ def memedata_prep( filename_in, filename_out ):
     geneIds = headers.keys()
     one_coord_per_geneId = {}
     for geneId in geneIds:
+        
         utrCoord = headers[geneId]['utrCoord']['chromosome']+':'+headers[geneId]['utrCoord']['start']+'-'+headers[geneId]['utrCoord']['end']+':'+headers[geneId]['utrCoord']['strand']
+        
         one_coord_per_geneId[utrCoord] = geneId   # To ensure only one geneId = one utrCoord, I purposefully allow values to be overidden for a given key 
 
     # Tug'o'war samples:    shared samples with genes in the opposite direction 
@@ -60,7 +68,7 @@ def memedata_prep( filename_in, filename_out ):
     #   s1  <-------G--- + ---S---
     #   s2                 ---S--- + ---S------->
     #
-    #   dealt with by making a set of unique utrcoords stripped of their strand property, now upon encountering a match forward samples and reverse samples take their half of the tug-o-war sequence
+    #   dealt with by making a set of unique utrcoords stripped of their strand property. Now upon encountering a match, forward samples and reverse samples take their half of the tug-o-war sequence
     #
     coords          = [ ':'.join(i.split(':')[0:-1]) for i in one_coord_per_geneId.keys() ]     # remove strand property
     coords_shared   = set([i for i in coords if coords.count(i)>1])
@@ -76,6 +84,7 @@ def memedata_prep( filename_in, filename_out ):
         sequence= file_in.readline().rstrip()
         if header == "": # break when finished
             break
+
     # MEME filter:  =>  Is this sample seq too short for meme? 
         # YES:
         if len(sequence)<10:

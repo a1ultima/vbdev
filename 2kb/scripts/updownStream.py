@@ -338,8 +338,7 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
 
     # MASKING PROCEDURE?
         # YES
-        if not masking=='none':
-
+        if not masking=='none': # For the other masking options CTRL+F --> #hard , #soft    # WARN TODO: if somebody typos the masking arg, they are screwed!! => neaten this
             if overlaps_flag:
                 if sample_completeOverlap_flag:
                     continue
@@ -359,15 +358,14 @@ def sampleSequences_read( ensembl_genome, sample_direction='upstream', take_anno
                     region[0]=0
                 if region[1]>len(sample_seq):     # TODO: is len() the actual matcher? 
                     region[1]=len(sample_seq)
-                if masking=='hard':
+                if masking=='hard':     #hard
                     sample_seq[region[0]:region[1]+1]='N'*(len(sample_seq[region[0]:region[1]+1])) # PyCogent is not happy with X
-                elif masking=='soft':
+                elif masking=='soft':   #soft
                     sample_seq[region[0]:region[1]+1]=[letter.lower() for letter in sample_seq[region[0]:region[1]+1]]
             sample_seqs[geneId]['truncated']=''.join(sample_seq)
 
         # NO
         # ...then move on...
-
     return sample_seqs, sample_direction, sample_failures  # yields the dictionary      # ANDY_02/03: 
 
 #______________________________________________#
@@ -516,5 +514,4 @@ if __name__ == "__main__":
 # genome          = setupGenome(              'Anopheles gambiae', db_host='localhost', db_user='vbuser', db_pass='Savvas', db_release=73 )
 # samples_read    = sampleSequences_read (    genome, sample_direction='upstream', sample_range=2000, take_annotated_utr=False, masking = 'none', sample_data={}, sample_seqs={}, test_it=True)
 # samples_write   = sampleSequences_write(    genome, samples_read, fasta_it=True, pickle_it=True, include_genes=False)
-
 # overlap_features, overlap_limit, overlap_locations, location_sample, location_transcript, location_transcript_noUtr

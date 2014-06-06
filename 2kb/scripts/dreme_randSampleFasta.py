@@ -88,6 +88,11 @@ def allSpecies(speciesFile, dataPath_in, dataPath_out, n_seqs = 10000, len_seq =
                                 })
     # GENERATE FASTA
         print('\twriting sampled sequences to FASTA...')
+
+        if not os.path.exists(dataPath_out): # generate cluster fasta dirs
+            print('making directory: '+dataPath_out)
+            os.makedirs(dataPath_out)
+
         file_out = open(filename_out,'w')
         for sample in randSamples:
             headers = sample['geneId'] 
@@ -120,7 +125,7 @@ if __name__ == "__main__":
     except IndexError:
         len_seq = 100
     try: 
-        population = sys.argv[6]
+        population = bool(sys.argv[6])
     except IndexError:
         population = True
     allSpecies( speciesFile, dataPath_in, dataPath_out, n_seqs, len_seq, population )
