@@ -7,8 +7,9 @@ if not os.getcwd().endswith('scripts'):
     print os.getcwd()
 
 import imp
-speciesManage = imp.load_source('speciesManage.py', './speciesManage.py')
+
 motif_entropy = imp.load_source('motif_entropy.py', './motif_entropy.py')
+speciesManage = imp.load_source('speciesManage.py', './speciesManage.py')
 
 import numpy as np 
 import copy
@@ -19,14 +20,23 @@ event_to_clusterClass   = {}                        # events as primary key
 
 
 # Ask user to provide the e-value cut-off pointing to the data we need, e.g. 0.5 points to dreme_100bp_e0.5. Then we get a list of d-cutoff values available in the directory by re-formatting the filenames
-e_cut       = str(raw_input('what is the e-value of the data you want to work with? e.g. 0.5'))
+e_cut       = str(raw_input('what is the e-value of the original dreme data you want worked with? in doubt try: 0.05'))
 e_cut_dir   = '../data/stamp_data/out/dreme_100bp_e'+e_cut+'/SWU_SSD/'
 d_list      = [float(i.replace('cluster_motifs_d','')) for i in os.listdir(e_cut_dir) if 'cluster_motifs_d' in i]
 
 
+print d_list
+
 parameterisation_events = zip([float(e_cut)]*len(d_list),d_list) # list of 'parameterisation events', e.g. 'of a parameterisation event': ( evalue, dvalue ), real examples commented below
 #parameterisation_events = [(0.05,0.05),(0.05,0.5)]     
 #parameterisation_events = [(0.05,0.5)]                 
+
+
+
+# REMOVE THIS AFTER
+import sys
+sys.exit("Testing parameterisation_events")
+
 
 filename_species= './species_list.txt'
 species_list    = speciesManage.generate_list(filename_species) # generates a list of species names corresponding to EnsEMBl MySQL db name
@@ -37,16 +47,21 @@ for i,s in enumerate(species_list):
     species_to_index[s] = i
 
 # 
-# MAIN LOOP             :   iteratre through event combinations in 'parameterisation_events', e.g. [] evalue
+# MAIN LOOP             :   iterate through event combinations in 'parameterisation_events', one parameterisation event is (evalue,distance), e.g. (0.05,0.02)
 #
 
 cluster_to_stats = {} 
+
+print 'Generating motif cluster statistics, primary key: parameterisation events, (e-value,distance), e.g. (0.05, 0.02)...'
 
 for e,save_d in parameterisation_events:
 
     event = 'e'+str(e)+'_d'+str(save_d)
 
+    print('\n\n')
+    print('#######################################')
     print('Parameters: e:'+str(e)+' d:'+str(save_d))
+    print('#######################################')
 
     # symbol_to_species dict    : to later translate motifs names into species name (CTRL+F: SPECIES-to-MOTIFS  ) => to generate dict of species_to_motifs => to then 
                                 # e.g. 
@@ -84,14 +99,14 @@ for e,save_d in parameterisation_events:
                     break
     file_dreme.close()
 
-    print 'motifs'
+    #print 'motifs'
 
     species_nmotifs_dist = [] # species vs. number of motifs distribution
     
     for species in species_to_motifs.keys(): # iterate through species
         nmotifs = len(species_to_motifs[species])   # count number of motifs on given species
         species_nmotifs_dist.append(nmotifs)        # append to the species vs. number of motifs distribution
-        print('\t'+species + ': ' + str(len(species_to_motifs[species])))
+        #print('\t'+species + ': ' + str(len(species_to_motifs[species])))
     
     species_nmotifs_dist = np.array(nmotifs)
 
@@ -243,14 +258,12 @@ for e,save_d in parameterisation_events:
                 species_to_clusters[species] = [cluster]
 
     # no. clusters per species
-    print 'clusters'
+    print '\nNumber of clusters per species:\n'
     species_nclusters_dist = []
     for species in species_to_clusters.keys():
         nclusters = len(species_to_clusters[species])
         species_nclusters_dist.append(nclusters)
-
-        # @PRINT
-        print('\t'+species + ': ' + str(len(species_to_clusters[species])))
+        print('\t'+species + ': ' + str(len(species_to_clusters[species]))) # 
 
     species_nclusters_dist = np.array(nclusters)
 
@@ -296,7 +309,7 @@ for e,save_d in parameterisation_events:
     # Build 
     for event in event_to_clusterClass.keys():
         
-        print event
+        #print event
 
         event_to_clusterClass[event] = copy.deepcopy(event_to_clusterClass_template) # cluster classes
 
@@ -322,7 +335,7 @@ for e,save_d in parameterisation_events:
             event_to_clusterClass[event]['nSpeciesOrMore'][s]['H']['distribution']  = clusters_s_entropy
             event_to_clusterClass[event]['nSpeciesOrMore'][s]['H']['mean']          = clusters_s_entropy.mean()
 
-        print(len(event_to_clusterClass[event]['all']['list']))
+        #print(len(event_to_clusterClass[event]['all']['list']))
 
         # clades            :   one level deeper than the above, under clades we have various clade related conditions to define the classes the template must be appended to each
         for clade in event_to_clusterClass_template['clades'].keys():
