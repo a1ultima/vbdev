@@ -22,21 +22,18 @@ event_to_clusterClass   = {}                        # events as primary key
 # Ask user to provide the e-value cut-off pointing to the data we need, e.g. 0.5 points to dreme_100bp_e0.5. Then we get a list of d-cutoff values available in the directory by re-formatting the filenames
 e_cut       = str(raw_input('what is the e-value of the original dreme data you want worked with? in doubt try: 0.05'))
 e_cut_dir   = '../data/stamp_data/out/dreme_100bp_e'+e_cut+'/SWU_SSD/'
-d_list      = [float(i.replace('cluster_motifs_d','')) for i in os.listdir(e_cut_dir) if 'cluster_motifs_d' in i]
+d_list      = sorted([float(i.replace('cluster_motifs_d','')) for i in os.listdir(e_cut_dir) if 'cluster_motifs_d' in i]) # list of distance parameters 
 
+parameterisation_events = zip([float(e_cut)]*len(d_list),d_list) # list of 'parameterisation events', ( evalue, dvalue ), real examples commented below
 
-print d_list
-
-parameterisation_events = zip([float(e_cut)]*len(d_list),d_list) # list of 'parameterisation events', e.g. 'of a parameterisation event': ( evalue, dvalue ), real examples commented below
+#e.g. 
 #parameterisation_events = [(0.05,0.05),(0.05,0.5)]     
 #parameterisation_events = [(0.05,0.5)]                 
 
 
-
-# REMOVE THIS AFTER
-import sys
-sys.exit("Testing parameterisation_events")
-
+# REMOVE THIS AFTER DEBUGGING: 03/08/2014
+# import sys
+# sys.exit("Testing parameterisation_events")
 
 filename_species= './species_list.txt'
 species_list    = speciesManage.generate_list(filename_species) # generates a list of species names corresponding to EnsEMBl MySQL db name
@@ -52,7 +49,7 @@ for i,s in enumerate(species_list):
 
 cluster_to_stats = {} 
 
-print 'Generating motif cluster statistics, primary key: parameterisation events, (e-value,distance), e.g. (0.05, 0.02)...'
+print '\n\nGenerating motif cluster statistics, primary key: parameterisation events, (e-value,distance), e.g. (0.05, 0.02)...\n'
 
 for e,save_d in parameterisation_events:
 
@@ -402,7 +399,14 @@ for e,save_d in parameterisation_events:
     all_avgEntropy = event_to_clusterClass[event]['all']['H']['mean']
 
 
-# Save cluster_to_stats[event][cluster] dict to: /home/ab108/0VB/2kb/data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_to_stats.p
+print '\n\nSaving cluster_to_stats[event][cluster] dict to: /home/ab108/0VB/2kb/data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_to_stats.p\n\n'
+
+"""
+
+import pickle
+pickle.load(open('/home/ab108/0VB/2kb/data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_to_stats.p','wb'))
+
+"""
 import pickle
 pickle_dir = e_cut_dir+'/cluster_to_stats'
 pickle_obj = cluster_to_stats
