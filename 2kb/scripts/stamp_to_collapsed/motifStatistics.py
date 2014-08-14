@@ -6,8 +6,10 @@ if not os.getcwd().endswith('scripts'):
     os.chdir('../')
     print os.getcwd()
 
-import speciesManage
-import motif_entropy
+import imp
+speciesManage = imp.load_source('speciesManage.py', './speciesManage.py')
+motif_entropy = imp.load_source('motif_entropy.py', './motif_entropy.py')
+
 import numpy as np 
 import copy
 
@@ -17,9 +19,10 @@ event_to_clusterClass   = {}                        # events as primary key
 
 
 # Ask user to provide the e-value cut-off pointing to the data we need, e.g. 0.5 points to dreme_100bp_e0.5. Then we get a list of d-cutoff values available in the directory by re-formatting the filenames
-e_cut = str(raw_input('what is the e-value of the data you want to work with? e.g. 0.5'))
-e_cut_dir = '../data/stamp_data/out/dreme_100bp_e'+e_cut+'/SWU_SSD/'
-d_list = [float(i.replace('cluster_motifs_d','')) for i in os.listdir(e_cut_dir) if 'cluster_motifs_d' in i]
+e_cut       = str(raw_input('what is the e-value of the data you want to work with? e.g. 0.5'))
+e_cut_dir   = '../data/stamp_data/out/dreme_100bp_e'+e_cut+'/SWU_SSD/'
+d_list      = [float(i.replace('cluster_motifs_d','')) for i in os.listdir(e_cut_dir) if 'cluster_motifs_d' in i]
+
 
 parameterisation_events = zip([float(e_cut)]*len(d_list),d_list) # list of 'parameterisation events', e.g. 'of a parameterisation event': ( evalue, dvalue ), real examples commented below
 #parameterisation_events = [(0.05,0.05),(0.05,0.5)]     
@@ -386,7 +389,7 @@ for e,save_d in parameterisation_events:
     all_avgEntropy = event_to_clusterClass[event]['all']['H']['mean']
 
 
-# Save statistics to a pickle 
+# Save cluster_to_stats[event][cluster] dict to: /home/ab108/0VB/2kb/data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_to_stats.p
 import pickle
 pickle_dir = e_cut_dir+'/cluster_to_stats'
 pickle_obj = cluster_to_stats
