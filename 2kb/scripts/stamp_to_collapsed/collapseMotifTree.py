@@ -15,7 +15,7 @@ import math
 # SUB-FUNCTIONS:
 def mean(array):
     return sum(array)/float(len(array))
-    
+
 def cache_distances(tree):
     ''' precalculate distances of all nodes to the root''' 
     node2rootdist = {tree:0}
@@ -44,15 +44,19 @@ def collapse(tree, min_dist):
 def exploreCutoffs( dataPath, filename_in, d_from = 0, d_to = 2, d_step = 0.05, save_d = 0.5 ):
     """
     Description:
-        Given a Newick format tree, collapses clades whose lengths to tips are on average < d, where d is here incremented from e.g. 0 to 1 in 0.05 increments
+
+    Given a Newick format tree, collapses clades* whose lengths to tips are on average < d, where d is here incremented from e.g. 0 to 1 in 0.05 increments.
+
+    *in the case of this project, clades represent clusters of motifs that are collapsed together and their PSSMs merged. These will be later referred to as @motif clusters
 
     Arguments:
-        dataPath    = '../../data/stamp_data/SWU_SSD/'  # directory of tree
-        filename_in = 'out.tree'                        # Newick format tree
-        d_from      = 0.00                              # distance cut-off start
-        d_to        = 1.00                              # distance cut-off end
-        d_step      = 0.05                              # increment of distance cut-off
-        save_d      = 0.5                               # save the clustered motif names if the loop cuts at a d within save_d
+
+    dataPath    = '../../data/stamp_data/SWU_SSD/'  # directory of motif tree
+    filename_in = 'out.tree'                        # Newick format motif tree
+    d_from      = 0.00                              # distance cut-off start
+    d_to        = 1.00                              # distance cut-off end
+    d_step      = 0.05                              # increment of distance cut-off
+    save_d      = 0.5                               # save the clustered motif names if the loop cuts at a d within save_d
     """
 
     # TEST  :   catch annoying errors where the distance cutting range (d_from, d_to) does not include the save_d !!!!
