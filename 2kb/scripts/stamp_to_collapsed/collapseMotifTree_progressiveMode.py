@@ -174,11 +174,11 @@ def print_blacklist_summary(blacklist, cluster_to_stats, e=0.05):
 
     Arguments:
 
-    blacklist = get_blacklisted_motif_clusters()
+    blacklist = get_blacklisted_motif_clusters()                # 
 
-    cluster_to_stats = get_motif_tree_collapsing_distances() 
+    cluster_to_stats = get_motif_tree_collapsing_distances()    #
 
-    e=0.05 # CTRL+F '@E-VALUE'
+    e=0.05 # CTRL+F '@E-VALUE' 
 
     """
 
@@ -202,63 +202,44 @@ def print_blacklist_summary(blacklist, cluster_to_stats, e=0.05):
     print '\n_________________________________'
     print 'SUMMARY STATISTICS OF BLACKLIST: '
     print '_________________________________\n'
-
     print '\tEntropy: '+str(H_mean)
     print '\tSpecies: '+str(S_mean)
-    print '\tCluster: '+str(len(blacklist))+'         <-- no. of putative motifs'
+    print '\tCluster: '+str(len(blacklist))+'         <-- no. of putative motifs\n\n\n'
 
     return H_mean, S_mean
 
 
 
-e = 0.05
+def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, entropy_threshold = 1.0 ):
+    """ 
 
-cluster_to_stats
+    Description:
 
+    A wrapper for obtaining the blacklist at given species number threshold, S, and entropy threshold, H, (CTRL+F: blacklist_criteria_check) and e value (CTRL+F: @e-value)
 
+    Arguments: 
 
-blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 1.0, species_threshold = 3.0, cluster_to_stats=None) # --> 14 motifs, as expected 
+    e = 0.05                      # CTRL+F: @e-value
 
-summary = print_blacklist_summary(blacklist, cluster_to_stats, e=0.05
+    species_threshold = 3.0       # CTRL+F: blacklist_criteria_check
 
+    entropy_threshold = 1.0       # CTRL+F: blacklist_criteria_check
 
-###
+    Example:
 
-# @TESTS (get_blacklisted_motif_clusters):
-#  
-# if entropy_threshold is lower we should get <more/less> motifs?
-#
-# if species_threshold is higher we should get less motifs
-#
-#
-# we get 325 motifs 
+    blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold=3.0, entropy_threshold=1.0)
 
-## ...
-# blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_threshold = 3.0, cluster_to_stats=cluster_to_stats) # --> 325 motifs
+    """
 
-## LOW SPECIES => LOW No. MOTIFS
-# blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_threshold = 20.0, cluster_to_stats=cluster_to_stats) # --> 5 motifs, as expected
+    blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e, entropy_threshold = 1.0, species_threshold = 3.0, cluster_to_stats=None) # --> 14 motifs, as expected 
 
-## LOW ENTROPY => LOW No. MOTIFS
-#blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 1.0, species_threshold = 3.0, cluster_to_stats=cluster_to_stats) # --> 14 motifs, as expected
+    summary = print_blacklist_summary(blacklist, cluster_to_stats, e=0.05)
 
-#blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 1.0, species_threshold = 3.0, cluster_to_stats=None) # --> 14 motifs, as expected
-
-#summary = print_blacklist_summary(blacklist, cluster_to_stats, e=0.05)
+    return blacklist, summary
 
 
+"""
 
-
-# @TEST: try all combinations of input args to blacklist and test if it crashes it
-
-###
-
-# Summary Statistics for Bob:
-
-# of a blacklist:
-#   number of motifs
-#   mean entropy
-#   mean species number
 
 import sys,getopt
     
@@ -313,4 +294,4 @@ if __name__ == "__main__":
 
 
 
-
+"""
