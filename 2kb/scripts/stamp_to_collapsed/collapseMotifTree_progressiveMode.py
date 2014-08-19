@@ -213,33 +213,32 @@ def print_blacklist_summary(blacklist, cluster_to_stats, e=0.05):
 def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, entropy_threshold = 1.0 ):
     """ 
 
-    Description:
+    Description:\n\n
 
-    A wrapper for obtaining the blacklist at given species number threshold, S, and entropy threshold, H, (CTRL+F: blacklist_criteria_check) and e value (CTRL+F: @e-value)
+    A wrapper for obtaining the blacklist at given species number threshold, S, and entropy threshold, H, (CTRL+F: blacklist_criteria_check) and e value (CTRL+F: @e-value)\n\n
 
-    Arguments: 
+    Arguments:\n\n 
 
-    e = 0.05                      # CTRL+F: @e-value
+    e = 0.05                      # CTRL+F: @e-value\n\n
 
-    species_threshold = 3.0       # CTRL+F: blacklist_criteria_check
+    species_threshold = 3.0       # CTRL+F: blacklist_criteria_check\n\n
 
-    entropy_threshold = 1.0       # CTRL+F: blacklist_criteria_check
+    entropy_threshold = 1.0       # CTRL+F: blacklist_criteria_check\n\n
 
-    Example:
+    Example:\n\n
 
-    blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold=3.0, entropy_threshold=1.0)
+    blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold=3.0, entropy_threshold=1.0)\n\n
 
     """
 
-    blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e, entropy_threshold = 1.0, species_threshold = 3.0, cluster_to_stats=None) # --> 14 motifs, as expected 
+    blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e, species_threshold, entropy_threshold, cluster_to_stats=None) # --> 14 motifs, as expected 
 
-    summary = print_blacklist_summary(blacklist, cluster_to_stats, e=0.05)
+    summary = print_blacklist_summary( blacklist, cluster_to_stats, e)
 
     return blacklist, summary
 
 
-"""
-
+#---------------------------------------------------------
 
 import sys,getopt
     
@@ -250,48 +249,51 @@ def main(argv):
 
     # ... if no
     try:
-        opts, args = getopt.getopt(argv,"hi:p:k:",["infile=","pvalue=","kcladetuple="])
+
+        opts, args = getopt.getopt(argv,"hs:H",["nspecies=","entropy="])
+
     # ... if yes (e.g. mispelled args, non-existant args etc)
     except getopt.GetoptError:
-        print 'fimo_report_expr_cladecombos.py -i <infile> -p <p-value threshold> -k <k number of clades>'
+        
+        print 'collapseMotifTree_progressiveMode.py -s <species threshold> -H <entropy threshold>'
+
         sys.exit(2)
 
     # PROCESS THE @ARGS
 
     for opt, arg in opts:
+        
         if opt == '-h': # help file
-            print 'fimo_report_expr_cladecombos.py -i <infile> -p <p-value threshold> -k <k number of clades>'
+        
+            print 'collapseMotifTree_progressiveMode.py -s <species threshold> -H <entropy threshold>\n\nDescription:\n\nA wrapper for obtaining the blacklist at given species number threshold, S, and entropy threshold, H, (CTRL+F: blacklist_criteria_check) and e value (CTRL+F: @e-value)\n\nArguments:\n\n e = 0.05                      # CTRL+F: @e-value\n\nspecies_threshold = 3.0       # CTRL+F: blacklist_criteria_check\n\nentropy_threshold = 1.0       # CTRL+F: blacklist_criteria_check\n\nExample:\n\nblacklist_then_summaryStats_from_shell( e = 0.05, species_threshold=3.0, entropy_threshold=1.0)\n\n'
+
             sys.exit()
-        elif opt in ("-i","--infile"):    # long and short args, see
-            i = arg
-        elif opt in ("-p", "--pvalue"):
-            p = arg
-        elif opt in ("-k", "--kcladetuple"):
-            k = arg
+
+        elif opt in ("-s","--nspecies"):    # long and short args, see
+
+            s = arg # don't forget to correct the type!!
+
+        elif opt in ("-H", "--entropy"):
+
+            H = arg
 
     # CMD or PYTHON EXECUTE CONTROL: by default try run as if on cmd line, with input and output args ... else if it errors it may be running from within python, so then run default args: 
 
     # ... script was run from command line
     try:
-        
+
         # SCRIPT
-         # <-- main script, @REPLICATE exactly as below
-        #                             ^@args here processed from above
-    
+        blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = float(s), entropy_threshold = float(H) ) # <-- main script, @REPLICATE exactly as below
+        #                            ^@args here processed from above
+
     # ... script was run within Python
     except UnboundLocalError:
         
-        i = raw_input('input file? e.g. /home/maccallr/agcc/fimo/merged-motifs-d0.002-species3/all-concatenated/fimo_anopheles_gambiae/fimo.report-expr.txt')
+        s = raw_input('input file? e.g. s = 3.0')
         
-        p = raw_input('p-value threshold? e.g. 0.1')
-        
-        k = raw_input('How many k clade tuples (0-3)? e.g. 2')
+        H = raw_input('entropy threshold? e = 1.0 ')
 
-        fimo_report_expr_cladecombos(i,p,k)  # <-- main script, CTRL+F "@replicate" exactly as above
+        blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = float(s), entropy_threshold = float(H) ) # <-- main script, CTRL+F "@replicate" exactly as above
 
 if __name__ == "__main__":
     main(sys.argv[1:])
-
-
-
-"""
