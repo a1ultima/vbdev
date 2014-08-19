@@ -89,9 +89,6 @@ def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, 
         return False
 
 
-
-#MAIN
-
 def get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_threshold = 3.0, cluster_to_stats=None):
     """
 
@@ -167,6 +164,64 @@ def get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_
 
     return blacklist, cluster_to_stats
 
+def print_blacklist_summary(blacklist, cluster_to_stats, e=0.05):
+
+    """
+
+    Description:
+
+    returns H_mean, S_mean: the mean entropy and mean species number of the motif clusters in the "blacklist", see get_blacklisted_motif_clusters().
+
+    Arguments:
+
+    blacklist = get_blacklisted_motif_clusters()
+
+    cluster_to_stats = get_motif_tree_collapsing_distances() 
+
+    e=0.05 # CTRL+F '@E-VALUE'
+
+    """
+
+    import numpy as np
+
+    # MEAN SPECIES: Mean number of unique species in motif clusters of the blacklist
+    S = [] # numbers of species per cluster in blacklist
+    for (c,d) in blacklist: # (cluster,distance)
+        s = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['species']['unique']['n_unique'] # species number of cluster c
+        S.append(s)
+    S_mean = np.mean(S)
+
+
+    # MEAN ENTROPY: Mean entropy of motif clusters of the blacklist
+    H = []
+    for (c,d) in blacklist:
+        h = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['H'] # entropy of cluster c
+        H.append(h)
+    H_mean = np.mean(H)
+
+    print '\n_________________________________'
+    print 'SUMMARY STATISTICS OF BLACKLIST: '
+    print '_________________________________\n'
+
+    print '\tEntropy: '+str(H_mean)
+    print '\tSpecies: '+str(S_mean)
+    print '\tCluster: '+str(len(blacklist))+'         <-- no. of putative motifs'
+
+    return H_mean, S_mean
+
+
+
+e = 0.05
+
+cluster_to_stats
+
+
+
+blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 1.0, species_threshold = 3.0, cluster_to_stats=None) # --> 14 motifs, as expected 
+
+summary = print_blacklist_summary(blacklist, cluster_to_stats, e=0.05
+
+
 ###
 
 # @TESTS (get_blacklisted_motif_clusters):
@@ -185,7 +240,16 @@ def get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_
 # blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_threshold = 20.0, cluster_to_stats=cluster_to_stats) # --> 5 motifs, as expected
 
 ## LOW ENTROPY => LOW No. MOTIFS
-blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 1.0, species_threshold = 3.0, cluster_to_stats=cluster_to_stats) # --> 14 motifs, as expected
+#blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 1.0, species_threshold = 3.0, cluster_to_stats=cluster_to_stats) # --> 14 motifs, as expected
+
+#blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 1.0, species_threshold = 3.0, cluster_to_stats=None) # --> 14 motifs, as expected
+
+#summary = print_blacklist_summary(blacklist, cluster_to_stats, e=0.05)
+
+
+
+
+# @TEST: try all combinations of input args to blacklist and test if it crashes it
 
 ###
 
@@ -196,8 +260,56 @@ blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_
 #   mean entropy
 #   mean species number
 
+import sys,getopt
+    
+# Argument Handling
+def main(argv):
 
+    # USER MADE ERROR? 
 
+    # ... if no
+    try:
+        opts, args = getopt.getopt(argv,"hi:p:k:",["infile=","pvalue=","kcladetuple="])
+    # ... if yes (e.g. mispelled args, non-existant args etc)
+    except getopt.GetoptError:
+        print 'fimo_report_expr_cladecombos.py -i <infile> -p <p-value threshold> -k <k number of clades>'
+        sys.exit(2)
+
+    # PROCESS THE @ARGS
+
+    for opt, arg in opts:
+        if opt == '-h': # help file
+            print 'fimo_report_expr_cladecombos.py -i <infile> -p <p-value threshold> -k <k number of clades>'
+            sys.exit()
+        elif opt in ("-i","--infile"):    # long and short args, see
+            i = arg
+        elif opt in ("-p", "--pvalue"):
+            p = arg
+        elif opt in ("-k", "--kcladetuple"):
+            k = arg
+
+    # CMD or PYTHON EXECUTE CONTROL: by default try run as if on cmd line, with input and output args ... else if it errors it may be running from within python, so then run default args: 
+
+    # ... script was run from command line
+    try:
+        
+        # SCRIPT
+         # <-- main script, @REPLICATE exactly as below
+        #                             ^@args here processed from above
+    
+    # ... script was run within Python
+    except UnboundLocalError:
+        
+        i = raw_input('input file? e.g. /home/maccallr/agcc/fimo/merged-motifs-d0.002-species3/all-concatenated/fimo_anopheles_gambiae/fimo.report-expr.txt')
+        
+        p = raw_input('p-value threshold? e.g. 0.1')
+        
+        k = raw_input('How many k clade tuples (0-3)? e.g. 2')
+
+        fimo_report_expr_cladecombos(i,p,k)  # <-- main script, CTRL+F "@replicate" exactly as above
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
 
 
 
