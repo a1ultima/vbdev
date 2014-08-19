@@ -263,7 +263,7 @@ def main(argv):
 
     for opt, arg in opts:
         
-        if opt == '-h': # help file
+        if opt == '-h': # help file 
         
             print 'collapseMotifTree_progressiveMode.py -s <species threshold> -H <entropy threshold>\n\nDescription:\n\nA wrapper for obtaining the blacklist at given species number threshold, S, and entropy threshold, H, (CTRL+F: blacklist_criteria_check) and e value (CTRL+F: @e-value)\n\nArguments:\n\n e = 0.05                      # CTRL+F: @e-value\n\nspecies_threshold = 3.0       # CTRL+F: blacklist_criteria_check\n\nentropy_threshold = 1.0       # CTRL+F: blacklist_criteria_check\n\nExample:\n\nblacklist_then_summaryStats_from_shell( e = 0.05, species_threshold=3.0, entropy_threshold=1.0)\n\n'
 
