@@ -1,5 +1,7 @@
 # WARNINGS:
 # CTRL+F "@WARN"
+# TODOS:
+# CTRL+F "@TODO"
 
 def load_motif_cluster_stats_dict():
     """
@@ -55,6 +57,7 @@ def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, 
 
     """
 
+    # @TODO: remove this debugging print stuff later
     # print cluster
     # cluster = 'c412_n005_CCGAAYGCC'
     # print type(cluster_to_stats)
@@ -75,8 +78,10 @@ def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, 
     if not bool(set(motifs) & set(blacklist_motifs)):   # tests if any elements between "motifs" and "blacklist_motifs" overlap
                                                      # WARN: should test this, got it from StackOverflow: http://stackoverflow.com/a/3170067/3011648
                                                      # @TEST: try returning a separate label or print a warning whenever this condition is satisfied/not instead of just "False", because then we can discriminate it vs. the "False" that is supplied by the inner (2)/(3) criteria, e.g. maybe return the warning "blacklisted already" then diagnose the clusters
-        print '\t\t\tCluster: '+cluster+' ...not blacklisted!'
+        # @TODO print junk
+        #print '\t\t\tCluster: '+cluster+' ...not blacklisted!'
         if ((entropy<=entropy_threshold) and (species_number>=species_threshold)):
+            print '\t\t\tCluster: '+cluster+' ...blacklisted!'
             return True
         else:
             return False
@@ -87,57 +92,109 @@ def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, 
 
 #MAIN
 
-print 'Loading pickled motif_cluster_statistics data...'
-cluster_to_stats    = load_motif_cluster_stats_dict()
-distances           = sorted(get_motif_tree_collapsing_distances(cluster_to_stats),reverse=True)
+def get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_threshold = 3.0, cluster_to_stats=None):
+    """
 
+    Description:
 
-print 'Progressively gathering motif clusters satisfying entropy and species_number thresholds...'
-# initiate...
-blacklist           = [] # motifs satisfying the CTRL+F "blacklisting criteria"
-blacklist_motifs    = [] # flat list of motifs of clusters blacklisted
-                        # used to check if clusters of downstream distances
-                        # are included in the upstream (lower distance,d) 
-                        # clusters
-                        # @WARN: this assumes all motifs of downstream d's cluster are included in upstream d's cluster?
-                        # @TEST: 
-                        #   <think of a test...> 
+    Returns a list, "blacklist", of motif clusters* that are canditates for trust-worthy de novo discovered motifs based on two criteria being satisfied: entropy lower than entropy_threshold, and species number lower than species_threshold. These criterial reflect the motif's biological functional precision and level of conservtion respectively. Conservation is used as a benchmark for filtering out motifs that are possibly the result of experimental errors. 
 
-e = 0.05 # @E-VALUE parameter used by dreme to generate the motif data
+    *motif clusters are defined in /home/ab108/0VB/2kb/scripts/collapseMotifTree.py in exploreCutoffs()
 
-entropy_threshold = 10.0
+    Arguments:
 
-species_threshold = 3
+    e                   #   @E-VALUE parameter used by dreme to generate the motif data in <@TODO>
 
-for d in distances:
+    entropy_threshold   #   see arguments for blacklist_criteria_check() <@TODO figure out a suitable value that will optimise for>
 
-    print '\tdistance: '+str(d)
+    species_threshold   #   see arguments for blacklist_criteria_check() <@TODO see above @TODO>
 
-    clusters = cluster_to_stats['e'+str(e)+'_d'+str(d)].keys() # list of names of clusters, e.g. 
+    cluster_to_stats    #   can be ignored, it is used as a debugging tool
 
-    for c in clusters:
+    Returns:
 
-        #print "\t\tcluster: "+str(c)
+    blacklist = [('c104_n004_CTGCGATCK', 0.5),
+                 ('c106_n006_AGGGTAT', 0.5),
+                 ('c029_n005_ACTGATGCA', 0.5),...] 
 
-        if blacklist_criteria_check(c, blacklist_motifs, cluster_to_stats, e, d ,entropy_threshold,species_threshold):
+                 where 'c104_n004_CTGCGATCK' is the name of a motif cluster*, and 0.5 is the distance at which the motif tree* was collapsed (*see: /home/ab108/0VB/2kb/scripts/collapseMotifTree.py)
 
-            blacklist.append(c) # blacklist the cluster satisfying the 
-                                # CTRL+F "blacklist critera"
+    cluster_to_stats    #   can be ignored, it is used as a debugging tool
 
-            # Update the blacklist_motifs list, @WARN: test if the 
-            motifs = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['motif']['list']  # list of motifs belonging to cluster c
-                    # e.g. cluster_to_stats['e0.05_d0.02']['c520_n027_GCTRTCA']['motif']['list']
-                    # @WARN: all of this assumes an e0.05, but can easily be refactored to handle future e values, CTRL+F "@e-value"
-            for m in motifs: 
-                blacklist_motifs.append(m)
+    """
 
-        else:
-            pass
+    print 'Loading pickled motif_cluster_statistics data...'
+    if not cluster_to_stats:
+        cluster_to_stats = load_motif_cluster_stats_dict()
 
-print blacklist
+    distances = sorted(get_motif_tree_collapsing_distances(cluster_to_stats),reverse=True)
 
+    print 'Progressively gathering motif clusters satisfying entropy and species_number thresholds...'
+    # initiate...
+    blacklist           = [] # motifs satisfying the CTRL+F "blacklisting criteria"
+    blacklist_motifs    = [] # flat list of motifs of clusters blacklisted
+                            # used to check if clusters of downstream distances
+                            # are included in the upstream (lower distance,d) 
+                            # clusters
+                            # @WARN: this assumes all motifs of downstream d's cluster are included in upstream d's cluster?
+                            # @TEST: 
+                            #   <think of a test...> 
 
+    for d in distances:
 
+        print '\tdistance: '+str(d)
+
+        clusters = cluster_to_stats['e'+str(e)+'_d'+str(d)].keys() # list of names of clusters, e.g. 
+
+        for c in clusters:
+
+            #print "\t\tcluster: "+str(c)
+
+            if blacklist_criteria_check(c, blacklist_motifs, cluster_to_stats, e, d ,entropy_threshold,species_threshold):
+
+                # ENTANGLE c to d: cluster_to_stats unfortunately groups each cluster by parameters d and e. This grouping information is not implicit to the names of each cluster, e.g. c930_n005_AGTTGACGA. This means we cannot simply use the names of each cluster as keys to cluster_to_stats to retrieve informtion of that cluster; we need to associate the d of each cluster to the c of each cluster in order to retrieve information of that cluster. We can do this by placing c and it's d in a tuple, (c,d). These will be appended to the blacklist. 
+                blacklist.append((c,d)) # blacklist the cluster satisfying the 
+                                    # CTRL+F "blacklist critera"
+                                    # Update the blacklist_motifs list
+                motifs = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['motif']['list']  # list of motifs belonging to cluster c
+                        # e.g. cluster_to_stats['e0.05_d0.02']['c520_n027_GCTRTCA']['motif']['list']
+                        # @WARN: all of this assumes an e0.05, but can easily be refactored to handle future e values, CTRL+F "@e-value"
+                for m in motifs: 
+                    blacklist_motifs.append(m)
+
+            else:
+                pass
+
+    return blacklist, cluster_to_stats
+
+###
+
+# @TESTS (get_blacklisted_motif_clusters):
+#  
+# if entropy_threshold is lower we should get <more/less> motifs?
+#
+# if species_threshold is higher we should get less motifs
+#
+#
+# we get 325 motifs 
+
+## ...
+# blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_threshold = 3.0, cluster_to_stats=cluster_to_stats) # --> 325 motifs
+
+## LOW SPECIES => LOW No. MOTIFS
+# blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_threshold = 20.0, cluster_to_stats=cluster_to_stats) # --> 5 motifs, as expected
+
+## LOW ENTROPY => LOW No. MOTIFS
+blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 1.0, species_threshold = 3.0, cluster_to_stats=cluster_to_stats) # --> 14 motifs, as expected
+
+###
+
+# Summary Statistics for Bob:
+
+# of a blacklist:
+#   number of motifs
+#   mean entropy
+#   mean species number
 
 
 
