@@ -244,7 +244,7 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
 
     """
 
-    blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e, species_threshold, entropy_threshold, cluster_to_stats=None) # --> 14 motifs, as expected 
+    blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e, entropy_threshold, species_threshold,  cluster_to_stats=None) # --> 14 motifs, as expected 
 
     summary = print_blacklist_summary( blacklist, cluster_to_stats, e)
 
