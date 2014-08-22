@@ -16,10 +16,15 @@ def load_motif_cluster_stats_dict():
 
     """
     import pickle
+
     f = open( '../../data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_to_stats.p' )
+
     cluster_to_stats = pickle.load( f )
+
     f.close()
+
     return cluster_to_stats
+
 
 def get_motif_tree_collapsing_distances(cluster_to_stats):
     """
@@ -33,7 +38,9 @@ def get_motif_tree_collapsing_distances(cluster_to_stats):
 
     """
     parameterisation_events = cluster_to_stats.keys()
+
     distances = [float(i.split('d')[1]) for i in parameterisation_events]
+
     return distances
 
 def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, entropy_threshold=10.0, species_threshold=3 ):
@@ -69,7 +76,6 @@ def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, 
     # print type(cluster_to_stats['e'+str(e)+'_d'+str(d)][cluster]['motif']['list'])
 
     motifs = cluster_to_stats['e'+str(e)+'_d'+str(d)][cluster]['motif']['list'] # CTRL+F (1)
-
 
     species_number  = cluster_to_stats['e'+str(e)+'_d'+str(d)][cluster]['species']['unique']['n_unique'] # CTRL+F (2)
 
@@ -186,17 +192,24 @@ def print_blacklist_summary(blacklist, cluster_to_stats, e=0.05):
 
     # MEAN SPECIES: Mean number of unique species in motif clusters of the blacklist
     S = [] # numbers of species per cluster in blacklist
-    for (c,d) in blacklist: # (cluster,distance)
+
+    for (c,d) in blacklist: # (/cluster,distance)
+
         s = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['species']['unique']['n_unique'] # species number of cluster c
+
         S.append(s)
+
     S_mean = np.mean(S)
 
 
     # MEAN ENTROPY: Mean entropy of motif clusters of the blacklist
     H = []
     for (c,d) in blacklist:
+
         h = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['H'] # entropy of cluster c
+
         H.append(h)
+
     H_mean = np.mean(H)
 
     print '\n_________________________________'
@@ -239,6 +252,17 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
 
 
 #---------------------------------------------------------
+# Scraps
+
+
+
+
+
+
+#---------------------------------------------------------
+
+
+"""
 
 import sys,getopt
     
@@ -297,3 +321,6 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
+
+
+"""
