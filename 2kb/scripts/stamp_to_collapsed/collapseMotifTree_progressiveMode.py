@@ -262,7 +262,7 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
 #---------------------------------------------------------
 
 
-"""
+
 
 import sys,getopt
     
@@ -323,4 +323,3 @@ if __name__ == "__main__":
     main(sys.argv[1:])
 
 
-"""
