@@ -1,3 +1,7 @@
+# NOTES:
+# Some technical words may not make sense to you. Such words may have intuitive descriptions available in here. Words with intuitive descriptions available will be in the format: @<word-in-lowercase>. Simply CTRL+F "@<word-in-uppercase>" to jump to the intuitive descriptions.
+
+
 # WARNINGS:
 # CTRL+F "@WARN"
 # TODOS:
@@ -100,9 +104,18 @@ def get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_
 
     Description:
 
-    Returns a list, "blacklist", of motif clusters* that are canditates for trust-worthy de novo discovered motifs based on two criteria being satisfied: entropy lower than entropy_threshold, and species number lower than species_threshold. These criterial reflect the motif's biological functional precision and level of conservtion respectively. Conservation is used as a benchmark for filtering out motifs that are possibly the result of experimental errors. 
+    Returns two pieces of data: 
+        (i) "@blacklist"* of motif @clusters** that are canditates for trust-worthy de novo discovered motifs based on two criteria being satisfied: entropy lower than entropy_threshold, and species number lower than species_threshold. These criterial reflect the motif's biological functional precision and level of conservtion respectively. Conservation is used as a benchmark for filtering out motifs that are possibly the result of experimental errors. 
+        (ii) cluster_to_stats (ignore, it's a debugging tool)
 
-    *motif clusters are defined in /home/ab108/0VB/2kb/scripts/collapseMotifTree.py in exploreCutoffs()
+    * blacklist = [  ('c104_n004_CTGCGATCK', 0.5),
+                     ('c106_n006_AGGGTAT', 0.5),
+                     ('c029_n005_ACTGATGCA', 0.5),...] 
+
+                 where 'c104_n004_CTGCGATCK' is the name of a motif cluster*, and 0.5 is the distance at which the motif tree* was collapsed (*see: /home/ab108/0VB/2kb/scripts/collapseMotifTree.py)
+
+    ** @CLUSTER: are defined in /home/ab108/0VB/2kb/scripts/collapseMotifTree.py in exploreCutoffs()
+  
 
     Arguments:
 
@@ -111,16 +124,6 @@ def get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_
     entropy_threshold   #   see arguments for blacklist_criteria_check() <@TODO figure out a suitable value that will optimise for>
 
     species_threshold   #   see arguments for blacklist_criteria_check() <@TODO see above @TODO>
-
-    cluster_to_stats    #   can be ignored, it is used as a debugging tool
-
-    Returns:
-
-    blacklist = [('c104_n004_CTGCGATCK', 0.5),
-                 ('c106_n006_AGGGTAT', 0.5),
-                 ('c029_n005_ACTGATGCA', 0.5),...] 
-
-                 where 'c104_n004_CTGCGATCK' is the name of a motif cluster*, and 0.5 is the distance at which the motif tree* was collapsed (*see: /home/ab108/0VB/2kb/scripts/collapseMotifTree.py)
 
     cluster_to_stats    #   can be ignored, it is used as a debugging tool
 
@@ -217,11 +220,265 @@ def print_blacklist_summary(blacklist, cluster_to_stats, e=0.05):
     print '_________________________________\n'
     print '\tEntropy: '+str(H_mean)
     print '\tSpecies: '+str(S_mean)
-    print '\tCluster: '+str(len(blacklist))+'         <-- no. of putative motifs\n\n\n'
+    print '\tCluster: '+str(len(blacklist))+'         <-- no. of putative motifs\n'
 
     return H_mean, S_mean
 
 
+#----------------------------
+# clade grouping script
+#----------------------------
+
+
+def blacklist_to_clades( blacklist, cluster_to_stats, e ):
+
+    """
+
+    Description: 
+
+    Returns five lists of @motif clusters* grouped by clade**. Each list is a group of motif clusters based on the branch of the phylogenetic tree that their motifs were originally predicted in the @promoterome (s) by dreme.     
+
+    * motif clusters are in the format (clustername, distance***), e.g. ('c087_n073_ACGCACGMA', 0.5)
+
+    ** clade-based groups of clusters are: "dipteran_clusters", "mosquito_clusters", "anopheles_clusters" and "gambiae_clusters":
+
+            dipteran_clusters: contains clusters if cluster has at least one motif belonging to a dipteran (drosophila), i.e. very conserved motifs, i.e.e. evolved early on in dipteran ancestry. see: cluster_has_dipteran().
+
+            mosquito_clusters: clusters having at least one motif belonging to a mosquito species (aedes, culex, others, but not other dipterans). These are less conserved than dipteran clusters. see: cluster_has_mosquito().
+
+            anopheles_clusters: clusters having at least one motif belonging to an anopheline species plus others, but not other dipterans or mosquitoes (for the list see: cluster_has_anophelines() ). see: cluster_has_anophelines().
+
+            gambiae_clusters: clusters having at least one motif belonging to gambiae complex species, but not other dipterans or mosquitoes or anophelines. see: cluster_has_gambiae_complex().
+
+            Note: these groups are independent, i.e. no overlaps in clusters. See descriptions of each groups personalised sub-functions for more info. 
+
+
+    *** see CTRL+F "0.5 is the distance at" to understand what we mean by distance.
+
+
+    Arguments: 
+
+    blacklist, ... = get_blacklisted_motif_clusters( e, entropy_threshold, species_threshold, cluster_to_stats=None)  # CTRL+F: "@blacklist"
+
+
+    """
+
+    #------------------------------------------------------------------------
+    # CLADE CHECKER FUNCTIONS   
+
+    def cluster_has_dipteran( blacklisted_cluster ):
+
+        """
+
+        Description: 
+
+        returns TRUE if the blacklisted_cluster contains at least one Dipteran* @motif**
+
+        * Dipteran:
+            drosophila_melanogaster 
+
+        ** @MOTIF: a motif that was originally predicted by dreme when fed the drosophila @promoterome** as input data
+
+        *** @PROMOTEROME: is the sequence data generated by 2kb/scripts/upDownStream.py
+
+
+        """
+
+        c = blacklisted_cluster[0] # cluster name
+        d = blacklisted_cluster[1] # distance where it came from
+
+        unique_species = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['species']['unique']['list'] # e.g. ['anopheles_maculatus','anopheles_atroparvus','anopheles_sinensis','anopheles_melas','anopheles_merus','anopheles_epiroticus','aedes_aegypti','anopheles_darlingi','anopheles_gambiae','anopheles_culicifacies','anopheles_dirus','culex_quinquefasciatus','anopheles_arabiensis','anopheles_farauti','anopheles_quadriannulatus','anopheles_funestus','anopheles_minimus','anopheles_christyi','anopheles_stephensi','anopheles_albimanus']
+
+        if 'drosophila_melanogaster' in unique_species: # @TESTED: there are drosophila clusters, and this does find them
+            return True
+        else: 
+            return False  
+
+    def cluster_has_mosquito( blacklisted_cluster ):
+        """
+
+        Description: 
+
+        returns TRUE if the blacklisted_cluster contains at least one Mosquito* @motif
+
+        * Mosquito:
+            culex_quinquefasciatus
+            aedes_aegypti
+
+        ** a motif that was originally predicted by dreme when fed the drosophila @PROMOTEROME** as input data
+
+        *** @PROMOTEROME: is the sequence data generated by 2kb/scripts/upDownStream.py
+
+        Arguments:
+
+        @cluster
+        
+        """
+
+        c = blacklisted_cluster[0] # cluster name
+        d = blacklisted_cluster[1] # distance that motif-tree was collapsed to get the cluster
+
+        unique_species = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['species']['unique']['list'] # e.g. ['anopheles_maculatus','anopheles_atroparvus','anopheles_sinensis','anopheles_melas','anopheles_merus','anopheles_epiroticus','aedes_aegypti','anopheles_darlingi','anopheles_gambiae','anopheles_culicifacies','anopheles_dirus','culex_quinquefasciatus','anopheles_arabiensis','anopheles_farauti','anopheles_quadriannulatus','anopheles_funestus','anopheles_minimus','anopheles_christyi','anopheles_stephensi','anopheles_albimanus']
+
+        if ('culex_quinquefasciatus' in unique_species) or ('aedes_aegypti' in unique_species): # @TESTED: there are drosophila clusters, and this does find them
+            return True
+            #print 'true'
+        else: 
+            return False
+            #print 'false'
+
+        # @TEST                     PASSED
+        # if cluster has:
+        #   only culex
+        #       unique_species = ['culex_quinquefasciatus']
+        #   only aedes
+        #       unique_species = ['aedes_aegypti']
+        #   neither
+        #       unique_species = ['drosophila']
+        #   both
+        #       unique_species = ['culex_quinquefasciatus','aedes_aegypti']
+
+
+    def cluster_has_anophelines( blacklisted_cluster ):
+
+        """
+
+        Description: 
+
+        returns TRUE if the blacklisted_cluster contains at least one Anopheline* @motif
+
+        Anopheline:
+            anopheles_darlingi
+            anopheles_albimanus
+            anopheles_atroparvus
+            anopheles_sinensis
+            anopheles_farauti
+            anopheles_dirus
+            anopheles_minimus
+            anopheles_funestus
+            anopheles_culicifacies
+            anopheles_maculatus
+            anopheles_stephensi
+            anopheles_epiroticus
+            anopheles_christyi
+
+        Arguments:
+
+        @cluster
+
+        """
+
+        c = blacklisted_cluster[0] # cluster name
+        d = blacklisted_cluster[1] # distance that motif-tree was collapsed to get the cluster
+
+        unique_species = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['species']['unique']['list'] # e.g. ['anopheles_maculatus','anopheles_atroparvus','anopheles_sinensis','anopheles_melas','anopheles_merus','anopheles_epiroticus','aedes_aegypti','anopheles_darlingi','anopheles_gambiae','anopheles_culicifacies','anopheles_dirus','culex_quinquefasciatus','anopheles_arabiensis','anopheles_farauti','anopheles_quadriannulatus','anopheles_funestus','anopheles_minimus','anopheles_christyi','anopheles_stephensi','anopheles_albimanus']
+
+        anophelines_not_including_gambiae_complex = ['anopheles_darlingi','anopheles_albimanus','anopheles_atroparvus','anopheles_sinensis','anopheles_farauti','anopheles_dirus','anopheles_minimus','anopheles_funestus','anopheles_culicifacies','anopheles_maculatus','anopheles_stephensi','anopheles_epiroticus','anopheles_christyi'] # @TEST: check this list is correct, i.e. (i)contains all the anophelines, (ii) does not have any non-anophelines, (iii) does not have any gambiae complex
+
+        is_overlaps_between_lists = bool(set(anophelines_not_including_gambiae_complex) & set(unique_species)) # checks for overlaps between the two lists, i.e. if the clusters species list contains any anophelines
+
+        if is_overlaps_between_lists: # @TESTED: there are drosophila clusters, and this does find them
+            return True
+        else: 
+            return False
+
+
+    def cluster_has_gambiae_complex( blacklisted_cluster ):
+
+        """
+        Description: 
+
+        returns TRUE if the blacklisted_cluster contains at least one Gambiae complex* @motif
+
+        * Gambiae complex:
+            anopheles_melas
+            anopheles_merus
+            anopheles_quadriannulatus
+            anopheles_arabiensis
+            anopheles_gambiae
+
+        Arguments:
+
+        @cluster
+
+        """
+
+        c = blacklisted_cluster[0] # cluster name
+        d = blacklisted_cluster[1] # distance that motif-tree was collapsed to get the cluster
+
+        unique_species = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['species']['unique']['list'] # e.g. ['anopheles_maculatus','anopheles_atroparvus','anopheles_sinensis','anopheles_melas','anopheles_merus','anopheles_epiroticus','aedes_aegypti','anopheles_darlingi','anopheles_gambiae','anopheles_culicifacies','anopheles_dirus','culex_quinquefasciatus','anopheles_arabiensis','anopheles_farauti','anopheles_quadriannulatus','anopheles_funestus','anopheles_minimus','anopheles_christyi','anopheles_stephensi','anopheles_albimanus']
+
+        gambiae_complex_not_other_anophelines = ['anopheles_melas','anopheles_merus','anopheles_quadriannulatus','anopheles_arabiensis','anopheles_gambiae']
+
+         # @TEST: check this list is correct, i.e. (i)contains all the gambiae complex, (ii) does not have any other anophelines, (iii) does not have any gambiae complex
+
+        is_overlaps_between_lists = bool(set(gambiae_complex_not_other_anophelines) & set(unique_species)) # checks for overlaps between the two lists, i.e. if the clusters species list contains any anophelines
+
+        if is_overlaps_between_lists: # @TESTED: there are drosophila clusters, and this does find them
+            return True
+        else: 
+            return False
+    #---------
+
+    # INITIATE CLADE GROUPINGS
+
+    dipteran_clusters = [] # contains at least one drosophila 
+    mosquito_clusters = [] # (contains no drosophila) AND (contains at least one culex OR one aedes)
+    anopheles_clusters = [] 
+    # (contains no mosquito AND no dipteran) AND (at least one anopheles (?) ) @BOB: wouldn't this just swallow up the whole of the gambiae complex...?
+    gambiae_clusters = [] # contains (no anopheles AND no dipteran AND no mosquito) AND (at least one gambiae complex)
+
+    # PER BLACKLISTED CLUSTER...
+
+    for c in blacklist:
+
+        # GROUP THE @cluster INTO ONE OF THE CLADEs
+
+        if cluster_has_dipteran(c): # store cluster if it contains at least one dipteran (drosophila)
+            dipteran_clusters.append(c)
+
+        if ( cluster_has_mosquito(c) and (not cluster_has_dipteran(c)) ): # store cluster if it contains at least one mosquito, but not if it has a dipteran
+
+        # @TEST: any difference in "and not" vs. "and ( not ... "  ??
+            mosquito_clusters.append(c)
+
+        if cluster_has_anophelines(c) and ( (not cluster_has_dipteran(c)) and (not cluster_has_mosquito(c))):  # store cluster if it contains at least one anopheline, but not if it has a dipteran or a mosquito
+
+            anopheles_clusters.append(c)
+
+        if cluster_has_gambiae_complex(c) and ( (not cluster_has_dipteran(c)) and (not cluster_has_mosquito(c)) and (not cluster_has_anophelines(c))): # store cluster if it contains at least one gambiae complex, but not if it has an anopheline or mosquito or dipteran
+        #@TESTs_1: 
+        #  - if the remainder == the output of this test, if yes, then great!
+        #  - are there any overlaps between clusters in each of the groups? Hint: use set() 
+            gambiae_clusters.append(c)
+
+    # dipteran_clusters # contains at least one drosophila 
+
+    # mosquito_clusters # (contains no drosophila) AND (contains at least one culex OR one aedes)
+
+    # anopheles_clusters # (contains no mosquito AND no dipteran) AND (at least one anopheles (?) ) @BOB: wouldn't this just swallow up the whole of the gambiae complex...?
+
+    # gambiae_clusters
+
+    print '\n_________________________________'
+    print 'CLADE DISTRIBUTION OF BLACKLIST: '
+    print '_________________________________\n'
+    print '\tDipteran: '    +str(len(dipteran_clusters))
+    print '\tMosquito: '    +str(len(mosquito_clusters))
+    print '\tAnopheles: '   +str(len(anopheles_clusters))
+    print '\tGambiae: '     +str(len(gambiae_clusters))
+    print '\t_____________'
+    print '\tTotal: '       +str(len(gambiae_clusters)+len(anopheles_clusters)+len(mosquito_clusters)+len(dipteran_clusters))
+    print '\n'
+
+    return dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters
+
+
+
+
+#----------------------------
+# MAIN THING
+#----------------------------
 
 def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, entropy_threshold = 1.0 ):
     """ 
@@ -244,11 +501,22 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
 
     """
 
-    blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e, entropy_threshold, species_threshold,  cluster_to_stats=None) # --> 14 motifs, as expected 
+    # GENERATE @blacklist
 
-    summary = print_blacklist_summary( blacklist, cluster_to_stats, e)
+    blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e, entropy_threshold, species_threshold,  cluster_to_stats=None) 
 
-    return blacklist, summary
+
+    print '\nGenerating statistics...\n'
+
+
+    # GLOBAL STATISTICS
+    summary = print_blacklist_summary( blacklist, cluster_to_stats, e)# (H_mean, S_mean)
+
+    # BOB CLADE GROUPINGS
+    clade_groups = blacklist_to_clades( blacklist, cluster_to_stats, e ) # dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters
+
+
+    return blacklist, summary, clade_groups, cluster_to_stats
 
 
 #---------------------------------------------------------
@@ -279,9 +547,11 @@ def main(argv):
     # ... if yes (e.g. mispelled args, non-existant args etc)
     except getopt.GetoptError:
         
-        print 'collapseMotifTree_progressiveMode.py -s <species threshold> -H <entropy threshold>'
+        print 'collapseMotifTree_progressiveMode.py --nspecies <species threshold,e.g.3> --entropy <entropy threshold,e.g.10.5>'
 
         sys.exit(2)
+
+
 
     # PROCESS THE @ARGS
 
@@ -310,14 +580,14 @@ def main(argv):
         blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = float(s), entropy_threshold = float(H) ) # <-- main script, @REPLICATE exactly as below
         #                            ^@args here processed from above
 
-    # ... script was run within Python
+    # ... script was run within Python, e.g. %paste in IPython or imported
     except UnboundLocalError:
         
-        s = raw_input('input file? e.g. s = 3.0')
+        s = raw_input('species threshold? e.g. s = 3.0...')
         
-        H = raw_input('entropy threshold? e = 1.0 ')
+        H = raw_input('entropy threshold? e = 10.0...')
 
-        blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = float(s), entropy_threshold = float(H) ) # <-- main script, CTRL+F "@replicate" exactly as above
+        blacklist, summary, clade_groups, cluster_to_stats =blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = float(s), entropy_threshold = float(H) ) # <-- main script, CTRL+F "@replicate" exactly as above
 
 if __name__ == "__main__":
     main(sys.argv[1:])
