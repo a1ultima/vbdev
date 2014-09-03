@@ -68,16 +68,7 @@ def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, 
 
     """
 
-    # @TODO: remove this debugging print stuff later
-    # print cluster
-    # cluster = 'c412_n005_CCGAAYGCC'
-    # print type(cluster_to_stats)
-    # print type(cluster_to_stats['e'+str(e)+'_d'+str(d)])
-    # print type(cluster_to_stats['e'+str(e)+'_d'+str(d)][cluster])
-    # print type(cluster_to_stats['e'+str(e)+'_d'+str(d)][cluster])
-
-    # print type(cluster_to_stats['e'+str(e)+'_d'+str(d)][cluster]['motif'])
-    # print type(cluster_to_stats['e'+str(e)+'_d'+str(d)][cluster]['motif']['list'])
+    # ACCESS DATA
 
     motifs = cluster_to_stats['e'+str(e)+'_d'+str(d)][cluster]['motif']['list'] # CTRL+F (1)
 
@@ -85,14 +76,18 @@ def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, 
 
     entropy         = cluster_to_stats['e'+str(e)+'_d'+str(d)][cluster]['cluster']['H'] # CTRL+F (3)
  
+
+    # CHECK IF PARENT DISTANCE ALREADY BLACKLISTED
+
     if not bool(set(motifs) & set(blacklist_motifs)):   # tests if any elements between "motifs" and "blacklist_motifs" overlap
                                                      # WARN: should test this, got it from StackOverflow: http://stackoverflow.com/a/3170067/3011648
                                                      # @TEST: try returning a separate label or print a warning whenever this condition is satisfied/not instead of just "False", because then we can discriminate it vs. the "False" that is supplied by the inner (2)/(3) criteria, e.g. maybe return the warning "blacklisted already" then diagnose the clusters
-        # @TODO print junk
-        #print '\t\t\tCluster: '+cluster+' ...not blacklisted!'
+
+        # IS THE CLUSTER WORTHY? ...
         if ((entropy<=entropy_threshold) and (species_number>=species_threshold)):
             print '\t\t\tCluster: '+cluster+' ...blacklisted!'
             return True
+
         else:
             return False
     else:
@@ -228,7 +223,6 @@ def print_blacklist_summary(blacklist, cluster_to_stats, e=0.05):
 #----------------------------
 # clade grouping script
 #----------------------------
-
 
 def blacklist_to_clades( blacklist, cluster_to_stats, e ):
 
@@ -474,6 +468,98 @@ def blacklist_to_clades( blacklist, cluster_to_stats, e ):
     return dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters
 
 
+#----------------------------
+# meme FBP outputs
+#----------------------------
+
+def make_meme_output(blacklist,outpath,e=0.05):
+    """
+
+    Description:
+
+    Take blacklisted clusters and generate a meme output file 
+
+    Arguments:
+
+    blacklist = blacklist, summary, clade_groups, cluster_to_stats = blacklist_then_summaryStats_from_shell(e,species_threshold,entropy_threshold)
+
+    outpath = '../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/blacklisted_motifs_meme_format.txt'
+
+    """
+
+    # blacklist --> this --> transfac and MEME matrices
+
+    #-----------------------------
+    # CLUSTER -to- FBP File path
+
+    # Generates paths to FBP data for each cluster
+
+    cluster_TO_fbp_path = {}
+
+    for c,d in blacklist:
+
+        name        = c
+        distance    = d
+        datapath    = '../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/cluster_motifs_d'+str(distance)+'/family_binding_matrices/'+str(name)+'FBP.txt' # e.g. ... c146_n004_TGGACGAKAFBP.txt # read tomtom inputdata format requirements
+
+        cluster_TO_fbp_path[(c,d)] = datapath
+
+    #-----------------------------
+    # Blacklsited cluster -to- fbp TRANSFAC data
+
+    cluster_TO_fbp = {}
+
+    for c,d in blacklist:
+
+        path = cluster_TO_fbp_path[(c,d)]
+
+        cluster_TO_fbp[(c,d)] = {'transfac':[],'meme':[],'path':path}
+
+        fi = open(path,'r')
+        while True:
+            l = fi.readline()
+            if l == "":
+                break
+            cluster_TO_fbp[(c,d)]['transfac'].append(l)
+        fi.close()
+
+    #-----------------------------
+    # Blacklsited cluster -to- fbp MEME data 
+
+    for c,d, in blacklist:
+
+        fbp_transfac = cluster_TO_fbp[(c,d)]['transfac']
+
+        header  = 'MOTIF '+c+'_d_'+str(d)+'\n'
+
+        rows = []
+        for i,row in enumerate(fbp_transfac[1:-1]): # skips the header and tailing delimiter xx
+            col = row.split('\t')
+            rows.append("\t".join(col[1:-1]))
+        rows = "\n".join(rows)+"\n\n"
+        width=str(i+1)
+
+        info    = 'letter-probability matrix: alength= 4 w= '+width+' nsites= 1000 E= 0.05\n' # nsites? E? 
+        
+        cluster_TO_fbp[(c,d)]['meme'] = header+info+rows
+        # [header,info] + cluster_TO_fbp[(c,d)]['meme']
+
+        # Reformat the fbp_transfac to make consistent w/ fbp_meme
+        fbp_transfac_str = "\n".join(fbp_transfac)
+        cluster_TO_fbp[(c,d)]['transfac'] = fbp_transfac_str
+
+
+    #-----------------------------
+    # Write to file
+
+    print '\t\t'+outpath
+
+    fo = open(outpath,'w')
+    fo.write("MEME version 4\n\nALPHABET= ACGT\n\nstrands: + -\n\nBackground letter frequencies\nA 0.303 C 0.183 G 0.209 T 0.306 \n\n")
+    for c,d in cluster_TO_fbp.keys():
+        fo.write(cluster_TO_fbp[(c,d)]['meme'])
+    fo.close()
+
 
 
 #----------------------------
@@ -500,6 +586,7 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
     blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold=3.0, entropy_threshold=1.0)\n\n
 
     """
+    import time
 
     # GENERATE @blacklist
 
@@ -508,13 +595,25 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
 
     print '\nGenerating statistics...\n'
 
-
     # GLOBAL STATISTICS
     summary = print_blacklist_summary( blacklist, cluster_to_stats, e)# (H_mean, S_mean)
 
+    time.sleep(2)
+
     # BOB CLADE GROUPINGS
     clade_groups = blacklist_to_clades( blacklist, cluster_to_stats, e ) # dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters
+    i_TO_clade = {0:'dipteran',1:'mosquito',2:'anopheles',3:'gambiae'}
+    
+    time.sleep(2)
 
+    # GENERATE MEME DATA ~ @LATEST
+    print 'Generating MEME output data per clade, apply TOMTOM on these...\n'
+    
+    for i,blacklist_clade in enumerate(clade_groups):
+        clade = i_TO_clade[i]
+        print '\t'+clade
+        outpath = '../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/'+clade+'_blacklisted_meme_format.txt'
+        make_meme_output(blacklist_clade,outpath,e) # generate the meme FBP data
 
     return blacklist, summary, clade_groups, cluster_to_stats
 
