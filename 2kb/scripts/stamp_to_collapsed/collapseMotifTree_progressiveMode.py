@@ -213,9 +213,9 @@ def print_blacklist_summary(blacklist, cluster_to_stats, e=0.05):
     print '\n_________________________________'
     print 'SUMMARY STATISTICS OF BLACKLIST: '
     print '_________________________________\n'
-    print '\tEntropy: '+str(H_mean)
-    print '\tSpecies: '+str(S_mean)
-    print '\tCluster: '+str(len(blacklist))+'         <-- no. of putative motifs\n'
+    print '\tMean Entropy: '+str(H_mean)
+    print '\tMean Number of Species: '+str(S_mean)
+    print '\tNumber of Clusters: '+str(len(blacklist))+'         <-- no. of putative motifs\n'
 
     return H_mean, S_mean
 
@@ -423,6 +423,7 @@ def blacklist_to_clades( blacklist, cluster_to_stats, e ):
     gambiae_clusters = [] # contains (no anopheles AND no dipteran AND no mosquito) AND (at least one gambiae complex)
 
     # PER BLACKLISTED CLUSTER...
+    #   Here is where the logic is applied to group blacklisted motif clusters by Bob clades
 
     for c in blacklist:
 
@@ -477,7 +478,7 @@ def make_meme_output(blacklist,outpath,e=0.05):
 
     Description:
 
-    Take blacklisted clusters and generate a meme output file 
+    Take blacklisted clusters and generate a meme output file at a path specified by outpath arg
 
     Arguments:
 
