@@ -11,6 +11,25 @@ import math
 #README
 #   TODO: still needs to be transformed into a robust and proper function, with commandline args
 
+"""
+
+Description:
+
+...
+
+Run the following scripts in order, in the way shown:
+
+1. collapseMotifTree.py # set the parameters at @PARAMETERS or @WARN
+2. motifStatistics.py
+3. python collapseMotifTree_progressiveMode.py --nspecies 3.0 --entropy 10.0
+
+Notes:
+
+CTRL+F: "@WARN" for the warnings
+
+"""
+
+
 
 # SUB-FUNCTIONS:
 def mean(array):
@@ -82,7 +101,7 @@ def exploreCutoffs( dataPath, filename_in, d_from = 0, d_to = 2, d_step = 0.05, 
 
     for count,d in enumerate(distances):     # explore distance threshold params
         
-        if count%2 == 0:
+        if count%1 == 0:
             print( 'Tree: '+str(count)+'  Distance: '+str(save_d) )
 
         t = Tree(dataPath+filename_in)           # load tree
@@ -102,7 +121,7 @@ def exploreCutoffs( dataPath, filename_in, d_from = 0, d_to = 2, d_step = 0.05, 
         clusters_all        = clusters_single+clusters_multiple
 
         # SAVE CLUSTER NAMES, HEADERS_FOR_FASTA  :   saves on a specified collapsing distance cut-off, save_d
-        print(str(save_d),str(d))
+        #print(str(save_d),str(d))
 
         if str(save_d) == str(d): # @SAVED
 
@@ -191,7 +210,8 @@ def exploreCutoffs( dataPath, filename_in, d_from = 0, d_to = 2, d_step = 0.05, 
 #
 #
 #
-# PARAMETERS    :   note that save_d determines the d-cutoff to save the cluster data at
+# @WARN: here is where you set the parameters
+# @PARAMETERS    :   note that save_d determines the d-cutoff to save the cluster data at
 #
 d_from  = 0.0
 d_to    = 0.3
@@ -263,8 +283,6 @@ for d_cut in d_vec:
         
         elif line.startswith('DE '):
             header = line.split(' ')[1].rstrip()
-            #print(header)
-
             motif_to_pwm[header] = []
             
             while True:
@@ -373,6 +391,6 @@ for d_cut in d_vec:
             subprocess.Popen(stamp,shell=False).communicate()               # call commands to the shell with messages
             #subprocess.Popen(stamp,shell=False)
             b = datetime.datetime.now()
-            print('\t'+str(b-a)) # print st
+            #print('\t'+str(b-a)) # print st
 
     print('COMPLETE!')

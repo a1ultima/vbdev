@@ -1,3 +1,20 @@
+# WARNINGS
+# - the pipeline from here to downstream scripts require that python 2.6.6 is used, because data pickled in 2.6.6 cannot be loaded by python of other versions 
+
+"""
+
+Description:
+
+...
+
+Run the following scripts in order, in the way shown:
+
+1. collapseMotifTree.py 
+2. motifStatistics.py
+3. python collapseMotifTree_progressiveMode.py --nspecies 3.0 --entropy 10.0
+
+"""
+
 
 # MOTIF STATS
 import os 
@@ -276,9 +293,22 @@ for e,save_d in parameterisation_events:
 
     # EVENT-TO-CLUSTER      :  an event is the data given a dreme evalue cut-off and a distance cut-off for tree-collapsing // common to each event are classes of interesting clusters, e.g. those with >= 3 species, or those with at least one drosophila motif, etc.// common to each cluster class are three pieces of key-value data: (i) entropy dict (mean, distribution, etc), (ii) list of cluster names in that class, (iii) and the number fo clusters. Due to common cluster classes per event and common cluster key-value data per cluster class we can construct the dictionary using "template dicts" for the cluster classes and for the key-value data.
     #  
-    #------------------------------------------#
-    #  nMotifs >= S, nMotifs == dipterans      #
-    #------------------------------------------#
+    # General Organisation: 
+    #
+    # event_to_clusterClass[event]['all']                     
+    # event_to_clusterClass[event]['all']['list']             
+    # event_to_clusterClass[event]['all']['nClusters']        
+    # event_to_clusterClass[event]['all']['H']['distribution']
+    # event_to_clusterClass[event]['all']['H']['mean'] 
+    # event_to_clusterClass[event]['nSpeciesOrMore'][s]                      
+    # event_to_clusterClass[event]['nSpeciesOrMore'][s]['list']              
+    # event_to_clusterClass[event]['nSpeciesOrMore'][s]['nClusters']         
+    # event_to_clusterClass[event]['nSpeciesOrMore'][s]['H']['distribution'] 
+    # event_to_clusterClass[event]['nSpeciesOrMore'][s]['H']['mean']        
+    # event_to_clusterClass[event]['clades']['inc_DMEL']['list']             
+    # event_to_clusterClass[event]['clades']['inc_DMEL']['nClusters']        
+    # event_to_clusterClass[event]['clades']['inc_DMEL']['H']['distribution']
+    # event_to_clusterClass[event]['clades']['inc_DMEL']['H']['mean']  
 
     event_to_clusterClass['e'+str(e)+'_d'+str(save_d)] = {}
 
@@ -301,8 +331,7 @@ for e,save_d in parameterisation_events:
         'nClusters':int()
         } 
 
-    # #------------------------------------------#
-
+    #------------------------------------------#
     # Build 
     for event in event_to_clusterClass.keys():
         
@@ -399,15 +428,40 @@ for e,save_d in parameterisation_events:
     all_avgEntropy = event_to_clusterClass[event]['all']['H']['mean']
 
 
+print '#####################'
+print 'Processing Complete! '
+print '#####################'
+
+import pickle
+
+
+
 print '\n\nSaving cluster_to_stats[event][cluster] dict to: /home/ab108/0VB/2kb/data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_to_stats.p\n\n'
-
-"""
-
-import pickle
-pickle.load(open('/home/ab108/0VB/2kb/data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_to_stats.p','wb'))
-
-"""
-import pickle
 pickle_dir = e_cut_dir+'/cluster_to_stats'
 pickle_obj = cluster_to_stats
-pickle.dump(pickle_obj,open(pickle_dir+'.p','wb'))
+f          = open(pickle_dir+'.p','wb')
+pickle.dump(pickle_obj,f)
+f.close()
+
+print "To Load: cluster_to_stats.p...\n"
+print ">>>import pickle\n"
+print ">>>f = open('/home/ab108/0VB/2kb/data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_to_stats.p','rb')\n"
+print ">>>cluster_to_stats = pickle.load(f)\n"
+print ">>>f.close()"
+
+
+
+print '\n\nSaving event_to_clusterClass[event] dict to: /home/ab108/0VB/2kb/data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/event_to_clusterClass.p\n\n'
+pickle_dir = e_cut_dir+'/event_to_clusterClass'
+pickle_obj = event_to_clusterClass
+f          = open(pickle_dir+'.p','wb')
+pickle.dump(pickle_obj,f)
+f.close()
+
+print "To Load: event_to_clusterClass.p...\n"
+print ">>>import pickle\n"
+print ">>>f = open('/home/ab108/0VB/2kb/data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/event_to_clusterClass.p','rb')\n"
+print ">>>event_to_clusterClass = pickle.load(f)\n"
+print ">>>f.close()\n"
+
+

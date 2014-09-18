@@ -1,11 +1,28 @@
-# NOTES:
-# Some technical words may not make sense to you. Such words may have intuitive descriptions available in here. Words with intuitive descriptions available will be in the format: @<word-in-lowercase>. Simply CTRL+F "@<word-in-uppercase>" to jump to the intuitive descriptions.
+"""
 
+Description:
+
+...
+
+Run the following scripts in order, in the way shown:
+
+1. collapseMotifTree.py 
+2. motifStatistics.py
+3. python collapseMotifTree_progressiveMode.py --nspecies 3.0 --entropy 10.0
+
+
+Notes:
+
+Some technical words may not make sense to you. Such words may have intuitive descriptions available in here. Words with intuitive descriptions available will be in the format: @<word-in-lowercase>. Simply CTRL+F "@<word-in-uppercase>" to jump to the intuitive descriptions.
+
+"""
 
 # WARNINGS:
 # CTRL+F "@WARN"
 # TODOS:
 # CTRL+F "@TODO"
+
+
 
 def load_motif_cluster_stats_dict():
     """
@@ -561,6 +578,90 @@ def make_meme_output(blacklist,outpath,e=0.05):
         fo.write(cluster_TO_fbp[(c,d)]['meme'])
     fo.close()
 
+def generate_summary_statistics_file(species_threshold, entropy_threshold, outDirPath, summary, blacklist, clade_groups):
+
+    """
+
+    Description:
+
+    Generates a file with summary statistics of a given blacklist, in a similar fashion to: blacklist_to_clades() and print_blacklist_summary(). It also provides the list of motif clusters of the blacklist and separate lists according to Bob-clade-groupings.
+
+    Arguments:
+
+    ...
+
+    """
+
+    print 'Generating summary statistics file...'
+
+
+    fo = open(outDirPath+'full_summary_statistics.txt','w')
+
+    # SUMMARY STATISTICS 
+
+    H_mean = summary[0]
+    S_mean = summary[1]
+
+    fo.write('_________________________________\n')
+    fo.write('SUMMARY STATISTICS OF BLACKLIST: \n')
+    fo.write('_________________________________\n')
+    fo.write('\tMean Entropy: '+str(H_mean)+'\n')
+    fo.write('\tMean Number of Species: '+str(S_mean)+'\n')
+    fo.write('\tNumber of Clusters: '+str(len(blacklist))+'\n')
+    fo.write('\n\n')
+
+    dipteran_clusters   = clade_groups[0]
+    mosquito_clusters   = clade_groups[1]
+    anopheles_clusters  = clade_groups[2]
+    gambiae_clusters    = clade_groups[3]
+
+    fo.write('_________________________________\n')
+    fo.write('CLADE DISTRIBUTION OF BLACKLIST: \n')
+    fo.write('_________________________________\n')
+    fo.write('\tDipteran: '    +str(len(dipteran_clusters))+'\n')
+    fo.write('\tMosquito: '    +str(len(mosquito_clusters))+'\n')
+    fo.write('\tAnopheles: '   +str(len(anopheles_clusters))+'\n')
+    fo.write('\tGambiae: '     +str(len(gambiae_clusters))+'\n')
+    fo.write('\t_____________\n')
+    fo.write('\tTotal: '       +str(len(gambiae_clusters)+len(anopheles_clusters)+len(mosquito_clusters)+len(dipteran_clusters))+'\n')
+    fo.write('\n\n\n')
+
+
+    # NAMES OF CLUSTERS LISTED by the following categories: whole blacklist, dipteran, mosquito, anopheles, gambiae
+
+        # FULL BLACKLIST
+
+    fo.write('Names of putative motifs (collapsed clusters of dreme motifs) grouped by:\n\n')
+
+    fo.write('all:\n')
+    fo.write('<Motif_name> \t <Distance_in_motif_tree>\n') # headers to indicate format of motif names
+
+    for c in blacklist:
+
+        fo.write(c[0]+'\t'+str(c[1])+'\n')
+
+    fo.write('\n\n')
+
+
+        # PER CLADE 
+
+    fo.write('Blacklisted motifs grouped by clade:\n')
+
+    i_TO_clade = {0:'dipteran',1:'mosquito',2:'anopheles',3:'gambiae'}
+
+    for i,blacklist_clade in enumerate(clade_groups):
+
+        clade = i_TO_clade[i]
+
+        fo.write('\n'+clade+':\n')
+        fo.write('<Motif_name> \t <Distance_in_motif_tree>\n')
+
+        for i2 in blacklist_clade:
+            fo.write(str(i2[0])+'\t'+str(i2[1])+'\n')
+
+        fo.write('\n\n')
+
+    fo.close()
 
 
 #----------------------------
@@ -588,6 +689,8 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
 
     """
     import time
+    import os
+    import shutil
 
     # GENERATE @blacklist
 
@@ -607,13 +710,33 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
     
     time.sleep(2)
 
-    # GENERATE MEME DATA ~ @LATEST
-    print 'Generating MEME output data per clade, apply TOMTOM on these...\n'
+
     
+    print 'Generating MEME output data per clade, apply TOMTOM on these...\n'
+
+    # GENERATE MEME DATA FILE SYSTEM
+
+    if not os.path.exists('../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/progressively_collapsed_motifs/'):
+        os.makedirs('../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/progressively_collapsed_motifs/') # generate parent directory that stores data for all --nspecies, --entropy combinations
+
+    outdir = '../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/progressively_collapsed_motifs/nspecies_'+str(species_threshold)+'_entropy_'+str(entropy_threshold)+'/'
+    
+    if os.path.exists(outdir): # remove an output directory if it exists, i.e. overwrite them, e.g. of an outdir is /nspecies_3.0_entropy_5.0/
+        shutil.rmtree(outdir)
+    os.makedirs(outdir)
+
+    generate_summary_statistics_file(species_threshold, entropy_threshold, outdir, summary, blacklist, clade_groups) # Generates a file with verbose summary statistics
+
     for i,blacklist_clade in enumerate(clade_groups):
         clade = i_TO_clade[i]
         print '\t'+clade
-        outpath = '../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/'+clade+'_blacklisted_meme_format.txt'
+        
+        # OVERWRITE directory to house the MEME data, e.g. /SWU_SSD/nspecies_3_entropy_10/
+
+        # TODO: <some function that generates the list of blacklisted motif cluster names + four other lists of cluster names: one per bobainian clade group>
+
+        outpath = outdir+clade+'_blacklisted_meme_format.txt'
+
         make_meme_output(blacklist_clade,outpath,e) # generate the meme FBP data
 
     return blacklist, summary, clade_groups, cluster_to_stats
@@ -633,7 +756,10 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
 
 
 import sys,getopt
-    
+
+
+#@WARN: this script can be run from termnial, but NEEDS two arguments to be fed to it: (i) from terminal: --nspecies 3.0 --entropy 10.0, (ii) from Python: blacklist, summary, clade_groups, cluster_to_stats = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, entropy_threshold = 10.0 )
+
 # Argument Handling
 def main(argv):
 
