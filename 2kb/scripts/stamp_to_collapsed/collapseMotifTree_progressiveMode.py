@@ -10,7 +10,6 @@ Run the following scripts in order, in the way shown:
 2. motifStatistics.py
 3. python collapseMotifTree_progressiveMode.py --nspecies 3.0 --entropy 10.0
 
-
 Notes:
 
 Some technical words may not make sense to you. Such words may have intuitive descriptions available in here. Words with intuitive descriptions available will be in the format: @<word-in-lowercase>. Simply CTRL+F "@<word-in-uppercase>" to jump to the intuitive descriptions.
