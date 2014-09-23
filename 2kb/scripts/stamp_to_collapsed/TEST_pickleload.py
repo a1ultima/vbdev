@@ -23,6 +23,8 @@ def load_motif_cluster_stats_dict():
 
     f = open( '../../data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_to_stats.p' )
 
+    print 'Loading motif cluster data structure, please wait a couple of minuites...'
+
     cluster_to_stats = pickle.load( f )
 
     f.close()
@@ -561,18 +563,34 @@ def make_meme_output(blacklist,outpath,e=0.05):
         # Is the (c,d) is missing it's FBP?
         if fbp_transfac == ['###MISSING###']:
         # YES: then we skip this motif cluster from downstream analyses 
-            cluster_TO_fbp[(c,d)]['meme']
+            # cluster_TO_fbp[(c,d)]['meme']
             continue
         # NO:  then we do the following...
         else:
             header  = 'MOTIF '+c+'_d_'+str(d)+'\n'
 
             rows = []
-            for i,row in enumerate(fbp_transfac[1:-1]): # skips the header and tailing delimiter xx
-                col = row.split('\t')
-                rows.append("\t".join(col[1:-1]))
 
-            rows = "\n".join(rows)+"\n\n"
+            for i,row in enumerate(fbp_transfac[1:-1]): # skips the header and tailing delimiter xx
+                
+                row_split = row.split('\t') # e.g. ['8', '0.0000', '0.0000', '1.0000', '0.0000', 'G\n']
+
+                row_split_without_number_and_letter = row_split[1:-1] # e.g. ['0.0000', '0.0000', '1.0000', '0.0000']
+
+                # A CHECK for if the FBP has it's PSSM in counts or decimals, and enforces decimals. e.g. [100,0,100,0] --> [0.5,0.0,0.5,0.0]
+                row_as_floats = [float(x) for x in row_split_without_number_and_letter]
+                row_as_total = sum(row_as_floats)
+                if row_as_total > 1.1:
+                    row_split_without_number_and_letter = [str(float(x)/float(row_as_total)) for x in row_as_floats]
+
+
+                row_unsplit_without_number_and_letter = "\t".join(row_split_without_number_and_letter) # e.g. 0.3333\t0.3333\t0.3333\t0.0000
+
+
+                rows.append(row_unsplit_without_number_and_letter)
+
+            rows = "\n".join(rows)+"\n\n" # e.g. '0.3333\t0.3333\t0.3333\t0.0000\n0.0000\t0.0000\t1.0000\t0.0000\n1.0000\t0.0000\t0.0000\t0.0000\n1.0000\t0.0000\t0.0000\t0.0000\n0.1178\t0.0000\t0.0000\t0.8822\n0.3333\t0.6667\t0.0000\t0.0000\n0.0000\t0.1530\t0.0000\t0.8470\n1.0000\t0.0000\t0.0000\t0.0000\n0.0000\t0.0000\t1.0000\t0.0000\n\n'
+
 
             width=str(i+1)
 
@@ -780,32 +798,32 @@ from itertools import product
 import time
 
 
-#cluster_to_stats = load_motif_cluster_stats_dict() # load data
+cluster_to_stats = load_motif_cluster_stats_dict() # load data
 
 
 
-blacklist, summary, clade_groups, cluster_to_stats = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 1.0, entropy_threshold = 5.0, cluster_to_stats=cluster_to_stats )
+# blacklist, summary, clade_groups, cluster_to_stats = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 1.0, entropy_threshold = 5.0, cluster_to_stats=cluster_to_stats )
 
 
 
 
 
 
-# # combinations of -nspecies, -entropy
+# combinations of -nspecies, -entropy
 
-# e = 0.05 # 
-# S_vec = np.arange(1,21,1)  # vector of -nspecies thresholds
-# H_vec = np.arange(3,30,1)  # vector of -entropy thresholds
-# S_and_H_vector = list(product(S_vec,H_vec))  # combinations of -nspecies, -entropy thresholds
+e = 0.05 # 
+S_vec = np.arange(1,21,1)  # vector of -nspecies thresholds
+H_vec = np.arange(3,30,1)  # vector of -entropy thresholds
+S_and_H_vector = list(product(S_vec,H_vec))  # combinations of -nspecies, -entropy thresholds
 
 
-# print 'Threshold Parameters: '
+print 'Threshold Parameters: '
 
-# for S,H in S_and_H_vector:
+for S,H in S_and_H_vector:
 
-#     print 'Number of species >= : '+str(S)+'  Entropy <= : '+str(H)+'\n\n'
+    print 'Number of species >= : '+str(S)+'  Entropy <= : '+str(H)+'\n\n'
  
-#     blacklist, summary, clade_groups, cluster_to_stats = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = S, entropy_threshold = H, cluster_to_stats=cluster_to_stats )
+    blacklist, summary, clade_groups, cluster_to_stats = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = S, entropy_threshold = H, cluster_to_stats=cluster_to_stats )
 
 
 
