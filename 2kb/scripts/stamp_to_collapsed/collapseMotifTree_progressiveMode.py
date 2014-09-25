@@ -62,6 +62,7 @@ def get_motif_tree_collapsing_distances(cluster_to_stats):
 
     return distances
 
+
 def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, entropy_threshold=10.0, species_threshold=3 ):
     """
     Description:
