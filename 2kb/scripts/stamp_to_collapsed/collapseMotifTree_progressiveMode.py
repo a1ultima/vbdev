@@ -14,6 +14,14 @@ Notes:
 
 Some technical words may not make sense to you. Such words may have intuitive descriptions available in here. Words with intuitive descriptions available will be in the format: @<word-in-lowercase>. Simply CTRL+F "@<word-in-uppercase>" to jump to the intuitive descriptions.
 
+
+@standard examples:
+
+cluster_to_stats['e0.05_d0.056']['c346_n002_CAATACWCG']
+
+                    ^e = 0.05
+                          ^d = 0.056  ^c = 'c346_n002_CAATACWCG'
+
 """
 
 # WARNINGS:
@@ -46,6 +54,8 @@ def load_motif_cluster_stats_dict():
 
     return cluster_to_stats
 
+
+
 def get_motif_tree_collapsing_distances(cluster_to_stats):
     """
     Description:
@@ -62,6 +72,8 @@ def get_motif_tree_collapsing_distances(cluster_to_stats):
     distances = [float(i.split('d')[1]) for i in parameterisation_events]
 
     return distances
+
+
 
 def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, entropy_threshold=10.0, species_threshold=3 ):
     """
@@ -643,7 +655,7 @@ def make_meme_output(blacklist,outpath, cd_to_vbname, e=0.05):
             fo.write(cluster_TO_fbp[(c,d)]['meme'])
     fo.close()
 
-def generate_summary_statistics_file(species_threshold, entropy_threshold, outDirPath, summary, blacklist, clade_groups, cd_to_vbname):
+def generate_summary_statistics_file(species_threshold, entropy_threshold, outDirPath, summary, blacklist, clade_groups, cd_to_vbname, cluster_to_stats, e = 0.05):
 
     """
 
@@ -703,19 +715,28 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
     fo.write('Names of putative motifs (collapsed clusters of dreme motifs) grouped by:\n\n')
 
     fo.write('all:\n')
-    fo.write('<VectorBase Motif Name> \t <Lagacy Motif Name>\n') # headers to indicate format of motif names
+    fo.write('<VB Name> \t <Old Name> \t <Group> \t <Entropy> \t <nspecies> \t <nparalogues>\n') # headers to indicate format of motif names
 
     for c,d in blacklist:
 
-        # is there is a translation available for (c,d) to vb name?
-        # try: 
-        #     vbname = cd_to_vbname[(c,d)]
-        # except: 
-        #     pass
+        ###########################
+        # per cluster STATISTICS 
+        ###########################
 
-        vbname = cd_to_vbname[(c,d)]
+        vbname      = cd_to_vbname[(c,d)] # e.g. MM10001_CAKTGGCGG_CCGCCAMTG_M
 
-        fo.write(vbname+'\t'+c+'_d'+str(d)+'\n') # e.g. c047_n007_CATTGGGCG    0.298
+        group       = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['bob_clade']
+
+        entropy     = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['H']
+
+        if str(entropy) == '-0': # for some reason, some entropies are: '-0' ... so we correct it
+            entropy = 0.0
+
+        nspecies    = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['species']['unique']['n_unique']
+
+        nparalogues = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['species']['unique']['n_paralogue']
+
+        fo.write(vbname+'\t'+c+'_d'+str(d)+'\t'+str(group)+'\t'+str(entropy)+'\t'+str(nspecies)+'\t'+str(nparalogues)+'\n') # e.g. MM10001_CAKTGGCGG_CCGCCAMTG_M   c047_n007_CATTGGGCG_d0.298
 
     fo.write('\n\n')
 
@@ -736,12 +757,9 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
         for c,d in blacklist_clade:
 
             # is there is a translation available for (c,d) to vb name?
-            try: 
-                vbname = cd_to_vbname[(c,d)]
-            except: 
-                pass
+            vbname = cd_to_vbname[(c,d)]
 
-            fo.write(vbname+'\t'+str(c)+'_'+str(d)+'\n') # e.g. i2 = c047_n007_CATTGGGCG   0.298
+            fo.write(vbname+'\t'+str(c)+'_'+str(d)+'\n') # e.g. i2 = MM10001_CAKTGGCGG_CCGCCAMTG_M  c047_n007_CATTGGGCG_d0.298
 
         fo.write('\n\n')
 
@@ -867,31 +885,31 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, ent
 
     Description:\n\n
 
-    A wrapper for obtaining the blacklist at given species number threshold, S, and entropy threshold, H, (CTRL+F: blacklist_criteria_check) and e value (CTRL+F: @e-value)\n\n
+        A wrapper for obtaining the blacklist at given species number threshold, S, and entropy threshold, H, (CTRL+F: blacklist_criteria_check) and e value (CTRL+F: @e-value)\n\n
 
     Arguments:\n\n 
 
-    e = 0.05                      # CTRL+F: @e-value\n\n
+        e = 0.05                      # CTRL+F: @e-value\n\n
 
-    species_threshold = 3.0       # CTRL+F: blacklist_criteria_check\n\n
+        species_threshold = 3.0       # CTRL+F: blacklist_criteria_check\n\n
 
-    entropy_threshold = 1.0       # CTRL+F: blacklist_criteria_check\n\n
+        entropy_threshold = 1.0       # CTRL+F: blacklist_criteria_check\n\n
 
-    Example:\n\n
+        Example:\n\n
 
-    blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold=3.0, entropy_threshold=1.0)\n\n
+        blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold=3.0, entropy_threshold=1.0)\n\n
 
-    USAGE:
+    Usage:
 
-    blacklist, summary, clade_groups, cluster_to_stats, cd_to_vbname = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, entropy_threshold = 5,cluster_to_stats=None )
+        blacklist, summary, clade_groups, cluster_to_stats, cd_to_vbname = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, entropy_threshold = 5,cluster_to_stats=None )
 
-    alt USAGE:
+    alt Usage:
 
-    blacklist, summary, clade_groups, cluster_to_stats, cd_to_vbname = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, entropy_threshold = 5,cluster_to_stats=cluster_to_stats ) # if cluster_to_stats.p is already loaded..
+        blacklist, summary, clade_groups, cluster_to_stats, cd_to_vbname = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, entropy_threshold = 5,cluster_to_stats=cluster_to_stats ) # if cluster_to_stats.p is already loaded..
 
-    TAGS:
+    Tags:
 
-    @shell
+        @shell
 
 
     """
@@ -940,7 +958,7 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, ent
         shutil.rmtree(outdir)
     os.makedirs(outdir)
 
-    generate_summary_statistics_file(species_threshold, entropy_threshold, outdir, summary, blacklist, clade_groups, cd_to_vbname) # Generates a file with verbose summary statistics
+    generate_summary_statistics_file(species_threshold, entropy_threshold, outdir, summary, blacklist, clade_groups, cd_to_vbname, cluster_to_stats, e=e) # Generates a file with verbose summary statistics
 
     for i,blacklist_clade in enumerate(clade_groups):
         clade = i_TO_clade[i]
