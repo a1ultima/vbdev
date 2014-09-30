@@ -38,12 +38,13 @@ def load_motif_cluster_stats_dict():
 
     f = open( '../../data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_to_stats.p' )
 
+    print 'Loading motif cluster data structure, please wait a couple of minuites...'
+
     cluster_to_stats = pickle.load( f )
 
     f.close()
 
     return cluster_to_stats
-
 
 def get_motif_tree_collapsing_distances(cluster_to_stats):
     """
@@ -61,7 +62,6 @@ def get_motif_tree_collapsing_distances(cluster_to_stats):
     distances = [float(i.split('d')[1]) for i in parameterisation_events]
 
     return distances
-
 
 def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, entropy_threshold=10.0, species_threshold=3 ):
     """
@@ -96,7 +96,7 @@ def blacklist_criteria_check(cluster, blacklist_motifs, cluster_to_stats, e, d, 
     # CHECK IF PARENT DISTANCE ALREADY BLACKLISTED
 
     if not bool(set(motifs) & set(blacklist_motifs)):   # tests if any elements between "motifs" and "blacklist_motifs" overlap
-                                                     # WARN: should test this, got it from StackOverflow: http://stackoverflow.com/a/3170067/3011648
+                                                     # @WARN: should test this, got it from StackOverflow: http://stackoverflow.com/a/3170067/3011648
                                                      # @TEST: try returning a separate label or print a warning whenever this condition is satisfied/not instead of just "False", because then we can discriminate it vs. the "False" that is supplied by the inner (2)/(3) criteria, e.g. maybe return the warning "blacklisted already" then diagnose the clusters
 
         # IS THE CLUSTER WORTHY? ...
@@ -138,9 +138,13 @@ def get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_
 
     cluster_to_stats    #   can be ignored, it is used as a debugging tool
 
+
+    USAGE:
+
+    blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e = 0.05, entropy_threshold = 10.0, species_threshold = 3.0, cluster_to_stats=None)
+
     """
 
-    print 'Loading pickled motif_cluster_statistics data...'
     if not cluster_to_stats:
         cluster_to_stats = load_motif_cluster_stats_dict()
 
@@ -265,6 +269,13 @@ def blacklist_to_clades( blacklist, cluster_to_stats, e ):
 
     *** see CTRL+F "0.5 is the distance at" to understand what we mean by distance.
 
+
+    **** Note that, consistent with vbname, e.g. MM10111_NGATTAAGCT_AGCTTAATCN_G, where '_G' can be:
+
+        _G = motif is found in at least one gambiae complex species, 
+        _A = motif is found in at least one anopheline species but not if that anopheline species is of the gambiae complex, 
+        _M = motif is found in at least one mosquito species but not if that mosquito species is of the anophelines, 
+        _D = motif is found in at least one dipteran species but not if that dipteran species is of the mosquitoes
 
     Arguments: 
 
@@ -441,35 +452,34 @@ def blacklist_to_clades( blacklist, cluster_to_stats, e ):
     # PER BLACKLISTED CLUSTER...
     #   Here is where the logic is applied to group blacklisted motif clusters by Bob clades
 
-    for c in blacklist:
+    for c,d in blacklist:
 
         # GROUP THE @cluster INTO ONE OF THE CLADEs
 
-        if cluster_has_dipteran(c): # store cluster if it contains at least one dipteran (drosophila)
-            dipteran_clusters.append(c)
+        # DIPTERAN      # dipteran_clusters # contains at least one drosophila 
+        if cluster_has_dipteran((c,d)): # store cluster if it contains at least one dipteran (drosophila)
+            cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['bob_clade'] = 'D' # this allows us to @REFERENCE-BACK to which bobanian clade group this cluster belongs to, see: e.g.: CTRL+F: "def rename_blacklist(", note: D for dipteran, M for mosquito, A for anopheles, G for gambiae
+            dipteran_clusters.append((c,d))
 
-        if ( cluster_has_mosquito(c) and (not cluster_has_dipteran(c)) ): # store cluster if it contains at least one mosquito, but not if it has a dipteran
-
+        # MOSQUITO      # mosquito_clusters # (contains no drosophila) AND (contains at least one culex OR one aedes)
+        if ( cluster_has_mosquito((c,d)) and (not cluster_has_dipteran((c,d))) ): # store cluster if it contains at least one mosquito, but not if it has a dipteran
         # @TEST: any difference in "and not" vs. "and ( not ... "  ??
-            mosquito_clusters.append(c)
+            cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['bob_clade'] = 'M' # see: CTRL+F: '@reference-back' for explanation
+            mosquito_clusters.append((c,d))
 
-        if cluster_has_anophelines(c) and ( (not cluster_has_dipteran(c)) and (not cluster_has_mosquito(c))):  # store cluster if it contains at least one anopheline, but not if it has a dipteran or a mosquito
+        # ANOPHELES     # anopheles_clusters # (contains no mosquito AND no dipteran) AND (at least one anopheles (?) ) @BOB: wouldn't this just swallow up the whole of the gambiae complex...?..
+        if cluster_has_anophelines((c,d)) and ( (not cluster_has_dipteran((c,d))) and (not cluster_has_mosquito((c,d)))):  # store cluster if it contains at least one anopheline, but not if it has a dipteran or a mosquito
+            cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['bob_clade'] = 'A' # see: CTRL+F: '@reference-back' for explanation
+            anopheles_clusters.append((c,d))
 
-            anopheles_clusters.append(c)
-
-        if cluster_has_gambiae_complex(c) and ( (not cluster_has_dipteran(c)) and (not cluster_has_mosquito(c)) and (not cluster_has_anophelines(c))): # store cluster if it contains at least one gambiae complex, but not if it has an anopheline or mosquito or dipteran
+        # GAMBIAE       #..and the remaining 
+        if cluster_has_gambiae_complex((c,d)) and ( (not cluster_has_dipteran((c,d))) and (not cluster_has_mosquito((c,d))) and (not cluster_has_anophelines((c,d)))): # store cluster if it contains at least one gambiae complex, but not if it has an anopheline or mosquito or dipteran
+        
         #@TESTs_1: 
         #  - if the remainder == the output of this test, if yes, then great!
         #  - are there any overlaps between clusters in each of the groups? Hint: use set() 
-            gambiae_clusters.append(c)
-
-    # dipteran_clusters # contains at least one drosophila 
-
-    # mosquito_clusters # (contains no drosophila) AND (contains at least one culex OR one aedes)
-
-    # anopheles_clusters # (contains no mosquito AND no dipteran) AND (at least one anopheles (?) ) @BOB: wouldn't this just swallow up the whole of the gambiae complex...?
-
-    # gambiae_clusters
+            cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['bob_clade'] = 'G' # see: CTRL+F: '@reference-back' for explanation
+            gambiae_clusters.append((c,d))
 
     print '\n_________________________________'
     print 'CLADE DISTRIBUTION OF BLACKLIST: '
@@ -482,14 +492,14 @@ def blacklist_to_clades( blacklist, cluster_to_stats, e ):
     print '\tTotal: '       +str(len(gambiae_clusters)+len(anopheles_clusters)+len(mosquito_clusters)+len(dipteran_clusters))
     print '\n'
 
-    return dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters
+    return dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters, cluster_to_stats
 
 
 #----------------------------
 # meme FBP outputs
 #----------------------------
 
-def make_meme_output(blacklist,outpath,e=0.05):
+def make_meme_output(blacklist,outpath, cd_to_vbname, e=0.05):
     """
 
     Description:
@@ -518,7 +528,17 @@ def make_meme_output(blacklist,outpath,e=0.05):
 
         name        = c
         distance    = d
-        datapath    = '../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/cluster_motifs_d'+str(distance)+'/family_binding_matrices/'+str(name)+'FBP.txt' # e.g. ... c146_n004_TGGACGAKAFBP.txt # read tomtom inputdata format requirements
+
+        # If the c,d cluster motif was created from only a single (=1) dreme motif (i.e. whose name has ..._n001_..., it would have a different path to a motif cluster that was created from >1 dreme motifs. This is because STAMP will not create a *FBP.txt (PSSM) for single dreme motifs. This is because STAMP is software specialized for taking >1 motif and generating a consensus from them. So is the motif cluster generated from only a single dreme motif?
+
+        # IF YES: 
+        if 'n001' in name:
+
+            datapath = '../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/cluster_motifs_d'+str(distance)+'/fasta/'+str(name)+'.fasta' # e.g. 
+
+        # IF NO:
+        else:     
+            datapath    = '../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/cluster_motifs_d'+str(distance)+'/family_binding_matrices/'+str(name)+'FBP.txt' # e.g. ... c146_n004_TGGACGAKAFBP.txt # read tomtom inputdata format requirements
 
         cluster_TO_fbp_path[(c,d)] = datapath
 
@@ -549,12 +569,13 @@ def make_meme_output(blacklist,outpath,e=0.05):
                 cluster_TO_fbp[(c,d)]['transfac'].append(l)
                 #print l
             fi.close()
-        # NO:  this means stamp has not generated a *FBP.txt (PSSM) for the motif: c,d ... this is because STAMP does not like to generate FBPs when there is only one input motif. 
+        # NO:  this means stamp has not generated a *FBP.txt (PSSM) for the motif: c,d ... this is because STAMP does not generate FBPs when there is only one input motif, e.g. all motifs whose names are ..._n001_... .
         except IOError:
             #sleep(5)
             print '\t\tWarning: No such file or directory: ../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/cluster_motifs_d'+str(d)+'/family_binding_matrices/'+str(c)+'FBP.txt'
 
             print'\t\tWhat this means is this: cluster '+str(c)+'_d'+str(d)+' has a missing FBP that should have been generated by STAMP, and will thus count as missing data from downstream analyses...'
+
             cluster_TO_fbp[(c,d)]['transfac'].append('###MISSING###')
 
     #-----------------------------
@@ -567,18 +588,36 @@ def make_meme_output(blacklist,outpath,e=0.05):
         # Is the (c,d) is missing it's FBP?
         if fbp_transfac == ['###MISSING###']:
         # YES: then we skip this motif cluster from downstream analyses 
-            cluster_TO_fbp[(c,d)]['meme']
+            # cluster_TO_fbp[(c,d)]['meme']
             continue
         # NO:  then we do the following...
         else:
-            header  = 'MOTIF '+c+'_d_'+str(d)+'\n'
+            #header  = 'MOTIF '+c+'_d_'+str(d)+'\n' # legacy motif names as generated by collapseMotifTree.py
+
+            header = 'MOTIF '+cd_to_vbname[(c,d)]+'\n'   # convert a legacy name to vbname and store in "header" 
 
             rows = []
-            for i,row in enumerate(fbp_transfac[1:-1]): # skips the header and tailing delimiter xx
-                col = row.split('\t')
-                rows.append("\t".join(col[1:-1]))
 
-            rows = "\n".join(rows)+"\n\n"
+            for i,row in enumerate(fbp_transfac[1:-1]): # skips the header and tailing delimiter xx
+                
+                row_split = row.split('\t') # e.g. ['8', '0.0000', '0.0000', '1.0000', '0.0000', 'G\n']
+
+                row_split_without_number_and_letter = row_split[1:-1] # e.g. ['0.0000', '0.0000', '1.0000', '0.0000']
+
+                # A CHECK for if the FBP has it's PSSM in counts or decimals, and enforces decimals. e.g. [100,0,100,0] --> [0.5,0.0,0.5,0.0]
+                row_as_floats = [float(x) for x in row_split_without_number_and_letter]
+                row_as_total = sum(row_as_floats)
+                if row_as_total > 1.1:
+                    row_split_without_number_and_letter = [str(float(x)/float(row_as_total)) for x in row_as_floats]
+
+
+                row_unsplit_without_number_and_letter = "\t".join(row_split_without_number_and_letter) # e.g. 0.3333\t0.3333\t0.3333\t0.0000
+
+
+                rows.append(row_unsplit_without_number_and_letter)
+
+            rows = "\n".join(rows)+"\n\n" # e.g. '0.3333\t0.3333\t0.3333\t0.0000\n0.0000\t0.0000\t1.0000\t0.0000\n1.0000\t0.0000\t0.0000\t0.0000\n1.0000\t0.0000\t0.0000\t0.0000\n0.1178\t0.0000\t0.0000\t0.8822\n0.3333\t0.6667\t0.0000\t0.0000\n0.0000\t0.1530\t0.0000\t0.8470\n1.0000\t0.0000\t0.0000\t0.0000\n0.0000\t0.0000\t1.0000\t0.0000\n\n'
+
 
             width=str(i+1)
 
@@ -604,7 +643,7 @@ def make_meme_output(blacklist,outpath,e=0.05):
             fo.write(cluster_TO_fbp[(c,d)]['meme'])
     fo.close()
 
-def generate_summary_statistics_file(species_threshold, entropy_threshold, outDirPath, summary, blacklist, clade_groups):
+def generate_summary_statistics_file(species_threshold, entropy_threshold, outDirPath, summary, blacklist, clade_groups, cd_to_vbname):
 
     """
 
@@ -615,6 +654,11 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
     Arguments:
 
     ...
+
+    Tags:
+
+    @stats
+
 
     """
 
@@ -659,11 +703,19 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
     fo.write('Names of putative motifs (collapsed clusters of dreme motifs) grouped by:\n\n')
 
     fo.write('all:\n')
-    fo.write('<Motif_name> \t <Distance_in_motif_tree>\n') # headers to indicate format of motif names
+    fo.write('<VectorBase Motif Name> \t <Lagacy Motif Name>\n') # headers to indicate format of motif names
 
-    for c in blacklist:
+    for c,d in blacklist:
 
-        fo.write(c[0]+'\t'+str(c[1])+'\n')
+        # is there is a translation available for (c,d) to vb name?
+        # try: 
+        #     vbname = cd_to_vbname[(c,d)]
+        # except: 
+        #     pass
+
+        vbname = cd_to_vbname[(c,d)]
+
+        fo.write(vbname+'\t'+c+'_d'+str(d)+'\n') # e.g. c047_n007_CATTGGGCG    0.298
 
     fo.write('\n\n')
 
@@ -676,24 +728,141 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
 
     for i,blacklist_clade in enumerate(clade_groups):
 
-        clade = i_TO_clade[i]
+        clade = i_TO_clade[i] # e.g. 'dipteran'
 
-        fo.write('\n'+clade+':\n')
+        fo.write('\n'+clade+':\n') 
         fo.write('<Motif_name> \t <Distance_in_motif_tree>\n')
 
-        for i2 in blacklist_clade:
-            fo.write(str(i2[0])+'\t'+str(i2[1])+'\n')
+        for c,d in blacklist_clade:
+
+            # is there is a translation available for (c,d) to vb name?
+            try: 
+                vbname = cd_to_vbname[(c,d)]
+            except: 
+                pass
+
+            fo.write(vbname+'\t'+str(c)+'_'+str(d)+'\n') # e.g. i2 = c047_n007_CATTGGGCG   0.298
 
         fo.write('\n\n')
 
     fo.close()
 
 
+def rename_blacklist( blacklist, cluster_to_stats, e = 0.05, version = 1 ):
+
+    print 'Re-naming blacklisted motif clusters (c,d) to vb-name format...'
+
+    cd_to_vbname = {}   # @dict_1 that converts (c,d) to vbname..
+
+    #   ..general format: MM<version><id, e.g. 0001>_<STAMP ambiguity seq>_<reverse complement>..
+    #   ..e.g. MM10001_CTGATGGNC_GNCCATCAG 
+
+    version = int(version)             # @WARN: this version number will need to change in future motif versions
+
+
+    for n,(c,d) in enumerate(blacklist):   # e.g. (c,d) = ('c397_n002_CTGATGGSC','0.056')
+
+        # grab the collapsed motif's STAMP (or .fasta) motif sequence
+
+        fbp_path = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['path']['fbp'] # e.g. '../data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_motifs_d0.056/family_binding_matrices/c397_n002_CTGATGGSCFBP.txt'
+        fbp_fi  = open('../'+fbp_path,'r') 
+
+        # ^ e.g.                              \/----letters of seq-----\/
+        # .._n000(>1)_.. :                          .._n0001_.. :
+        # DE  FBP                                 # DE CQUI_ATATGGAGA
+        # 0   0.1250  0.6250  0.1250  0.1250  c   # 0   198 0   0   0   A
+        # 1   0.0000  0.0000  0.2178  0.7822  T   # 1   0   0   0   198 T
+        # 2   0.0000  0.0000  1.0000  0.0000  G   # 2   198 0   0   0   A
+        # 3   0.7513  0.0000  0.2487  0.0000  A   # 3   0   0   0   198 T
+        # 4   0.0000  0.0000  0.0000  1.0000  T   # 4   0   0   198 0   G
+        # 5   0.0000  0.0000  1.0000  0.0000  G   # 5   0   0   198 0   G
+        # 6   0.0000  0.0000  1.0000  0.0000  G   # 6   198 0   0   0   A
+        # 7   0.1250  0.4198  0.3302  0.1250  n   # 7   0   0   198 0   G
+        # 8   0.1250  0.6250  0.1250  0.1250  c   # 8   198 0   0   0   A
+        # XX                                      # XX
+
+        seq = []                           #  ^-----e.g.----------------^        
+        while True:
+            l = fbp_fi.readline()
+            if l == "XX\n": break
+            if l == 'DE\tFBP\n': continue
+            s = l[-2] # e.g. n
+            seq.append(s) # e.g. ['c', 'T', 'G', 'A', 'T', 'G', 'G', 'n', 'c']
+        fbp_fi.close()
+
+        # find the complement of seq,   
+        #   e.g. if seq = ['c', 'T', 'G', 'A', 'T', 'G', 'G', 'n', 'c'] then rc = ['G', 'N', 'C', 'C', 'A', 'T', 'C', 'A', 'G']
+
+        iupac_to_complement = {'A':'T','C':'G','G':'C','T':'A','M':'K','R':'Y','W':'W','S':'S','Y':'R','K':'M','V':'B','H':'D','D':'H','B':'V','N':'N'}
+        complement = [iupac_to_complement[i.upper()] for i in seq]
+        rc = ''.join(complement[::-1]) # e.g. CCGCCAMTG
+
+        # format to strings
+        seq = ''.join(seq).upper()
+        rc = ''.join(rc).upper()
+
+        # Grab the 'bob_clade' label, e.g. 'D' for dipteran, 'M' for mosquito, etc.
+        bob_clade_symbol = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['bob_clade']
+
+        vbname = 'MM'+str(version)+str(n+1).zfill(4)+'_'+seq+'_'+rc+'_'+str(bob_clade_symbol) # e.g. MM10001_CTGATGGNC_GNCCATCAG_D   ^ @pad 0s to the left to have 4 digits, e.g. 0001 and 0111, etc. so that we have a max of 9999 motifs we can use, keeping motif names at controlled numbering width.
+        #                           ^ n+1 to ensure indexing starts from 1 (not 0)
+
+        # incorporate into @dict_1
+        cd_to_vbname[(c,d)] = vbname
+
+
+    return cd_to_vbname
+
+
+def blacklist_then_summaryStats_S_and_H_combos( S_from, S_to, S_step , H_from, H_to, H_step , e = 0.05):
+
+    """
+
+    Description:
+
+        runs blacklist_then_summaryStats_from_shell() on combinations of -nspecies, -entropy parameters
+
+        Output is found in: /home/ab108/0VB/2kb/data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/progressively_collapsed_motifs/
+
+    Arguments:
+
+        ...@todo...
+
+    Usage:
+
+        blacklist_then_summaryStats_S_and_H_combos( S_from = 1, S_to = 21, S_step = 1, H_from = 1, H_to = 30, H_step = 1, e = 0.05)
+
+    """
+
+    import numpy as np
+    from itertools import product
+
+    S_vec = np.arange(float(S_from),float(S_to),float(S_step))  # vector of -nspecies thresholds
+    H_vec = np.arange(float(H_from),float(H_to),float(H_step))  # vector of -entropy thresholds
+    S_and_H_vector = list(product(S_vec,H_vec))  # combinations of -nspecies, -entropy thresholds
+
+    cluster_to_stats = load_motif_cluster_stats_dict() # load data
+
+
+    print 'Threshold Parameters: '
+
+    for S,H in S_and_H_vector:
+
+        print 'Number of species >= : '+str(S)+'  Entropy <= : '+str(H)+'\n\n'
+     
+        blacklist, summary, clade_groups, cluster_to_stats, cd_to_vbname = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = S, entropy_threshold = H, cluster_to_stats=cluster_to_stats )
+
+
+
+
+
+
+
 #----------------------------
 # MAIN THING
 #----------------------------
 
-def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, entropy_threshold = 1.0,cluster_to_stats=None ):
+def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, entropy_threshold = 5,cluster_to_stats=None ):
     """ 
 
     Description:\n\n
@@ -712,6 +881,19 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
 
     blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold=3.0, entropy_threshold=1.0)\n\n
 
+    USAGE:
+
+    blacklist, summary, clade_groups, cluster_to_stats, cd_to_vbname = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, entropy_threshold = 5,cluster_to_stats=None )
+
+    alt USAGE:
+
+    blacklist, summary, clade_groups, cluster_to_stats, cd_to_vbname = blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, entropy_threshold = 5,cluster_to_stats=cluster_to_stats ) # if cluster_to_stats.p is already loaded..
+
+    TAGS:
+
+    @shell
+
+
     """
     import os
     import shutil
@@ -724,27 +906,33 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
         blacklist, cluster_to_stats = get_blacklisted_motif_clusters( e, entropy_threshold, species_threshold,  cluster_to_stats=cluster_to_stats)
 
 
+    # GENERATE cd_to_vbname translations
+
+
     print '\nGenerating statistics...\n'
 
     # GLOBAL STATISTICS
     summary = print_blacklist_summary( blacklist, cluster_to_stats, e)# (H_mean, S_mean)
 
-    time.sleep(2)
-
     # BOB CLADE GROUPINGS
-    clade_groups = blacklist_to_clades( blacklist, cluster_to_stats, e ) # dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters
-    i_TO_clade = {0:'dipteran',1:'mosquito',2:'anopheles',3:'gambiae'}
     
-    time.sleep(2)
+    clade_group_data = blacklist_to_clades( blacklist, cluster_to_stats, e ) # dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters, cluster_to_stats
+
+    clade_groups = clade_group_data[:-1]    # dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters
+    cluster_to_stats = clade_group_data[-1] # cluster_to_stats // note: this has been modified now to allow referencing to the clade groupings explicitly via cluster_to_stats, e.g. cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['bob_clade'] = 'D'     }- where 'D' means dipteran
 
 
+    cd_to_vbname = rename_blacklist( blacklist, cluster_to_stats, e=e, version = 1 ) # dictionary: converts a blacklisted motif cluster (c,d) into a vectorbase name e.g. of usage: vbname = cd_to_vbname[(c,d)] // e.g. of vbname = 'MM10119_CGATGCGAT_ATCGCATCG' // general format: MM<version><id, e.g. 0001>_<STAMP ambiguity seq>_<reverse complement>..
+
+
+    i_TO_clade = {0:'dipteran',1:'mosquito',2:'anopheles',3:'gambiae'}
     
     print 'Generating MEME output data per clade, apply TOMTOM on these...\n'
 
     # GENERATE MEME DATA FILE SYSTEM
 
     if not os.path.exists('../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/progressively_collapsed_motifs/'):
-        os.makedirs('../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/progressively_collapsed_motifs/') # generate parent directory that stores data for all --nspecies, --entropy combinations
+        os.makedirs('0VB/2kb/data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/progressively_collapsed_motifs/') # generate parent directory that stores data for all --nspecies, --entropy combinations
 
     outdir = '../../data/stamp_data/out/dreme_100bp_e'+str(e)+'/SWU_SSD/progressively_collapsed_motifs/nspecies_'+str(species_threshold)+'_entropy_'+str(entropy_threshold)+'/'
     
@@ -752,7 +940,7 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
         shutil.rmtree(outdir)
     os.makedirs(outdir)
 
-    generate_summary_statistics_file(species_threshold, entropy_threshold, outdir, summary, blacklist, clade_groups) # Generates a file with verbose summary statistics
+    generate_summary_statistics_file(species_threshold, entropy_threshold, outdir, summary, blacklist, clade_groups, cd_to_vbname) # Generates a file with verbose summary statistics
 
     for i,blacklist_clade in enumerate(clade_groups):
         clade = i_TO_clade[i]
@@ -764,9 +952,9 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
 
         outpath = outdir+clade+'_blacklisted_meme_format.txt'
 
-        make_meme_output(blacklist_clade,outpath,e) # generate the meme FBP data
+        make_meme_output(blacklist_clade,outpath, cd_to_vbname, e) # generate the meme FBP data
 
-    return blacklist, summary, clade_groups, cluster_to_stats
+    return blacklist, summary, clade_groups, cluster_to_stats, cd_to_vbname
 
 
 #---------------------------------------------------------
@@ -775,10 +963,7 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3.0, e
 
 
 
-
-
 #---------------------------------------------------------
-
 
 
 
