@@ -2,6 +2,103 @@ import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 from operator import itemgetter, attrgetter
+import copy
+
+
+def boxplot_tfs(data1,data2,labels,save):
+
+    """
+
+    Description:
+
+    ...
+
+    Arguments: 
+
+    ...
+
+    Usage:
+
+    ...
+
+    """
+
+
+    positions = np.array(xrange(len(data1)))*2.0-0.4
+
+    f = plt.figure()
+
+
+    ################################################
+    # First Y-axis: number of TFs present
+    ################################################
+
+    ax = f.add_subplot(111) # plotting the first y-axis to the left: TF counts
+
+    ax.scatter(positions,np.array(data2),color='b') # using the x-axis ticks as individual TF AGAPs
+
+    plt.xlabel('Transcription Factor OG (VB Gene Id)')
+    plt.ylabel('Number of Transcription Factors in OG')
+
+        # Organise Tick Labels:      x tick labels changed to AGAP ids 
+    locs, dlabels    = plt.xticks()
+    plt.xticks(locs, labels)
+    plt.xticks(rotation=90)
+
+    plt.ylim((0,800))
+
+    ################################################
+    # Second Y-axis: Boxplots of %id OG TFs
+    ################################################
+
+    ax2 = ax.twinx() # second y-axis
+
+    def set_box_color(bp, color):
+        plt.setp(bp['boxes'], color=color)
+        plt.setp(bp['whiskers'], color=color)
+        plt.setp(bp['caps'], color=color)
+        plt.setp(bp['medians'], color=color)
+
+    #bpl = plt.boxplot(data1, positions=positions, sym='', widths=0.6)
+    bpl = ax2.boxplot(data1, positions=positions, sym='', widths=0.6)
+
+    set_box_color(bpl, '#D7191C') # colors are from http://colorbrewer2.org/
+
+    # draw temporary red and blue lines and use them to create a legend
+    ax2.plot([], c='#D7191C')
+    plt.xlabel('Transcription Factor OG (VB Gene Id)')
+    plt.ylabel('AA sequence similarity within OG (%\id)')
+    plt.title('Comparing AA sequence similarities within various Transcription Factor OGs')
+
+    # plt.plot([], c='#D7191C')
+    # plt.xlabel('Transcription Factor (VB Gene Id)')
+    # plt.ylabel('AA sequence similarities within OG (biscore)')
+    # plt.title('Comparing AA sequence similarities within various Transcription Factor OGs')
+
+    # x tick labels changed to AGAP ids 
+    locs, dlabels    = plt.xticks()
+    plt.xticks(locs, labels)
+    
+    #plt.xticks(rotation=90) # @ANDY
+    plt.xticks(rotation=90) # @ANDY
+
+
+    #############################
+    # Final Plot Configurations
+    #############################
+
+    #plt.gca().set_xlim([xmin,xmax])
+    #plt.gca().set_ylim([ymin,ymax])
+    plt.ylim((0,100))
+
+    #plt.show()
+    plt.gcf().subplots_adjust(bottom=0.15) # allows xticklabels to fit into the borders of the plot
+    plt.gcf().set_size_inches(19.5,10.5)  # resize the plot to make it pretty
+
+    plt.savefig(save,dpi=300)
+    plt.close()
+
+
 
 
 # Is the data already generated?
@@ -9,9 +106,9 @@ from operator import itemgetter, attrgetter
     # Yes: then load it
 try:
 
-    f = open( './bitscoreVecs.p' )
+    f = open( './bitscoreVecs_bitscoreVecs_noZeros.p' )
     print 'Loading bitscoreVecs data structure, please wait a dozen or so seconds...'
-    bitscoreVecs = pickle.load( f )
+    bitscoreVecs,bitscoreVecs_noZeros = pickle.load( f )
     f.close()
 
     # No: then generate it
@@ -151,23 +248,45 @@ except IOError as detail:
         ########################    
 
     bitscoreVecs = []
+    bitscoreVecs_noZeros = []
 
     for mz in mzTF_to_bitscoreVec.keys():
 
-        vec = mzTF_to_bitscoreVec[mz]
+        vec         = mzTF_to_bitscoreVec[mz]
 
-        ag = mz_to_ag[mz]
+        vec_noZeros = [i for i in vec if i != 0] # 0s removed as they artificially mean "this OG is not present in this species"
+        
+        ag          = mz_to_ag[mz]
 
-        bitscoreVecs.append((mz,vec,np.mean(vec),ag))
+        nTfs        = len(vec)
+        
+        nTfs_noZeros= len(vec_noZeros)
+
+        bitscoreVecs.append([mz,vec,np.mean(vec),ag,nTfs_noZeros])
+        bitscoreVecs_noZeros.append([mz,vec_noZeros,np.mean(vec_noZeros),ag,nTfs_noZeros])
+
+        ################################
+        # Finishing touches to the data
+        ################################
+
+    # sort the vectors by their means 
+    bitscoreVecs = sorted(bitscoreVecs, key=itemgetter(2), reverse = True)  # sort bitscoreVecs by their means
+    #   note: bitscoreVec[0] = [ mz, vec, np.mean(vec), ag ]
+    bitscoreVecs_noZeros = sorted(bitscoreVecs_noZeros, key=itemgetter(2), reverse = True)  # sort bitscoreVecs by their means
+    # # purge out all 0s from the bitscore vectors <= since 0s are artificially introduced, they mean "this OG is not present in this species"
+    # for vec in bitscoreVecs:
+    #     bitscoreVec = vec[1]
+    #     if 0 in bitscoreVec:
+    #         vec[1].remove(0)        # e.g. vec[1] = [0,0.95,0.2,0,0,0,...] # %identity vector
+
 
         ##############
         # Pickle data
         ##############
+    bitscoreVecs_bitscoreVecs_noZeros = [bitscoreVecs,bitscoreVecs_noZeros]
 
-    bitscoreVecs = sorted(bitscoreVecs, key=itemgetter(2), reverse = True)  # sort bitscoreVecs by their means
-
-    f = open('bitscoreVecs.p','wb')
-    pickle.dump(bitscoreVecs,f)
+    f = open('bitscoreVecs_bitscoreVecs_noZeros.p','wb')
+    pickle.dump(bitscoreVecs_bitscoreVecs_noZeros,f)
     f.close()
 
 
@@ -178,55 +297,26 @@ except IOError as detail:
 #######################
 # Plots
 #######################
+# Key:
+# bitscoreVecs[0][0] # mz
+# bitscoreVecs[0][1] # vec
+# bitscoreVecs[0][2] # mean
+# bitscoreVecs[0][3] # vec_noZeros
+# bitscoreVecs[0][4] # nTfs
 
 
-data_a      = [vec for (mz,vec,mean,ag) in bitscoreVecs]
-labels_a    = [ag for (mz,vec,mean,ag) in bitscoreVecs]
+# NOTE: bitscoreVecs and bitscoreVecs_noZeros are obtained by line: CTRL+F: "bitscoreVecs,bitscoreVecs_noZeros = pickle.load( f )"
 
-def set_box_color(bp, color):
-    plt.setp(bp['boxes'], color=color)
-    plt.setp(bp['whiskers'], color=color)
-    plt.setp(bp['caps'], color=color)
-    plt.setp(bp['medians'], color=color)
+data1_wZeros   = [vec for (mz,vec,mean,ag,nTfs) in bitscoreVecs]
+data2_wZeros   = [nTfs for (mz,vec,mean,ag,nTfs) in bitscoreVecs]
+labels_wZeros  = [ag for (mz,vec,mean,ag,nTfs) in bitscoreVecs]
+save_wZeros    = './boxcompare_TF_AGAP_OG_percId_wZeors.png'
+boxplot_tfs(data1_wZeros,data2_wZeros,labels_wZeros,save_wZeros)
 
-plt.figure()
 
-bpl = plt.boxplot(data_a, positions=np.array(xrange(len(data_a)))*2.0-0.4, sym='', widths=0.6)
-
-#bpr = plt.boxplot(data_b, positions=np.array(xrange(len(data_b)))*2.0+0.4, sym='', widths=0.6)
-set_box_color(bpl, '#D7191C') # colors are from http://colorbrewer2.org/
-#set_box_color(bpr, '#2C7BB6')
-
-# draw temporary red and blue lines and use them to create a legend
-#plt.plot([], c='#D7191C', label='Apples')
-plt.plot([], c='#D7191C')
-plt.xlabel('Transcription Factor (VB Gene Id)')
-plt.ylabel('AA sequence similarities within OG (biscore)')
-plt.title('Comparing AA sequence similarities within various Transcription Factor OGs')
-
-# x tick labels changed to AGAP ids 
-locs, labels    = plt.xticks()
-plt.xticks(locs, labels_a)
-plt.xticks(rotation=90)
-
-#plt.xticks(xrange(0, len(ticks) * 2, 2), ticks)
-#plt.xlim(-2, len(ticks)*2)
-#plt.ylim(0, 8)
-#plt.tight_layout()
-
-#plt.rcParams['figure.subplot.hspace']=0.9
-#plt.rcParams['figure.figsize']=[-20,20]
-
-#plt.savefig('./boxcompare.png')
-
-plt.gcf().subplots_adjust(bottom=10)
-
-plt.show()
-
-fig = plt.gcf() # get current figure (?)
-fig.set_size_inches(19.5,15.5)
-fig.savefig('./boxcompare.png',dpi=300)
-
-plt.close()
-
+data1       = [vec for (mz,vec,mean,ag,nTfs) in bitscoreVecs_noZeros]
+data2       = [nTfs for (mz,vec,mean,ag,nTfs) in bitscoreVecs_noZeros]
+labels      = [ag for (mz,vec,mean,ag,nTfs) in bitscoreVecs_noZeros]
+save        = './boxcompare_TF_AGAP_OG_percId_noZeors.png'
+boxplot_tfs(data1,data2,labels,save)
 
