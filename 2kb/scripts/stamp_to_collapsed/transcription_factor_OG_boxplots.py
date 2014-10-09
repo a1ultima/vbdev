@@ -45,7 +45,7 @@ def boxplot_tfs(data1,data2,labels,save):
     plt.xticks(locs, labels)
     plt.xticks(rotation=90)
 
-    plt.ylim((0,800))
+    #plt.ylim((0,800))
 
     ################################################
     # Second Y-axis: Boxplots of %id OG TFs
@@ -89,7 +89,7 @@ def boxplot_tfs(data1,data2,labels,save):
 
     #plt.gca().set_xlim([xmin,xmax])
     #plt.gca().set_ylim([ymin,ymax])
-    plt.ylim((0,100))
+    #plt.ylim((0,100))
 
     #plt.show()
     plt.gcf().subplots_adjust(bottom=0.15) # allows xticklabels to fit into the borders of the plot
@@ -98,8 +98,14 @@ def boxplot_tfs(data1,data2,labels,save):
     plt.savefig(save,dpi=300)
     plt.close()
 
+################################################################################################
+#
+#   Main Script 
+#
+################################################################################################
 
 
+paralogues = True  # a switch that determines whether OGs that are plotted should contain paralogues or not
 
 # Is the data already generated?
 
@@ -157,13 +163,23 @@ except IOError as detail:
     ###############################################################
 
 
-    transcription_factor_mzIds_with_no_paralogues = []
 
-    pclist=[]
+    transcription_factor_mzIds_with_no_paralogues = []  # "no paralogues": OGs cannot contain paralogues
+
+    mz_to_pc = {}
+
+    pclist = []
 
     fi = open(ParalogCount_path,'r')
+
+    line    = fi.readline()     # first line are headers to species
+    row     = line.split(',')
+    species = [j.replace('\r\n','') for j in row]
+
     while True:
+
         line = fi.readline()
+        
         if line == '':
             break
 
@@ -171,27 +187,28 @@ except IOError as detail:
         mz      = row[0]
         pcounts = row[1:]
 
-        try:
-            pc = [int(i.replace('\r\n','')) for i in pcounts]
-            pclist.append(pc)
+        pc = [int(i.replace('\r\n','')) for i in pcounts]
+        pclist.append(pc)
 
+        mz_to_pc[mz] = pc
 
-            #######################################
-            # IS THE OG A TRANSCRIPTION FACTOR? ..#
-            #######################################
+        #######################################
+        # IS THE OG A TRANSCRIPTION FACTOR? ..#
+        #######################################
 
-            if mz in transcription_factor_mzIds:
+        if mz in transcription_factor_mzIds:
 
-                #########################################
-                # ARE THERE NO PARALOGUES IN THIS OG? ..#
-                #########################################
+            #########################################
+            # ARE THERE NO PARALOGUES IN THIS OG? ..#
+            #########################################
 
-                if not len([i for i in pc if i >1])>0: # any of the genes in the OG has paralogues (i.e. if any elements are >1)
-                    transcription_factor_mzIds_with_no_paralogues.append(mz) #..then list it!
+            # "NO PARALOGUES":
+            if not len([i for i in pc if i >1])>0: # any of the genes in the OG has paralogues (i.e. if any elements are >1)
+                transcription_factor_mzIds_with_no_paralogues.append(mz) #..then list it!
 
-        except ValueError: 
-            species = [j.replace('\r\n','') for j in pcounts]
-
+            # # "WITH PARALOGUES":
+            # else: 
+            #     transcription_factor_mzIds_with_paralogues.append(mz)
     fi.close()
 
 
@@ -225,7 +242,6 @@ except IOError as detail:
         if line == '':
             break
 
-        #mz_to_bitscoreVec[mzId] = np.array(bitscores) # key:value 
         mz_to_bitscoreVec[mzId] = bitscores # key:value 
 
     fi.close()
@@ -258,12 +274,12 @@ except IOError as detail:
         
         ag          = mz_to_ag[mz]
 
-        nTfs        = len(vec)
+        pc = mz_to_pc[mz]
         
-        nTfs_noZeros= len(vec_noZeros)
+        nTfs = len([i for i in pc if i>=1])
 
-        bitscoreVecs.append([mz,vec,np.mean(vec),ag,nTfs_noZeros])
-        bitscoreVecs_noZeros.append([mz,vec_noZeros,np.mean(vec_noZeros),ag,nTfs_noZeros])
+        bitscoreVecs.append([mz,vec,np.mean(vec),ag,nTfs])
+        bitscoreVecs_noZeros.append([mz,vec_noZeros,np.mean(vec_noZeros),ag,nTfs])
 
         ################################
         # Finishing touches to the data
