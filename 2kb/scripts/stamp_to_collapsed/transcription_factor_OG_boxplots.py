@@ -67,7 +67,7 @@ def boxplot_tfs(data1,data2,labels,save):
     # draw temporary red and blue lines and use them to create a legend
     ax2.plot([], c='#D7191C')
     plt.xlabel('Transcription Factor OG (VB Gene Id)')
-    plt.ylabel('AA sequence similarity within OG (%\id)')
+    plt.ylabel('AA sequence similarity within OG (%id)')
     plt.title('Comparing AA sequence similarities within various Transcription Factor OGs')
 
     # plt.plot([], c='#D7191C')
