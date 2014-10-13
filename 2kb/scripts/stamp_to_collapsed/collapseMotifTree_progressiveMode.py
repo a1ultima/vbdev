@@ -674,6 +674,150 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
 
     """
 
+
+
+    #----------------------------
+
+
+
+
+
+
+
+    def fraction_of_motifs_matching_to_jaspar( match_significance, blacklist ):
+
+        """
+
+        Returns the fraction of motifs in the blacklist with a match in JASPAR for a given p-value threshold that defines what constitues a match. If the p-value of a match is 0.05 then the fraction is calculated by the number of motifs in the blacklist with at least one JASPAR match whose p-value is less than the threshold.
+
+        """
+
+        n_jaspar_matched_motifs = 0 
+
+        for c,d in blacklist:
+
+            if cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['data']['jaspar']['stats']['<=p'][match_significance]>0:
+                n_jaspar_matched_motifs += 1
+
+        try:
+            fraction_of_motifs_matched = float(n_jaspar_matched_motifs)/len(blacklist)
+        except ZeroDivisionError:
+            fraction_of_motifs_matched = 0 # ANDY: sometimes len(blacklist) = 0, for now I deal with this by making JASPAR statistic = 0
+
+        return fraction_of_motifs_matched
+
+
+
+
+    #-----------------------------
+
+
+
+
+    ###################################################################
+    # Store JASPAR matches per motif of a collpased motif cluster c,d
+    ###################################################################
+
+
+    for c,d in blacklist: # e.g. c047_n007_CATTGGGCG, 0.29799999999999999
+
+        # Opportunistic corrections to cluster_to_stats
+        cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['path']['jaspar'] = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['path']['jaspar'].replace('paris','pairs')
+        cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['data']['jaspar'] = {'matches':{},'stats':{}} # represents matches made per motif of the collapsed motif cluster
+
+
+        cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['data']['jaspar']['stats']['n_total'] = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['motif']['n']
+        cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['data']['jaspar']['stats']['n_queries'] = 0
+
+
+        # access *_match_pairs.txt file
+        path    = '../'+cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['path']['jaspar'] # e.g. '../../data/stamp_data/out/dreme_100bp_e0.05/SWU_SSD/cluster_motifs_d0.298/family_binding_matrices/c047_n007_CATTGGGCG_match_pairs.txt'
+        fi      = open(path,'r')
+
+        # initiate
+        matches     = []
+        query       = []
+        
+
+        while True:
+
+            line = fi.readline() # e.g. Snail   5.7055e-01  CCGCCACTG   ---CACCTG
+
+            if line == '':
+                break
+
+            if '>' in line: # e.g. >   AAEG_GTKTAGTGA
+                # STORE QUERY:[MATCH1,MATCH2,...]
+                cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['data']['jaspar']['stats']['n_queries'] += 1 # update counting of queries with matches
+                if matches:
+                    cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['data']['jaspar']['matches'][query] = matches
+                # RESET QUERY:MATCHES
+                query   = line.rstrip().split('\t')[1] # e.g. AAEG_GTKTAGTGA
+                matches = []
+            else:
+                split_line      = line.rstrip().split('\t')
+                match_name      = split_line[0] # e.g. Myf
+                match_pvalue    = float(split_line[1]) # e.g. 2.9990e-01
+                match_qseq      = split_line[2] # e.g. CCGCCACTG---
+                match_mseq      = split_line[3] # e.g. MRGCARCTGCTG
+                matches.append([match_name,match_pvalue,match_qseq,match_mseq]) # e.g. ['Myf',2.9990e-01,'CCGCCACTG---','MRGCARCTGCTG']
+
+        fi.close()
+
+
+
+    #########################################################################################################################
+    # Count the number of query motifs with a p-value <= p-value threshold to each (c,d), for various p-value thresholds
+    ##########################################################################################################################
+
+
+    p_thresh_vec = [0.05,0.01,0.001] # significance thresholds: 0.05, 0.01, 0.001
+
+    for c,d, in blacklist:
+
+        cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['data']['jaspar']['stats']['<=p'] = {}
+
+        for p_thresh in p_thresh_vec:
+
+            p_thresh_n_match    = 0
+
+            for query in cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['data']['jaspar']['matches'].keys():
+
+                matches             = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['data']['jaspar']['matches'][query]
+
+                p_thresh_matches    = [] # number of queries with at least one match
+
+                for match in matches:
+                    
+                    pvalue  = match[1]
+
+                    if pvalue <= p_thresh:
+                        
+                        p_thresh_matches.append(match)
+
+                if p_thresh_matches: # if there are any matches with p-values <= p-value threshold, then +1 
+
+                    p_thresh_n_match += 1
+
+            cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['data']['jaspar']['stats']['<=p'][p_thresh] = p_thresh_n_match
+
+
+    #
+    # JASPAR STATISTIC for significance thresholds: 0.05, 0.01, 0.001  
+    # 
+
+    jaspar_statistics=[]
+
+    for match_significance in p_thresh_vec:
+
+        jaspar_statistic = fraction_of_motifs_matching_to_jaspar( match_significance, blacklist )
+
+        jaspar_statistics.append(str(jaspar_statistic)+' (matches p-value<='+str(match_significance)+')')
+
+
+
+
+
     fo = open(outDirPath+'full_summary_statistics.txt','w')
 
 
@@ -689,6 +833,13 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
     fo.write('\tMean Entropy: '+str(H_mean)+'\n')
     fo.write('\tMean Number of Species: '+str(S_mean)+'\n')
     fo.write('\tNumber of Clusters: '+str(len(blacklist))+'\n')
+    fo.write('\n\n')
+
+    fo.write('_________________________________\n')
+    fo.write('JASPAR STATISTICS (the fraction of motifs in blacklist with matches to JASPAR): \n')
+    fo.write('_________________________________\n')
+    for jaspar_statistic in jaspar_statistics:
+        fo.write('\t'+jaspar_statistic+'\n')
     fo.write('\n\n')
 
     dipteran_clusters   = clade_groups[0]
@@ -715,7 +866,7 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
     fo.write('Names of putative motifs (collapsed clusters of dreme motifs) grouped by:\n\n')
 
     fo.write('all:\n')
-    fo.write('<VB Name> \t <Old Name> \t <Group> \t <Entropy> \t <nspecies> \t <nparalogues>\n') # headers to indicate format of motif names
+    fo.write('<VB Name> \t <Old Name> \t <Group> \t <Entropy> \t <nspecies> \t <nparalogues> \t <avglength>\n') # headers to indicate format of motif names
 
     for c,d in blacklist:
 
@@ -736,7 +887,9 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
 
         nparalogues = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['species']['unique']['n_paralogue']
 
-        fo.write(vbname+'\t'+c+'_d'+str(d)+'\t'+str(group)+'\t'+str(entropy)+'\t'+str(nspecies)+'\t'+str(nparalogues)+'\n') # e.g. MM10001_CAKTGGCGG_CCGCCAMTG_M   c047_n007_CATTGGGCG_d0.298
+        avglength   = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['motif']['avg_length']
+
+        fo.write(vbname+'\t'+c+'_d'+str(d)+'\t'+str(group)+'\t'+str(entropy)+'\t'+str(nspecies)+'\t'+str(nparalogues)+'\t'+str(avglength)+'\n') # e.g. MM10001_CAKTGGCGG_CCGCCAMTG_M   c047_n007_CATTGGGCG_d0.298
 
     fo.write('\n\n')
 
@@ -822,7 +975,9 @@ def rename_blacklist( blacklist, cluster_to_stats, e = 0.05, version = 1 ):
         # Grab the 'bob_clade' label, e.g. 'D' for dipteran, 'M' for mosquito, etc.
         bob_clade_symbol = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['bob_clade']
 
-        vbname = 'MM'+str(version)+str(n+1).zfill(4)+'_'+seq+'_'+rc+'_'+str(bob_clade_symbol) # e.g. MM10001_CTGATGGNC_GNCCATCAG_D   ^ @pad 0s to the left to have 4 digits, e.g. 0001 and 0111, etc. so that we have a max of 9999 motifs we can use, keeping motif names at controlled numbering width.
+        # vbname = 'MM'+str(version)+str(n+1).zfill(4)+'_'+seq+'_'+rc+'_'+str(bob_clade_symbol) # e.g. MM10001_CTGATGGNC_GNCCATCAG_D
+
+        vbname = 'MM'+str(version)+str(n+1).zfill(4)+'_'+seq+'_'+rc # e.g. MM10001_CTGATGGNC_GNCCATCAG ^ @pad 0s to the left to have 4 digits, e.g. 0001 and 0111, etc. so that we have a max of 9999 motifs we can use, keeping motif names at controlled numbering width.
         #                           ^ n+1 to ensure indexing starts from 1 (not 0)
 
         # incorporate into @dict_1
@@ -849,6 +1004,10 @@ def blacklist_then_summaryStats_S_and_H_combos( S_from, S_to, S_step , H_from, H
     Usage:
 
         blacklist_then_summaryStats_S_and_H_combos( S_from = 1, S_to = 21, S_step = 1, H_from = 1, H_to = 30, H_step = 1, e = 0.05)
+
+    Tags:
+
+        @combo
 
     """
 
@@ -939,9 +1098,7 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, ent
     clade_groups = clade_group_data[:-1]    # dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters
     cluster_to_stats = clade_group_data[-1] # cluster_to_stats // note: this has been modified now to allow referencing to the clade groupings explicitly via cluster_to_stats, e.g. cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['bob_clade'] = 'D'     }- where 'D' means dipteran
 
-
     cd_to_vbname = rename_blacklist( blacklist, cluster_to_stats, e=e, version = 1 ) # dictionary: converts a blacklisted motif cluster (c,d) into a vectorbase name e.g. of usage: vbname = cd_to_vbname[(c,d)] // e.g. of vbname = 'MM10119_CGATGCGAT_ATCGCATCG' // general format: MM<version><id, e.g. 0001>_<STAMP ambiguity seq>_<reverse complement>..
-
 
     i_TO_clade = {0:'dipteran',1:'mosquito',2:'anopheles',3:'gambiae'}
     
@@ -982,6 +1139,7 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, ent
 
 
 #---------------------------------------------------------
+
 
 
 
