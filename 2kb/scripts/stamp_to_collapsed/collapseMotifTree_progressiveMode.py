@@ -674,16 +674,6 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
 
     """
 
-
-
-    #----------------------------
-
-
-
-
-
-
-
     def fraction_of_motifs_matching_to_jaspar( match_significance, blacklist ):
 
         """
@@ -707,17 +697,9 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
         return fraction_of_motifs_matched
 
 
-
-
-    #-----------------------------
-
-
-
-
     ###################################################################
     # Store JASPAR matches per motif of a collpased motif cluster c,d
     ###################################################################
-
 
     for c,d in blacklist: # e.g. c047_n007_CATTGGGCG, 0.29799999999999999
 
@@ -821,7 +803,6 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
     fo = open(outDirPath+'full_summary_statistics.txt','w')
 
 
-
     # SUMMARY STATISTICS 
 
     H_mean = summary[0]
@@ -875,18 +856,14 @@ def generate_summary_statistics_file(species_threshold, entropy_threshold, outDi
         ###########################
 
         vbname      = cd_to_vbname[(c,d)] # e.g. MM10001_CAKTGGCGG_CCGCCAMTG_M
-
         group       = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['bob_clade']
-
         entropy     = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['cluster']['H']
 
         if str(entropy) == '-0': # for some reason, some entropies are: '-0' ... so we correct it
             entropy = 0.0
 
         nspecies    = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['species']['unique']['n_unique']
-
         nparalogues = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['species']['unique']['n_paralogue']
-
         avglength   = cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['motif']['avg_length']
 
         fo.write(vbname+'\t'+c+'_d'+str(d)+'\t'+str(group)+'\t'+str(entropy)+'\t'+str(nspecies)+'\t'+str(nparalogues)+'\t'+str(avglength)+'\n') # e.g. MM10001_CAKTGGCGG_CCGCCAMTG_M   c047_n007_CATTGGGCG_d0.298
@@ -1095,12 +1072,15 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, ent
     
     clade_group_data = blacklist_to_clades( blacklist, cluster_to_stats, e ) # dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters, cluster_to_stats
 
-    clade_groups = clade_group_data[:-1]    # dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters
+    clade_groups = clade_group_data[:-1]# dipteran_clusters, mosquito_clusters, anopheles_clusters, gambiae_clusters
+    
+    clade_groups_with_all = list(clade_groups) + [blacklist]  # append the whole blacklist so we can use it as "all"
+
     cluster_to_stats = clade_group_data[-1] # cluster_to_stats // note: this has been modified now to allow referencing to the clade groupings explicitly via cluster_to_stats, e.g. cluster_to_stats['e'+str(e)+'_d'+str(d)][c]['bob_clade'] = 'D'     }- where 'D' means dipteran
 
     cd_to_vbname = rename_blacklist( blacklist, cluster_to_stats, e=e, version = 1 ) # dictionary: converts a blacklisted motif cluster (c,d) into a vectorbase name e.g. of usage: vbname = cd_to_vbname[(c,d)] // e.g. of vbname = 'MM10119_CGATGCGAT_ATCGCATCG' // general format: MM<version><id, e.g. 0001>_<STAMP ambiguity seq>_<reverse complement>..
 
-    i_TO_clade = {0:'dipteran',1:'mosquito',2:'anopheles',3:'gambiae'}
+    i_TO_clade = {0:'dipteran',1:'mosquito',2:'anopheles',3:'gambiae',4:'all'}
     
     print 'Generating MEME output data per clade, apply TOMTOM on these...\n'
 
@@ -1117,7 +1097,7 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, ent
 
     generate_summary_statistics_file(species_threshold, entropy_threshold, outdir, summary, blacklist, clade_groups, cd_to_vbname, cluster_to_stats, e=e) # Generates a file with verbose summary statistics
 
-    for i,blacklist_clade in enumerate(clade_groups):
+    for i,blacklist_clade in enumerate(clade_groups_with_all):
         clade = i_TO_clade[i]
         print '\t'+clade
         
@@ -1130,6 +1110,7 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, ent
         make_meme_output(blacklist_clade,outpath, cd_to_vbname, e) # generate the meme FBP data
 
     return blacklist, summary, clade_groups, cluster_to_stats, cd_to_vbname
+
 
 
 #---------------------------------------------------------
