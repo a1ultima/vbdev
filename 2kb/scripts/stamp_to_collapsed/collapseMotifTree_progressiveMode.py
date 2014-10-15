@@ -1105,7 +1105,7 @@ def blacklist_then_summaryStats_from_shell( e = 0.05, species_threshold = 3, ent
 
         # TODO: <some function that generates the list of blacklisted motif cluster names + four other lists of cluster names: one per bobainian clade group>
 
-        outpath = outdir+clade+'_blacklisted_meme_format.txt'
+        outpath = outdir+clade+'_meme_format.txt'
 
         make_meme_output(blacklist_clade,outpath, cd_to_vbname, e) # generate the meme FBP data
 
