@@ -11,11 +11,13 @@ def boxplot_tfs(data1,data2,labels,save):
 
     Description:
 
-    ...
+        Generate side-by side boxplots for comparison + a scatter plot (dots aligned with boxplots), two y-axes are generated.
 
     Arguments: 
 
-    ...
+        data1       # list of lists, where each nested list is a vetor that is input for a boxplot 
+        data2       # list of y-axis ticks for a scatterplot 
+        labels      # 
 
     Usage:
 
@@ -35,15 +37,21 @@ def boxplot_tfs(data1,data2,labels,save):
 
     ax = f.add_subplot(111) # plotting the first y-axis to the left: TF counts
 
+    #ax.yaxis.tick_right()
+
     ax.scatter(positions,np.array(data2),color='b') # using the x-axis ticks as individual TF AGAPs
+
+    ax.yaxis.tick_right()
 
     plt.xlabel('Transcription Factor OG (VB Gene Id)')
     plt.ylabel('Number of Transcription Factors in OG')
 
         # Organise Tick Labels:      x tick labels changed to AGAP ids 
-    locs, dlabels    = plt.xticks()
-    plt.xticks(locs, labels)
+    # locs, dlabels    = plt.xticks()
+    # plt.xticks(locs, labels)
     plt.xticks(rotation=90)
+
+    ax.yaxis.tick_right()
 
     #plt.ylim((0,800))
 
@@ -52,6 +60,8 @@ def boxplot_tfs(data1,data2,labels,save):
     ################################################
 
     ax2 = ax.twinx() # second y-axis
+
+    #ax2.yaxis.tick_left()
 
     def set_box_color(bp, color):
         plt.setp(bp['boxes'], color=color)
@@ -70,15 +80,10 @@ def boxplot_tfs(data1,data2,labels,save):
     plt.ylabel('AA sequence similarity within OG (%id)')
     plt.title('Comparing AA sequence similarities within various Transcription Factor OGs')
 
-    # plt.plot([], c='#D7191C')
-    # plt.xlabel('Transcription Factor (VB Gene Id)')
-    # plt.ylabel('AA sequence similarities within OG (biscore)')
-    # plt.title('Comparing AA sequence similarities within various Transcription Factor OGs')
-
     # x tick labels changed to AGAP ids 
     locs, dlabels    = plt.xticks()
     plt.xticks(locs, labels)
-    
+
     #plt.xticks(rotation=90) # @ANDY
     plt.xticks(rotation=90) # @ANDY
 
@@ -98,6 +103,8 @@ def boxplot_tfs(data1,data2,labels,save):
     plt.savefig(save,dpi=300)
     plt.close()
 
+    return locs, dlabels
+
 ################################################################################################
 #
 #   Main Script 
@@ -112,7 +119,7 @@ paralogues = True  # a switch that determines whether OGs that are plotted shoul
     # Yes: then load it
 try:
 
-    f = open( './bitscoreVecs_bitscoreVecs_noZeros.p' )
+    f = open( './data_in_transcription_factor_OG_boxplots.p' )
     print 'Loading bitscoreVecs data structure, please wait a dozen or so seconds...'
     bitscoreVecs,bitscoreVecs_noZeros = pickle.load( f )
     f.close()
@@ -122,7 +129,6 @@ except IOError as detail:
 
     print detail 
     # found transcription factor Anopheles gambiae gene ids using Biomart, filtered with Go term: 
-
     transcription_factor_agIds = ['AGAP000114','AGAP010777','AGAP010777','AGAP008935','AGAP008935','AGAP004693','AGAP004693','AGAP004696','AGAP004696','AGAP005010','AGAP005010','AGAP005011','AGAP005011','AGAP005041','AGAP005041','AGAP005096','AGAP005096','AGAP005099','AGAP005099','AGAP005137','AGAP005137','AGAP005138','AGAP005138','AGAP005300','AGAP005300','AGAP005300','AGAP005300','AGAP005300','AGAP005300','AGAP005311','AGAP005311','AGAP005346','AGAP005346','AGAP005362','AGAP005362','AGAP005437','AGAP005437','AGAP005878','AGAP005878','AGAP005878','AGAP005878','AGAP005655','AGAP005655','AGAP005661','AGAP005661','AGAP005661','AGAP005661','AGAP005711','AGAP005711','AGAP005719','AGAP005719','AGAP005727','AGAP005727','AGAP005755','AGAP005755','AGAP005755','AGAP005755','AGAP005804','AGAP005804','AGAP005895','AGAP005895','AGAP005896','AGAP005896','AGAP005902','AGAP005902','AGAP005903','AGAP005903','AGAP005903','AGAP005903','AGAP006376','AGAP006376','AGAP006376','AGAP006376','AGAP006386','AGAP006386','AGAP006386','AGAP006386','AGAP007035','AGAP006536','AGAP006536','AGAP006537','AGAP006537','AGAP006540','AGAP006540','AGAP006571','AGAP006571','AGAP006642','AGAP006642','AGAP006747','AGAP006747','AGAP006786','AGAP006786','AGAP006923','AGAP006923','AGAP007018','AGAP007018','AGAP007058','AGAP007058','AGAP007170','AGAP007170','AGAP007171','AGAP007171','AGAP007327','AGAP007327','AGAP007327','AGAP007327','AGAP007376','AGAP007376','AGAP007539','AGAP007539','AGAP001187','AGAP001187','AGAP001880','AGAP001880','AGAP013075','AGAP013075','AGAP001978','AGAP001978','AGAP013178','AGAP013178','AGAP002035','AGAP002035','AGAP002095','AGAP002095','AGAP002095','AGAP002095','AGAP002095','AGAP002095','AGAP002095','AGAP002095','AGAP002155','AGAP002155','AGAP002155','AGAP002155','AGAP002172','AGAP002172','AGAP002178','AGAP002178','AGAP002234','AGAP002234','AGAP002235','AGAP002235','AGAP002238','AGAP002238','AGAP002238','AGAP002238','AGAP002236','AGAP002236','AGAP001269','AGAP001269','AGAP001269','AGAP001269','AGAP002352','AGAP002352','AGAP002352','AGAP002352','AGAP002372','AGAP002372','AGAP002431','AGAP002431','AGAP002460','AGAP002460','AGAP013297','AGAP013297','AGAP002506','AGAP002506','AGAP002544','AGAP002544','AGAP002544','AGAP002544','AGAP002487','AGAP002487','AGAP002741','AGAP002741','AGAP002902','AGAP002902','AGAP002903','AGAP002903','AGAP013394','AGAP001348','AGAP001348','AGAP001344','AGAP001344','AGAP003406','AGAP003406','AGAP013485','AGAP013485','AGAP013299','AGAP013299','AGAP003574','AGAP003574','AGAP001389','AGAP001389','AGAP001388','AGAP001388','AGAP003669','AGAP003669','AGAP003670','AGAP003670','AGAP003671','AGAP003671','AGAP003672','AGAP003672','AGAP003674','AGAP003674','AGAP003726','AGAP003726','AGAP003871','AGAP003871','AGAP003871','AGAP003871','AGAP003940','AGAP003940','AGAP013032','AGAP013032','AGAP004050','AGAP004050','AGAP004050','AGAP004050','AGAP004050','AGAP004050','AGAP004050','AGAP004050','AGAP004050','AGAP004050','AGAP004178','AGAP004178','AGAP004224','AGAP004224','AGAP004228','AGAP004228','AGAP001483','AGAP001483','AGAP001464','AGAP001464','AGAP001464','AGAP001464','AGAP004319','AGAP004319','AGAP004341','AGAP004341','AGAP004337','AGAP004337','AGAP001495','AGAP001495','AGAP004646','AGAP004646','AGAP004647','AGAP004647','AGAP004648','AGAP004648','AGAP004649','AGAP004649','AGAP004659','AGAP004659','AGAP013157','AGAP013157','AGAP004660','AGAP004660','AGAP004660','AGAP004660','AGAP004661','AGAP004661','AGAP004661','AGAP004661','AGAP001536','AGAP001536','AGAP004664','AGAP004664','AGAP001560','AGAP001560','AGAP001577','AGAP001577','AGAP001593','AGAP001593','AGAP001619','AGAP001619','AGAP001618','AGAP001618','AGAP001671','AGAP001671','AGAP001743','AGAP001743','AGAP001761','AGAP001761','AGAP004662','AGAP004662','AGAP004662','AGAP004662','AGAP004662','AGAP004662','AGAP004541','AGAP004541','AGAP000569','AGAP000569','AGAP000569','AGAP000569','AGAP000067','AGAP000067','AGAP000068','AGAP000068','AGAP000069','AGAP000069','AGAP000662','AGAP000662','AGAP000662','AGAP000662','AGAP000662','AGAP000662','AGAP000773','AGAP000773','AGAP000779','AGAP000779','AGAP000779','AGAP000779','AGAP000819','AGAP000819','AGAP000858','AGAP000858','AGAP000874','AGAP000874','AGAP000875','AGAP000875','AGAP000114','AGAP000114','AGAP013373','AGAP013373','AGAP001093','AGAP001093','AGAP001094','AGAP001094','AGAP000190','AGAP000190','AGAP000215','AGAP000215','AGAP000237','AGAP000237','AGAP000431','AGAP000431','AGAP000061','AGAP000061','AGAP000063','AGAP000063','AGAP000058','AGAP000058','AGAP013275','AGAP013275','AGAP000441','AGAP000441','AGAP000484','AGAP000484','AGAP000488','AGAP000488','AGAP000512','AGAP000512','AGAP000512','AGAP000512','AGAP000528','AGAP000528','AGAP013287','AGAP013287','AGAP012976','AGAP012976','AGAP000099','AGAP000099','AGAP010623','AGAP010623','AGAP010686','AGAP010686','AGAP010777','AGAP010777','AGAP011038','AGAP011038','AGAP011065','AGAP011065','AGAP011067','AGAP011067','AGAP011082','AGAP011082','AGAP011096','AGAP011096','AGAP011134','AGAP011134','AGAP011143','AGAP011143','AGAP011253','AGAP011253','AGAP011417','AGAP011417','AGAP011548','AGAP011548','AGAP011695','AGAP011695','AGAP011711','AGAP011711','AGAP011712','AGAP011712','AGAP011927','AGAP011927','AGAP012211','AGAP012211','AGAP012222','AGAP012222','AGAP012223','AGAP012223','AGAP012303','AGAP012303','AGAP012345','AGAP012345','AGAP010423','AGAP010423','AGAP008606','AGAP008606','AGAP009494','AGAP009494','AGAP009500','AGAP009500','AGAP009513','AGAP009513','AGAP009515','AGAP009515','AGAP009575','AGAP009575','AGAP009646','AGAP009646','AGAP009676','AGAP009676','AGAP009748','AGAP009748','AGAP009777','AGAP009777','AGAP009807','AGAP009807','AGAP009890','AGAP009890','AGAP009986','AGAP009986','AGAP009986','AGAP009986','AGAP010030','AGAP010030','AGAP010044','AGAP010044','AGAP012428','AGAP012428','AGAP012461','AGAP012461','AGAP012501','AGAP012501','AGAP012600','AGAP012600','AGAP012873','AGAP012873','AGAP012921','AGAP012921','AGAP007767','AGAP007767','AGAP008155','AGAP008155','AGAP009400','AGAP009400','AGAP010209','AGAP010209','AGAP009399','AGAP007888','AGAP007985','AGAP007985','AGAP010279','AGAP010279','AGAP008023','AGAP008023','AGAP007801','AGAP009350','AGAP027996','AGAP008935','AGAP008935','AGAP009002','AGAP009002','AGAP009002','AGAP008416','AGAP008416','AGAP008382','AGAP008979','AGAP008567','AGAP008567','AGAP009064','AGAP009064','AGAP008334','AGAP008334','AGAP009088','AGAP009088','AGAP009302','AGAP008762','AGAP008762','AGAP008762','AGAP008551','AGAP008551','AGAP008569','AGAP008569','AGAP008728','AGAP008728','AGAP009147','AGAP009147','AGAP008832','AGAP008832','AGAP008025','AGAP008025','AGAP008563','AGAP008563','AGAP008868','AGAP008868','AGAP008980','AGAP008980','AGAP009293','AGAP009293','AGAP004619','AGAP004619','AGAP011339','AGAP010478','AGAP010438','AGAP004747','AGAP010358','AGAP011341','AGAP011341','AGAP010516','AGAP010359','AGAP011954','AGAP011954','AGAP011625','AGAP004745','AGAP010333','AGAP028080','AGAP028221','AGAP010405','AGAP010405','AGAP012001','AGAP028105','AGAP005281','AGAP010375','AGAP027992','AGAP002544','AGAP002544','AGAP002544','AGAP002544','AGAP012600','AGAP012600','AGAP008334','AGAP012211','AGAP012211','AGAP006571','AGAP006571','AGAP012223','AGAP012223','AGAP009002','AGAP009002','AGAP009002'] # agaps retrieved from BioMart with: filter1: Anopheles gambiae only, filter2: GO:0003700 
 
 
@@ -158,11 +164,10 @@ except IOError as detail:
     transcription_factor_mzIds = list(set(transcription_factor_mzIds)) # remove duplicates: 556 -> 221
 
 
+
     ###############################################################
     # Obtain OG ids (MZ........) that do not contain paralogues
     ###############################################################
-
-
 
     transcription_factor_mzIds_with_no_paralogues = []  # "no paralogues": OGs cannot contain paralogues
 
@@ -278,8 +283,8 @@ except IOError as detail:
         
         nTfs = len([i for i in pc if i>=1])
 
-        bitscoreVecs.append([mz,vec,np.mean(vec),ag,nTfs])
-        bitscoreVecs_noZeros.append([mz,vec_noZeros,np.mean(vec_noZeros),ag,nTfs])
+        bitscoreVecs.append([mz,vec,np.median(vec),ag,nTfs])                            # medians not means
+        bitscoreVecs_noZeros.append([mz,vec_noZeros,np.median(vec_noZeros),ag,nTfs])    # ^
 
         ################################
         # Finishing touches to the data
@@ -301,7 +306,7 @@ except IOError as detail:
         ##############
     bitscoreVecs_bitscoreVecs_noZeros = [bitscoreVecs,bitscoreVecs_noZeros]
 
-    f = open('bitscoreVecs_bitscoreVecs_noZeros.p','wb')
+    f = open('data_in_transcription_factor_OG_boxplots.p','wb')
     pickle.dump(bitscoreVecs_bitscoreVecs_noZeros,f)
     f.close()
 
@@ -327,12 +332,12 @@ data1_wZeros   = [vec for (mz,vec,mean,ag,nTfs) in bitscoreVecs]
 data2_wZeros   = [nTfs for (mz,vec,mean,ag,nTfs) in bitscoreVecs]
 labels_wZeros  = [ag for (mz,vec,mean,ag,nTfs) in bitscoreVecs]
 save_wZeros    = './boxcompare_TF_AGAP_OG_percId_wZeors.png'
-boxplot_tfs(data1_wZeros,data2_wZeros,labels_wZeros,save_wZeros)
+debug1 = boxplot_tfs(data1_wZeros,data2_wZeros,labels_wZeros,save_wZeros)
 
 
 data1       = [vec for (mz,vec,mean,ag,nTfs) in bitscoreVecs_noZeros]
 data2       = [nTfs for (mz,vec,mean,ag,nTfs) in bitscoreVecs_noZeros]
 labels      = [ag for (mz,vec,mean,ag,nTfs) in bitscoreVecs_noZeros]
 save        = './boxcompare_TF_AGAP_OG_percId_noZeors.png'
-boxplot_tfs(data1,data2,labels,save)
+debug2 = boxplot_tfs(data1,data2,labels,save)
 
