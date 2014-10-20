@@ -26,7 +26,7 @@ def boxplot_tfs(data1,data2,labels,save):
     """
 
 
-    positions = np.array(xrange(len(data1)))*2.0-0.4
+    positions = np.array(xrange(len(data1)))*2.0-0.4   # original
 
     f = plt.figure()
 
@@ -37,18 +37,27 @@ def boxplot_tfs(data1,data2,labels,save):
 
     ax = f.add_subplot(111) # plotting the first y-axis to the left: TF counts
 
-    #ax.yaxis.tick_right()
+    def set_box_color(bp, color):
+        plt.setp(bp['boxes'], color=color)
+        plt.setp(bp['whiskers'], color=color)
+        plt.setp(bp['caps'], color=color)
+        plt.setp(bp['medians'], color=color)
 
-    ax.scatter(positions,np.array(data2),color='b') # using the x-axis ticks as individual TF AGAPs
+    bpl = ax.boxplot(data1, positions=positions, sym='', widths=0.6)
 
-    ax.yaxis.tick_right()
+    plt.plot((min(positions), max(positions)), (70, 70), 'k-') # draw horiztonal line representing "AA %id inference threshold in Rob's cell paper: "http://www.sciencedirect.com/science/article/pii/S0092867414010368" ax_getylim() returns <<(0.0, 100.0)>> 
 
+    set_box_color(bpl, '#D7191C') # colors are from http://colorbrewer2.org/
+
+    # draw temporary red and blue lines and use them to create a legend
+    ax.plot([], c='#D7191C')
     plt.xlabel('Transcription Factor OG (VB Gene Id)')
-    plt.ylabel('Number of Transcription Factors in OG')
+    plt.ylabel('AA sequence similarity within OG (%id)')
+    plt.title('Comparing AA sequence similarities within various Transcription Factor OGs')
 
-        # Organise Tick Labels:      x tick labels changed to AGAP ids 
-    # locs, dlabels    = plt.xticks()
-    # plt.xticks(locs, labels)
+    # x tick labels changed to AGAP ids 
+    locs, dlabels    = plt.xticks() # @boxticks
+    plt.xticks(locs, labels)  
     plt.xticks(rotation=90)
 
     ax.yaxis.tick_right()
@@ -61,30 +70,12 @@ def boxplot_tfs(data1,data2,labels,save):
 
     ax2 = ax.twinx() # second y-axis
 
-    #ax2.yaxis.tick_left()
+    spl = ax2.scatter(positions,np.array(data2),color='b') # using the x-axis ticks as individual TF AGAPs
 
-    def set_box_color(bp, color):
-        plt.setp(bp['boxes'], color=color)
-        plt.setp(bp['whiskers'], color=color)
-        plt.setp(bp['caps'], color=color)
-        plt.setp(bp['medians'], color=color)
-
-    #bpl = plt.boxplot(data1, positions=positions, sym='', widths=0.6)
-    bpl = ax2.boxplot(data1, positions=positions, sym='', widths=0.6)
-
-    set_box_color(bpl, '#D7191C') # colors are from http://colorbrewer2.org/
-
-    # draw temporary red and blue lines and use them to create a legend
-    ax2.plot([], c='#D7191C')
     plt.xlabel('Transcription Factor OG (VB Gene Id)')
-    plt.ylabel('AA sequence similarity within OG (%id)')
-    plt.title('Comparing AA sequence similarities within various Transcription Factor OGs')
+    plt.ylabel('Number of Transcription Factors in OG')
 
-    # x tick labels changed to AGAP ids 
-    locs, dlabels    = plt.xticks()
-    plt.xticks(locs, labels)
-
-    #plt.xticks(rotation=90) # @ANDY
+    plt.xticks(locs, labels) # the forces the xticks to be consistent with the boxllot's y-axis see: ctrl+f: @boxticks
     plt.xticks(rotation=90) # @ANDY
 
 
@@ -92,9 +83,9 @@ def boxplot_tfs(data1,data2,labels,save):
     # Final Plot Configurations
     #############################
 
-    #plt.gca().set_xlim([xmin,xmax])
-    #plt.gca().set_ylim([ymin,ymax])
+    #plt.gca().set_ylim([xmin,xmax])
     #plt.ylim((0,100))
+    plt.gca().set_xlim([min(positions)-1,max(positions)+1]) # compacts the figure better, otherwise there are usually big white spaces padding the y-axes
 
     #plt.show()
     plt.gcf().subplots_adjust(bottom=0.15) # allows xticklabels to fit into the borders of the plot
@@ -103,7 +94,7 @@ def boxplot_tfs(data1,data2,labels,save):
     plt.savefig(save,dpi=300)
     plt.close()
 
-    return locs, dlabels
+    return locs, dlabels, ax2, spl, np.array(data2), positions, bpl, ax
 
 ################################################################################################
 #
