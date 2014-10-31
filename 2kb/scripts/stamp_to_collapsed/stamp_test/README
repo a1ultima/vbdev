@@ -1,0 +1,4 @@
+Description of workflow
+
+Collapse the all-species motif tree at a given distance (collapse_biostart_v<date>_cutCollapseStamp_v<version_number>...) then generate motif statistics (motifStatistics_v<date>_iterateEandD_v<version_number>...)
+
