@@ -1,0 +1,30 @@
+Related to 
+
+	Jira Ticket/s:
+
+		https://www.ebi.ac.uk/panda/jira/browse/VB-1845
+		https://www.ebi.ac.uk/panda/jira/browse/VB-2088
+			
+Work Log (google doc) 
+
+	https://docs.google.com/document/d/1f2t6rSccADmgAG-E03EbYRmyFe_x-qYiGgARjgvyEvU/edit#
+
+
+README for separate scripts:
+
+README: ./scripts/stocktraitsGenotypes.py
+
+Description:
+
+    Converts raw data of inversion karyotypes for 2L and 2R available in "Stock traits for Vectorbase continued.xlsx" from https://www.ebi.ac.uk/panda/jira/browse/VB-2088 into ISA-Tab friendly format. The relevant region of the .xlsx is: columns D:F, rows 2:23. These are copied from the .xlsx formatted into python list, then pasted into this script: CTRL+F: "@paste"
+
+    Example of desired format for entry in g_karyotypes.txt ISA-Tab format is found in the Neafsey ISA-Tab: https://docs.google.com/spreadsheet/ccc?key=0AiHJk7ao3qFUdEpWM2NYWWhZa0tmaDlyWll3MUpITGc&usp=sheets_web#gid=8    
+
+Usage:
+
+    From shell: 
+
+        cd /home/ab108/0VB/isatab/MR4/scripts/
+
+        python ./stocktraitsGenotypes.py > ../data/g_karyotypes.txt
+

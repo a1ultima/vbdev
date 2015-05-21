@@ -1,0 +1,17 @@
+<MAP.40396	MAP.40396.collection		light trap				-06/-09	Turkey	GAZ	00000558	37.031	38.001
+
+<MAP.40398	MAP.40398.collection		light trap				-06/-09	Turkey	GAZ	00000558	37.75	39.6666
+
+<MAP.40400	MAP.40400.collection		light trap				-06/-09	Turkey	GAZ	00000558	37.6	39.3167
+
+<MAP.40402	MAP.40402.collection		light trap				-06/-09	Turkey	GAZ	00000558	37.3166	39.5666
+
+---
+>MAP.40396	MAP.40396.collection		light trap					Turkey	GAZ	00000558	37.031	38.001
+
+>MAP.40398	MAP.40398.collection		light trap					Turkey	GAZ	00000558	37.75	39.6666
+
+>MAP.40400	MAP.40400.collection		light trap					Turkey	GAZ	00000558	37.6	39.3167
+
+>MAP.40402	MAP.40402.collection		light trap					Turkey	GAZ	00000558	37.3166	39.5666
+

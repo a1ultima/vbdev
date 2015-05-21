@@ -1,0 +1,82 @@
+ONTOLOGY SOURCE REFERENCE																																		
+Term Source Name	MO	EFO	OBI	UO	GAZ	NCBITaxon	PATO	MIRO	efo	IDOMAL	SO	NCBIGene	1032																					
+Term Source File	http://mged.sourceforge.net/ontologies/MGEDontology.php																																	
+Term Source Version	1.3.0.1	50608	47893	49121	47282	47845	47893	49766	49584	47619	49414	49496	50586																					
+Term Source Description	The Microarray Ontology	Experimental Factor Ontology	Ontology for Biomedical Investigations	Units of measurement	Gazetteer	NCBI organismal classification	Ontology for Biomedical Investigations	Mosquito Insecticide Resistance Ontology	Experimental Factor Ontology	Malaria Ontology	Sequence Types and Features Ontology	Cell Cycle Ontology	National Cancer Institute Thesaurus																					
+																																		
+STUDY																																		
+Study Identifier	2014-MAP-Americas																																	
+Study Title	Malaria Atlas Project: Global distribution of observed malaria vector species (Americas)																																	
+Study Submission Date	2011-12-21																																	
+Study Public Release Date	2012-04-04																																	
+Study Description	Collection and species identification of various malarial mosquito specimens for generating a global map of the dominant vector species of malaria.																																	
+Study File Name	s_samples.txt																																	
+																																		
+STUDY DESIGN DESCRIPTORS																																		
+Study Design Type	observational design	strain or line design																																
+Study Design Type Term Accession Number	0000629	0001754																																
+Study Design Type Term Source REF	EFO	EFO																																
+																																		
+STUDY PUBLICATIONS																																		
+Study PubMed ID	22475528																																	
+Study Publication DOI	10.1186/1756-3305-5-69																																	
+Study Publication Author list	Sinka ME, Bangs MJ, Manguin S, Rubio-Palis Y, Chareonviriyaphap T, Coetzee M, Mbogo CM, Hemingway J, Patil AP, Temperley WH, Gething PW, Kabaria CW, Burkot TR, Harbach RE, Hay SI.																																	
+Study Publication Title	A global map of dominant malaria vectors.																																	
+Study Publication Status	published																																	
+Study Publication Status Term Accession Number	0001796																																	
+Study Publication Status Term Source REF	EFO																																	
+																																		
+																																		
+# VectorBase is currently not planning to use factors and factor values in popbio ISA-Tab submissions.																																		
+# Instead we ask you to provide our curators with a description of the pertinent Characteristics, Parameter Values, Genotypes and/or Phenotypes to be used in the display of the results.																																		
+STUDY FACTORS																																		
+Study Factor Name																																		
+Study Factor Type																																		
+Study Factor Type Term Accession Number																																		
+Study Factor Type Term Source REF																																		
+																																		
+STUDY ASSAYS																																		
+Study Assay Measurement Type	field collection	species identification assay																																
+Study Assay Measurement Type Term Accession Number																																		
+Study Assay Measurement Type Term Source REF																																		
+Study Assay Technology Type																																		
+Study Assay Technology Type Term Accession Number																																		
+Study Assay Technology Type Term Source REF																																		
+Study Assay Technology Platform																																		
+Study Assay File Name	a_collection.txt	a_species.txt																																
+																																		
+STUDY PROTOCOLS																																		
+Study Protocol Name	cross mating experiment	Octanol dehydrogenase alloenzyme	polymerase chain reaction method	isoenzyme electrophoresis	salinity tolerance tests	DNA probe	chromosomal banding sequences	morphology	larval collection	animal biting	animal biting outdoors	man biting	man biting indoors	man biting outdoors	outside shelter	outside shelter artificial	outside shelter natural	house resting inside	resting outdoors	animal shed resting	carbon dioxide baited net trap	outlet window trap	light trap	indoor light trap	outdoor light trap	animal baited net trap	human baited net trap								
+Study Protocol Type	cross mating experiment	species identification method	PCR-based species identification	isoenzyme electrophoresis	salinity tolerance tests	species specific DNA hybridization	cytological chromosome examination	morphological examination	collection of larvae	animal biting catch	animal biting catch - outdoors	man biting catch	man biting catch - indoors	man biting catch - outdoors	outdoors shelter catch	outdoors shelter catch - artificial	outdoors shelter catch - natural	house resting - daytime catch	outdoors shelter catch	animal shed resting catch	CO2 baited net trap catch	outlet window trap catch	baited light trap catch	indoor light trap catch	outdoor light trap catch	animal baited net trap catch	human landed net trap catch								
+Study Protocol Type Term Accession Number	30000036	30000005	30000040	30000038	30000042	30000041	30000037	30000039	30000022	30000012	30000014	30000017	30000019	30000018	30000024	30000026	30000025	30000007	30000024	30000027	30000021	30000020	30000065	30000009	30000010	30000013	30000015								
+Study Protocol Type Term Source REF	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO	MIRO								
+Study Protocol Description																																		
+Study Protocol URI																																		
+Study Protocol Version																																		
+Study Protocol Parameters Name																																		
+Study Protocol Parameters Name Term Accession Number																																		
+Study Protocol Parameters Name Term Source REF																																		
+Study Protocol Components Name																																		
+Study Protocol Components Type																																		
+Study Protocol Components Type Term Accession Number																																		
+Study Protocol Components Type Term Source REF																																		
+																																		
+																																		
+# study contacts must contain a "submitter" or "reporting party role" person																																		
+# please add the sample collector details in the a_collection sheet																																		
+# the Email field is mandatory (emails will not be displayed on the site)																																		
+# use "sub-investigator role" as a default role																																		
+STUDY CONTACTS																																		
+Study Person Last Name	Sinka	Bangs	Manguin	 Rubio-Palis	 Chareonviriyaphap	 Coetzee	 Mbogo	 Hemingway	 Patil	 Temperley	 Gething	 Kabaria	 Burkot	 Harbach	 Hay																			
+Study Person First Name	Marianne 	Michael	Sylvie	Yasmin	Moses	Maureen	Charles	Janet	Anand	William	Peter	Caroline	Thomas	Ralph	Simon																			
+Study Person Mid Initials	E	J					M		P	H	W	W	R	E	I																			
+Study Person Email	marianne.sinka@zoo.ox.ac.uk	bangs_michael@yahoo.com	sylvie.manguin@ird.fr	rubiopalis@gmail.com	faasthc@ku.ac	maureenc@nicd.ac.za	cmbogo@kilifi.kemri-wellcome.org	hemingway@liverpool.ac.uk	anand.prabhakar.patil@gmail.com	william.temperley@zoo.ox.ac.uk	peter.gething@zoo.ox.ac.uk	ckabaria@nairobi.kemri-wellcome.org	tom.burkot@jcu.edu.au	R.Harbach@nhm.ac.uk	simon.hay@zoo.ox.ac.uk																			
+Study Person Phone																																		
+Study Person Fax																																		
+Study Person Address		PT Freeport Indonesia, Kuala Kencana, Papua, Indonesia 	Montpellier, France	Maracay, Venezuela	Bangkok, Thailand	Johannesburg, South Africa	Coast, Kilifi, Kenya					Nairobi, Kenya	Queenland, Australia	London																				
+Study Person Affiliation	University of Oxford	 Public Health and Malaria Control Department	Institut de Recherche pour le Développement, Lab	Universidad de Carabobo	Kasetsart University	University of the Witwatersrand	Centre for Geographic Medicine Research	Liverpool School of Tropical Medicine	University of Oxford	University of Oxford	University of Oxford	KEMRI Wellcome Trust	James Cook University	Natural History Museum	University of Oxford																			
+Study Person Roles	reporting party role	sub-investigator role	sub-investigator role	sub-investigator role	sub-investigator role	sub-investigator role	sub-investigator role	sub-investigator role	sub-investigator role	sub-investigator role	sub-investigator role	sub-investigator role	sub-investigator role	sub-investigator role	principal investigator role																			
+Study Person Roles Term Accession Number	0000068	0000224	0000224	0000224	0000224	0000224	0000224	0000224	0000224	0000224	0000224	0000224	0000224	0000224	0000103																			
+Study Person Roles Term Source REF	OBI	OBI	OBI	OBI	OBI	OBI	OBI	OBI	OBI	OBI	OBI	OBI	OBI	OBI	OBI																			
+																																		
+# ISA-Tab allows multiple studies (a new STUDY section following this line) but for VectorBase submissions we only accept single studies at the moment.																																		

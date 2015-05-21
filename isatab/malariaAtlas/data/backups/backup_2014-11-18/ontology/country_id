@@ -1,0 +1,147 @@
++-----+-----+------------------------------+--------------+
+| Cod | UN  | Country                      | GAZ term     |
++-----+-----+------------------------------+--------------+
+| AFG | 004 | Afghanistan                  | GAZ:00006882 |
+| AGO | 024 | Angola                       | GAZ:00001095 |
+| ALB | 008 | Albania                      | GAZ:00002953 |
+| ARE | 784 | United Arab Emirates         | GAZ:00005282 |
+| ARG | 032 | Argentina                    | GAZ:00002928 |
+| ARM | 051 | Armenia                      | GAZ:00004094 |
+| AUS | 036 | Australia                    | GAZ:00000463 |
+| AUT | 040 | Austria                      | GAZ:00002942 |
+| AZE | 031 | Azerbaijan                   | GAZ:00004941 |
+| BDI | 108 | Burundi                      | GAZ:00001090 |
+| BEL | 056 | Belgium                      | GAZ:00002938 |
+| BEN | 204 | Benin                        | GAZ:00000904 |
+| BFA | 854 | Burkina Faso                 | GAZ:00000905 |
+| BGD | 050 | Bangladesh                   | GAZ:00003750 |
+| BGR | 100 | Bulgaria                     | GAZ:00002950 |
+| BIH | 070 | Bosnia and Herzegovina       | GAZ:00006887 |
+| BLZ | 084 | Belize                       | GAZ:00002934 |
+| BOL | 068 | Bolivia                      | GAZ:00002511 |
+| BRA | 076 | Brazil                       | GAZ:00002828 |
+| BWA | 072 | Botswana                     | GAZ:00001097 |
+| CAF | 140	| Central African Republic     | GAZ:00001089 |
+| CHE | 756	| Switzerland                  | GAZ:00002941 |
+| CHN | 156 | China                        | GAZ:00002845 |
+| CIV | 384 | Côte d'Ivoire                | GAZ:00000906 |
+| CMR | 120 | Cameroon                     | GAZ:00001093 |
+| COD | 180 | DR Congo                     | GAZ:00001086 |
+| COG | 178 | Congo                        | GAZ:00001088 |
+| COL | 170 | Colombia                     | GAZ:00002929 |
+| COM | 174 | Comores                      | GAZ:00002936 |
+| CRI | 188 | Costa Rica                   | GAZ:00002901 |
+| CUB | 192 | Cuba                         | GAZ:00003762 |
+| CZE | 203 | Czech Republic               | GAZ:00002954 |
+| DEU | 276 | Germany                      | GAZ:00002646 |
+| DNK | 208 | Denmark                      | GAZ:00002635 |
+| DOM | 214 | Dominican Republic           | GAZ:00003952 |
+| ECU | 218 | Ecuador                      | GAZ:00002912 |
+| EGY | 818 | Egypt                        | GAZ:00003934 |
+| ERI | 232 | Eritrea                      | GAZ:00000581 |
+| ESP | 724 | Spain                        | GAZ:00000591 |
+| EST | 233 | Estonia                      | GAZ:00002959 |
+| ETH | 231 | Ethiopia                     | GAZ:00000567 |
+| FIN | 246 | Finland                      | GAZ:00002937 |
+| FRA | 250 | France                       | GAZ:00003940 |
+| GAB | 266 | Gabon                        | GAZ:00001092 |
+| GBR | 826 | United Kingdom               | GAZ:00002637 |
+| GEO | 268 | Georgia                      | GAZ:00004942 |
+| GHA | 288 | Ghana                        | GAZ:00000908 |
+| GIN | 324 | Guinea                       | GAZ:00000909 |
+| GMB | 270 | Gambia                       | GAZ:00000907 |
+| GNB | 624 | Guinea-Bissau                | GAZ:00000910 |
+| GNQ | 226 | Equatorial Guinea            | GAZ:00001091 |
+| GRC | 300 | Greece                       | GAZ:00002945 |
+| GRD | 308 | Grenada                      | GAZ:02000573 |
+| GTM | 320 | Guatemala                    | GAZ:00002936 |
+| GUF | 254 | French Guiana                | GAZ:00067144 |
+| GUY | 328 | Guyana                       | GAZ:00002522 |
+| HKG | 344 | China, Hong Kong             | GAZ:00003203 |
+| HND | 340 | Honduras                     | GAZ:00002894 |
+| HRV | 191 | Croatia                      | GAZ:00002719 |
+| HTI | 332 | Haiti                        | GAZ:00003953 |
+| HUN | 348 | Hungary                      | GAZ:00002952 |
+| IDN | 360 | Indonesia                    | GAZ:00003727 |
+| IND | 356 | India                        | GAZ:00002839 |
+| IRN | 364 | Iran                         | GAZ:00004474 |
+| IRQ | 368 | Iraq                         | GAZ:00004483 |
+| ISR | 376 | Israel                       | GAZ:00002476 |
+| ITA | 380 | Italy                        | GAZ:00002650 |
+| JOR | 400 | Jordan                       | GAZ:00002473 |
+| JPN | 392 | Japan                        | GAZ:00002747 |
+| KEN | 404 | Kenya                        | GAZ:00001101 |
+| KHM | 116 | Cambodia                     | GAZ:00006888 |
+| KOR | 410 | Republic of Korea            | GAZ:00002802 |
+| LAO | 418 | Laos                         | GAZ:00006889 |
+| LBR | 430 | Liberia                      | GAZ:00000911 |
+| LKA | 144 | Sri Lanka                    | GAZ:00003924 |
+| LTU | 440 | Lithuania                    | GAZ:00002960 |
+| LVA | 428 | Latvia                       | GAZ:00002958 |
+| MAC | 446 | China, Macao                 | GAZ:00003202 |
+| MAR | 504 | Morocco                      | GAZ:00000565 |
+| MDA | 498 | Moldova                      | GAZ:00003897 |
+| MDG | 450 | Madagascar                   | GAZ:00001108 |
+| MEX | 484 | Mexico                       | GAZ:00002852 |
+| MKD | 807 | Macedonia FYR                | GAZ:00006895 |
+| MLI | 466 | Mali                         | GAZ:00000584 |
+| MMR | 104 | Myanmar                      | GAZ:00006899 |
+| MNE | 499 | Montenegro                   | GAZ:00006898 | 
+| MOZ | 508 | Mozambique                   | GAZ:00001100 |
+| MRT | 478 | Mauritania                   | GAZ:00000583 |
+| MWI | 454 | Malawi                       | GAZ:00001105 |
+| MYS | 458 | Malaysia                     | GAZ:00003902 |
+| NAM | 516	| Namibia                      | GAZ:00001096 |
+| NER | 562	| Niger                        | GAZ:00000585 |
+| NGA | 566	| Nigeria                      | GAZ:00000912 |
+| NIC | 558	| Nicaragua                    | GAZ:00002978 |
+| NLD | 528 | Netherlands                  | GAZ:00001549 |
+| NOR | 578 | Norway                       | GAZ:00002699 |
+| NPL | 524	| Nepal                        | GAZ:00004399 |
+| PAK | 586	| Pakistan                     | GAZ:00005246 |
+| PAN | 591	| Panama                       | GAZ:00002892 |
+| PER | 604 | Peru                         | GAZ:00002932 |
+| PHL | 608 | Philippines                  | GAZ:00004525 |
+| PNG | 598 | Papua New Guinea             | GAZ:00003922 |
+| POL | 616 | Poland                       | GAZ:00002939 |
+| PRK | 408	| North Korea                  | GAZ:00002801 |
+| PRT | 620 | Portugal                     | GAZ:00002944 |
+| PRY | 600 | Paraguay                     | GAZ:00002933 |
+| REU | 638 | Réunion                      | GAZ:00003945 |
+| ROU | 642 | Romania                      | GAZ:00002951 |
+| RUS | 643 | Russian Federation           | GAZ:00002721 |
+| SAU | 682 | Saudia Arabia                | GAZ:00005279 |
+| SDN | 729 | Sudan                        | GAZ:00000560 |
+| SEN | 686 | Senegal                      | GAZ:00000913 |
+| SGP | 702 | Singapore                    | GAZ:00003923 |
+| SLB | 090 | Solomon Islands              | GAZ:00005275 |
+| SLE | 694 | Sierra Leone                 | GAZ:00000914 |
+| SLV | 222 | El Salvador                  | GAZ:00002935 |
+| SOM | 706 | Somalia                      | GAZ:00001104 |
+| SRB | 688 | Serbia                       | GAZ:00002957 |
+| STP | 678 | Sao Tome and Principe        | GAZ:00006927 |
+| SUR | 740	| Suriname                     | GAZ:00002525 |
+| SVK | 703	| Slovakia                     | GAZ:00002956 |
+| SVN | 705	| Slovenia                     | GAZ:00002955 |
+| SWE | 752 | Sweden                       | GAZ:00002729 |
+| SWZ | 748 | Swaziland                    | GAZ:00001099 |
+| TCD | 148	| Chad                         | GAZ:00000586 |
+| TGO | 768	| Togo                         | GAZ:00000915 |
+| THA | 764	| Thailand                     | GAZ:00003744 |
+| TJK | 762	| Tajikistan                   | GAZ:00006912 |
+| TLS | 626	| Timor-Leste                  | GAZ:00006913 |
+| TTO | 780	| Trinidad and Tobago          | GAZ:00003767 |
+| TUR | 792	| Turkey                       | GAZ:00000558 |
+| TZA | 834	| Tanzania                     | GAZ:00001103 |
+| UGA | 800 | Uganda                       | GAZ:00001102 |
+| UKR | 804 | Ukraine                      | GAZ:00002724 |
+| USA | 840 | United States of America     | GAZ:00002459 |
+| UZB | 860 | Uzbekistan                   | GAZ:00004979 |
+| VEN | 862 | Venezuala                    | GAZ:00002931 |
+| VNM | 704 | Viet Nam                     | GAZ:00003756 |
+| VUT | 548 | Vanuatu                      | GAZ:00006918 |
+| YEM | 887 | Yemen                        | GAZ:00005284 |
+| ZAF | 710 | South Africa                 | GAZ:00001094 |
+| ZMB | 894 | Zambia                       | GAZ:00001107 |
+| ZWE | 716 | Zimbabwe                     | GAZ:00001106 |
++-----+-----+------------------------------+--------------+

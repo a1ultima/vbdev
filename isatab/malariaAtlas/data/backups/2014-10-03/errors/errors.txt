@@ -1,0 +1,730 @@
+The following deferred exceptions were encountered:
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Study Protocol Type ontology term for protocol resting outdoors missing or not found
+
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Study Protocol Type ontology term for protocol resting outdoors missing or not found
+
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Study Protocol Type ontology term for protocol resting outdoors missing or not found
+
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Study Protocol Type ontology term for protocol resting outdoors missing or not found
+
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Study Protocol Type ontology term for protocol resting outdoors missing or not found
+
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Study Protocol Type ontology term for protocol resting outdoors missing or not found
+
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Study Protocol Type ontology term for protocol resting outdoors missing or not found
+
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Study Protocol Type ontology term for protocol resting outdoors missing or not found
+
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Study Protocol Type ontology term for protocol resting outdoors missing or not found
+
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF unknown not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.
+  Protocol REF not applicable not described in ISA-Tab.

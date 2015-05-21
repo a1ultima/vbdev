@@ -1,0 +1,161 @@
+<MAP.14911	MAP.14911.collection		larval collection				-04/-06	Argentina	GAZ	00002928	-31.559	-63.538
+
+<MAP.14912	MAP.14912.collection		larval collection				-08/-08	Argentina	GAZ	00002928	-31.559	-63.538
+
+<MAP.15891	MAP.15891.collection		man biting	larval collection			-02/-08	Suriname	GAZ	00002525	4.517	-55.293
+
+<MAP.15892	MAP.15891.collection		man biting	larval collection			-02/-08	Suriname	GAZ	00002525	4.517	-55.293
+
+<MAP.15902	MAP.15902.collection		man biting				-01/-12	Suriname	GAZ	00002525	2.357	-56.813
+
+<MAP.15904	MAP.15904.collection		man biting	larval collection			-01/-12	Suriname	GAZ	00002525	2.357	-56.813
+
+<MAP.15906	MAP.15906.collection		man biting	larval collection			-11/-12	Suriname	GAZ	00002525	4.87	-57.874
+
+<MAP.15907	MAP.15906.collection		man biting	larval collection			-11/-12	Suriname	GAZ	00002525	4.87	-57.874
+
+<MAP.15908	MAP.15908.collection		man biting	larval collection			-09/-10	Suriname	GAZ	00002525	4.7333	-56.8833
+
+<MAP.15910	MAP.15908.collection		man biting	larval collection			-09/-10	Suriname	GAZ	00002525	4.7333	-56.8833
+
+<MAP.15911	MAP.15911.collection		man biting	larval collection			-09/-10	Suriname	GAZ	00002525	4.7167	-56.2
+
+<MAP.15913	MAP.15913.collection		man biting				-09/-10	Suriname	GAZ	00002525	4.7167	-56.2
+
+<MAP.15914	MAP.15914.collection		man biting	larval collection			-04/-12	Suriname	GAZ	00002525	4.95	-55.551
+
+<MAP.15916	MAP.15914.collection		man biting	larval collection			-04/-12	Suriname	GAZ	00002525	4.95	-55.551
+
+<MAP.15917	MAP.15917.collection		man biting	larval collection			-04/-12	Suriname	GAZ	00002525	4.367	-55.784
+
+<MAP.15919	MAP.15917.collection		man biting	larval collection			-04/-12	Suriname	GAZ	00002525	4.367	-55.784
+
+<MAP.15923	MAP.15923.collection		man biting				-08/-11	Suriname	GAZ	00002525	5.344	-56.353
+
+<MAP.15924	MAP.15923.collection		man biting				-08/-11	Suriname	GAZ	00002525	5.344	-56.353
+
+<MAP.15926	MAP.15926.collection		man biting	larval collection			-08/-11	Suriname	GAZ	00002525	5.344	-56.353
+
+<MAP.15927	MAP.15926.collection		man biting	larval collection			-08/-11	Suriname	GAZ	00002525	5.344	-56.353
+
+<MAP.15933	MAP.15933.collection		man biting				-08/-11	Suriname	GAZ	00002525	5.168	-56.101
+
+<MAP.15935	MAP.15933.collection		man biting				-08/-11	Suriname	GAZ	00002525	5.168	-56.101
+
+<MAP.15936	MAP.15936.collection		man biting	larval collection			-08/-11	Suriname	GAZ	00002525	5.168	-56.101
+
+<MAP.15937	MAP.15936.collection		man biting	larval collection			-08/-11	Suriname	GAZ	00002525	5.168	-56.101
+
+<MAP.29551	MAP.29551.collection						-06/-08	Cuba	GAZ	00003762	22.718	-81.951
+
+<MAP.29552	MAP.29552.collection						-11/-01	Cuba	GAZ	00003762	22.718	-81.951
+
+<MAP.31748	MAP.31748.collection		larval collection				-08/-08	Belize	GAZ	00002934	17.265	-88.859
+
+<MAP.31749	MAP.31749.collection		larval collection				-08/-08	Belize	GAZ	00002934	17.101	-88.715
+
+<MAP.31750	MAP.31750.collection		larval collection				-08/-08	Belize	GAZ	00002934	17.05	-88.649
+
+<MAP.31751	MAP.31751.collection		larval collection				-08/-08	Belize	GAZ	00002934	16.566	-88.776
+
+<MAP.31752	MAP.31752.collection		larval collection				-08/-08	Belize	GAZ	00002934	17.1	-88.777
+
+<MAP.31753	MAP.31753.collection		larval collection				-08/-08	Belize	GAZ	00002934	16.966	-88.76
+
+<MAP.31754	MAP.31754.collection		larval collection				-08/-08	Belize	GAZ	00002934	18.065	-88.581
+
+<MAP.31755	MAP.31755.collection		larval collection				-08/-08	Belize	GAZ	00002934	17.989	-88.595
+
+<MAP.31756	MAP.31756.collection		larval collection				-08/-08	Belize	GAZ	00002934	18.199	-88.328
+
+<MAP.31757	MAP.31757.collection		larval collection				-08/-08	Belize	GAZ	00002934	18.423	-88.469
+
+<MAP.31758	MAP.31758.collection		larval collection				-08/-08	Belize	GAZ	00002934	18.169	-88.446
+
+<MAP.31759	MAP.31759.collection		larval collection				-08/-08	Belize	GAZ	00002934	18.146	-88.401
+
+<MAP.32619	MAP.32619.collection		human baited net trap	animal baited net trap			-05/-10	Mexico	GAZ	00002852	14.625	-92.2706
+
+<MAP.32620	MAP.32620.collection		human baited net trap	animal baited net trap			-11/-04	Mexico	GAZ	00002852	14.625	-92.2706
+
+---
+>MAP.14911	MAP.14911.collection		larval collection					Argentina	GAZ	00002928	-31.559	-63.538
+
+>MAP.14912	MAP.14911.collection		larval collection					Argentina	GAZ	00002928	-31.559	-63.538
+
+>MAP.15891	MAP.15891.collection		man biting	larval collection				Suriname	GAZ	00002525	4.517	-55.293
+
+>MAP.15892	MAP.15891.collection		man biting	larval collection				Suriname	GAZ	00002525	4.517	-55.293
+
+>MAP.15902	MAP.15902.collection		man biting					Suriname	GAZ	00002525	2.357	-56.813
+
+>MAP.15904	MAP.15904.collection		man biting	larval collection				Suriname	GAZ	00002525	2.357	-56.813
+
+>MAP.15906	MAP.15906.collection		man biting	larval collection				Suriname	GAZ	00002525	4.87	-57.874
+
+>MAP.15907	MAP.15906.collection		man biting	larval collection				Suriname	GAZ	00002525	4.87	-57.874
+
+>MAP.15908	MAP.15908.collection		man biting	larval collection				Suriname	GAZ	00002525	4.7333	-56.8833
+
+>MAP.15910	MAP.15908.collection		man biting	larval collection				Suriname	GAZ	00002525	4.7333	-56.8833
+
+>MAP.15911	MAP.15911.collection		man biting	larval collection				Suriname	GAZ	00002525	4.7167	-56.2
+
+>MAP.15913	MAP.15913.collection		man biting					Suriname	GAZ	00002525	4.7167	-56.2
+
+>MAP.15914	MAP.15914.collection		man biting	larval collection				Suriname	GAZ	00002525	4.95	-55.551
+
+>MAP.15916	MAP.15914.collection		man biting	larval collection				Suriname	GAZ	00002525	4.95	-55.551
+
+>MAP.15917	MAP.15917.collection		man biting	larval collection				Suriname	GAZ	00002525	4.367	-55.784
+
+>MAP.15919	MAP.15917.collection		man biting	larval collection				Suriname	GAZ	00002525	4.367	-55.784
+
+>MAP.15923	MAP.15923.collection		man biting					Suriname	GAZ	00002525	5.344	-56.353
+
+>MAP.15924	MAP.15923.collection		man biting					Suriname	GAZ	00002525	5.344	-56.353
+
+>MAP.15926	MAP.15926.collection		man biting	larval collection				Suriname	GAZ	00002525	5.344	-56.353
+
+>MAP.15927	MAP.15926.collection		man biting	larval collection				Suriname	GAZ	00002525	5.344	-56.353
+
+>MAP.15933	MAP.15933.collection		man biting					Suriname	GAZ	00002525	5.168	-56.101
+
+>MAP.15935	MAP.15933.collection		man biting					Suriname	GAZ	00002525	5.168	-56.101
+
+>MAP.15936	MAP.15936.collection		man biting	larval collection				Suriname	GAZ	00002525	5.168	-56.101
+
+>MAP.15937	MAP.15936.collection		man biting	larval collection				Suriname	GAZ	00002525	5.168	-56.101
+
+>MAP.29551	MAP.29551.collection							Cuba	GAZ	00003762	22.718	-81.951
+
+>MAP.29552	MAP.29551.collection							Cuba	GAZ	00003762	22.718	-81.951
+
+>MAP.31748	MAP.31748.collection		larval collection					Belize	GAZ	00002934	17.265	-88.859
+
+>MAP.31749	MAP.31749.collection		larval collection					Belize	GAZ	00002934	17.101	-88.715
+
+>MAP.31750	MAP.31750.collection		larval collection					Belize	GAZ	00002934	17.05	-88.649
+
+>MAP.31751	MAP.31751.collection		larval collection					Belize	GAZ	00002934	16.566	-88.776
+
+>MAP.31752	MAP.31752.collection		larval collection					Belize	GAZ	00002934	17.1	-88.777
+
+>MAP.31753	MAP.31753.collection		larval collection					Belize	GAZ	00002934	16.966	-88.76
+
+>MAP.31754	MAP.31754.collection		larval collection					Belize	GAZ	00002934	18.065	-88.581
+
+>MAP.31755	MAP.31755.collection		larval collection					Belize	GAZ	00002934	17.989	-88.595
+
+>MAP.31756	MAP.31756.collection		larval collection					Belize	GAZ	00002934	18.199	-88.328
+
+>MAP.31757	MAP.31757.collection		larval collection					Belize	GAZ	00002934	18.423	-88.469
+
+>MAP.31758	MAP.31758.collection		larval collection					Belize	GAZ	00002934	18.169	-88.446
+
+>MAP.31759	MAP.31759.collection		larval collection					Belize	GAZ	00002934	18.146	-88.401
+
+>MAP.32619	MAP.32619.collection		human baited net trap	animal baited net trap				Mexico	GAZ	00002852	14.625	-92.2706
+
+>MAP.32620	MAP.32619.collection		human baited net trap	animal baited net trap				Mexico	GAZ	00002852	14.625	-92.2706
+

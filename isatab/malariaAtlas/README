@@ -1,0 +1,62 @@
+###################
+README v 2014-11-18
+###################
+
+
+Pipeline:
+
+1. python ./scripts/isatabGen.py
+
+	1. Generate dictionaries for: species, country, citations  --> species_to_miro, country_to_gaz, citations_to_pubmedId
+	2. Re-interpret the above dictionaries to allow conversion from raw_to_<aboveDictionary>  --> e.g. raw_to_species_to_miro
+	3. Read & Vectorize raw data columns
+	4. Parse vectorized columns partitioned into: s_samples, a_collection, a_species
+
+2. python ./scripts/isatabPrune.py 
+
+	remove duplicated rows in the a_collections.txt
+
+3. bash ./scripts/send_isatabs_to_popbio.sh
+
+	copy over the isatabs for each of the regions: Asia, Americas, Africa, Europe to a pre-release ready location
+
+
+Put together:
+
+cd ./scripts && python ./isatabGen.py && python ./isatabPrune.py && bash ./send_isatabs_to_popbio.sh
+
+
+Data:
+
+output:
+
+./data/isatab/Africa
+./data/isatab/Americas
+./data/isatab/Asia
+./data/isatab/Europe
+
+	ISA-Tab formatted data that is the final output of the above pipeline. For more info on ISA-Tab formats see: http://www.isa-tools.org/. If you are reading this you probably want to have a look at the ISA-Tab "rule book" for tips on doing ISA-Tabs: https://docs.google.com/document/d/1_CcuN_zCr_nzA2BdrZiMBkj8Ya2aSdizYLKGI_hqnb8/edit#heading=h.it84klhjb9yp.  
+
+./data/ontology/citation_raw_to_pubmed.p
+./data/ontology/citation_raw_to_miro.p
+
+	python dictionaries stored as pickle files, these map citation information that were avilable form the raw excel files to ontology terms. These pickles are used in step 1. of the pipeline.
+
+input:
+
+./data/raw/* 
+
+	spreadsheets of Malaria Atlas data. * There are four sets of sheets: Asia, Africa, Americas, Europe; and in three formats: xlsx, csv, txt. All formats contain the same data.
+
+./data/ontology/MalariaAtlas_citations
+
+	citations-to-pubmed id mappings.
+	
+./data/ontology/country_id
+
+	country-to-GAZ ontology term mappings.	
+
+./data/ontologyspecies
+
+	MIRO ontologyterm-to-Species name mappings.
+

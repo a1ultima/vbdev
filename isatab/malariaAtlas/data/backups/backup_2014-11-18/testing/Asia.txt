@@ -1,0 +1,249 @@
+<MAP.24931	MAP.24931.collection		man biting				-01/-01	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24932	MAP.24932.collection		man biting				-02/-02	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24933	MAP.24933.collection		man biting				-03/-03	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24934	MAP.24934.collection		man biting				-04/-04	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24935	MAP.24935.collection		man biting				-05/-05	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24936	MAP.24936.collection		man biting				-06/-06	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24937	MAP.24937.collection		man biting				-07/-07	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24938	MAP.24938.collection		man biting				-08/-08	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24939	MAP.24939.collection		man biting				-09/-09	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24940	MAP.24940.collection		man biting				-10/-10	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24941	MAP.24941.collection		man biting				-11/-11	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24942	MAP.24942.collection		man biting				-12/-12	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24949	MAP.24931.collection		man biting				-01/-01	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24950	MAP.24932.collection		man biting				-02/-02	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24951	MAP.24933.collection		man biting				-03/-03	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24952	MAP.24934.collection		man biting				-04/-04	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24953	MAP.24935.collection		man biting				-05/-05	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24954	MAP.24936.collection		man biting				-06/-06	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24955	MAP.24937.collection		man biting				-07/-07	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24956	MAP.24938.collection		man biting				-08/-08	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24957	MAP.24939.collection		man biting				-09/-09	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24958	MAP.24940.collection		man biting				-10/-10	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24959	MAP.24941.collection		man biting				-11/-11	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.24960	MAP.24942.collection		man biting				-12/-12	Sri Lanka	GAZ	00003924	7.651	80.833
+
+<MAP.26578	MAP.26578.collection		man biting indoors	man biting outdoors			-05/-09	Indonesia	GAZ	00003727	-2.933	140.782
+
+<MAP.26579	MAP.26579.collection		man biting indoors	man biting outdoors			-01/-01	Indonesia	GAZ	00003727	-2.933	140.782
+
+<MAP.31339	MAP.31339.collection		man biting	house resting inside	animal biting		-06/-10	China	GAZ	00002845	27.616	118.233
+
+<MAP.31340	MAP.31339.collection		man biting	house resting inside	animal biting		-06/-10	China	GAZ	00002845	27.616	118.233
+
+<MAP.31341	MAP.31341.collection		man biting	house resting inside	animal biting		-06/-10	China	GAZ	00002845	27.6	118.467
+
+<MAP.31342	MAP.31341.collection		man biting	house resting inside	animal biting		-06/-10	China	GAZ	00002845	27.6	118.467
+
+<MAP.39363	MAP.39363.collection		larval collection				-01/-12	Myanmar	GAZ	00006899	16.3746	97.6936
+
+<MAP.39365	MAP.39365.collection		larval collection				-07/-01	Myanmar	GAZ	00006899	18.7564	96.1667
+
+<MAP.39366	MAP.39366.collection		larval collection				-06/-07	Myanmar	GAZ	00006899	17.43	95.82
+
+<MAP.39367	MAP.39367.collection		larval collection				-06/-07	Myanmar	GAZ	00006899	17.33	95.86
+
+<MAP.39368	MAP.39368.collection		larval collection				-06/-06	Myanmar	GAZ	00006899	17.4142	96.1418
+
+<MAP.39370	MAP.39370.collection		larval collection	man biting	animal baited net trap	human baited net trap	-06/-02	Myanmar	GAZ	00006899	18.2014	96.6807
+
+<MAP.39397	MAP.39397.collection		larval collection				-06/-01	Myanmar	GAZ	00006899	18.1	96.5
+
+<MAP.39398	MAP.39398.collection		larval collection				-06/-01	Myanmar	GAZ	00006899	18.033	96.481
+
+<MAP.39399	MAP.39399.collection		larval collection				-06/-06	Myanmar	GAZ	00006899	18.14	96.6
+
+<MAP.39400	MAP.39400.collection		larval collection				-11/-11	Myanmar	GAZ	00006899	18.549	95.6
+
+<MAP.39401	MAP.39401.collection		larval collection				-11/-11	Myanmar	GAZ	00006899	18.267	95.833
+
+<MAP.39402	MAP.39402.collection		larval collection				-08/-09	Myanmar	GAZ	00006899	22.2781	96.3212
+
+<MAP.39403	MAP.39403.collection		larval collection				-08/-09	Myanmar	GAZ	00006899	22.95	96.49
+
+<MAP.39404	MAP.39404.collection		larval collection				-01/-01	Myanmar	GAZ	00006899	10.29	98.67
+
+<MAP.39407	MAP.39407.collection			house resting inside			-12/-12	Myanmar	GAZ	00006899	18.2014	96.6807
+
+<MAP.39418	MAP.39418.collection			house resting inside			-06/-07	Myanmar	GAZ	00006899	22.084	96.597
+
+<MAP.39420	MAP.39420.collection			house resting inside			-09/-10	Myanmar	GAZ	00006899	22.2781	96.3212
+
+<MAP.39422	MAP.39422.collection			house resting inside			-08/-09	Myanmar	GAZ	00006899	22.95	96.49
+
+<MAP.39425	MAP.39425.collection		animal baited net trap	house resting inside			-01/-02	Myanmar	GAZ	00006899	18.6203	96.4472
+
+<MAP.39433	MAP.39433.collection		larval collection	house resting inside			-01/-01	Myanmar	GAZ	00006899	11.5136	98.7931
+
+<MAP.39434	MAP.39434.collection			house resting inside			-06/-07	Myanmar	GAZ	00006899	17.43	95.82
+
+<MAP.39438	MAP.39438.collection			house resting inside			-01/-01	Myanmar	GAZ	00006899	10.29	98.67
+
+<MAP.39439	MAP.39439.collection		larval collection	house resting inside			-01/-01	Myanmar	GAZ	00006899	12.3907	98.7532
+
+<MAP.4963	MAP.4963.collection		man biting indoors	animal shed resting			-07/-09	China	GAZ	00002845	34.902	116.803
+
+<MAP.4970	MAP.4970.collection		man biting indoors	animal shed resting			-07/-09	China	GAZ	00002845	35.082	115.415
+
+<MAP.4974	MAP.4974.collection		man biting indoors	animal shed resting			-07/-09	China	GAZ	00002845	35.316	116.498
+
+<MAP.4989	MAP.4989.collection		man biting indoors	animal shed resting			-07/-09	China	GAZ	00002845	35.1003	116.4978
+
+<MAP.4997	MAP.4997.collection		man biting indoors	animal shed resting			-07/-09	China	GAZ	00002845	35.1	118.264
+
+<MAP.5005	MAP.5005.collection		man biting indoors	animal shed resting			-07/-09	China	GAZ	00002845	35.4267	115.5958
+
+<MAP.5011	MAP.5011.collection		man biting indoors	animal shed resting			-07/-09	China	GAZ	00002845	35.034	117
+
+<MAP.5015	MAP.5015.collection		man biting indoors	animal shed resting			-07/-09	China	GAZ	00002845	36.367	115.498
+
+<MAP.5023	MAP.5015.collection		man biting indoors	animal shed resting			-07/-09	China	GAZ	00002845	36.367	115.498
+
+---
+>MAP.24931	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24932	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24933	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24934	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24935	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24936	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24937	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24938	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24939	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24940	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24941	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24942	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24949	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24950	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24951	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24952	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24953	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24954	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24955	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24956	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24957	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24958	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24959	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.24960	MAP.24931.collection		man biting					Sri Lanka	GAZ	00003924	7.651	80.833
+
+>MAP.26578	MAP.26578.collection		man biting indoors	man biting outdoors				Indonesia	GAZ	00003727	-2.933	140.782
+
+>MAP.26579	MAP.26578.collection		man biting indoors	man biting outdoors				Indonesia	GAZ	00003727	-2.933	140.782
+
+>MAP.31339	MAP.31339.collection		man biting	house resting inside	animal biting			China	GAZ	00002845	27.616	118.233
+
+>MAP.31340	MAP.31339.collection		man biting	house resting inside	animal biting			China	GAZ	00002845	27.616	118.233
+
+>MAP.31341	MAP.31341.collection		man biting	house resting inside	animal biting			China	GAZ	00002845	27.6	118.467
+
+>MAP.31342	MAP.31341.collection		man biting	house resting inside	animal biting			China	GAZ	00002845	27.6	118.467
+
+>MAP.39363	MAP.39363.collection		larval collection					Myanmar	GAZ	00006899	16.3746	97.6936
+
+>MAP.39365	MAP.39365.collection		larval collection					Myanmar	GAZ	00006899	18.7564	96.1667
+
+>MAP.39366	MAP.39366.collection		larval collection					Myanmar	GAZ	00006899	17.43	95.82
+
+>MAP.39367	MAP.39367.collection		larval collection					Myanmar	GAZ	00006899	17.33	95.86
+
+>MAP.39368	MAP.39368.collection		larval collection					Myanmar	GAZ	00006899	17.4142	96.1418
+
+>MAP.39370	MAP.39369.collection		larval collection	man biting	animal baited net trap	human baited net trap		Myanmar	GAZ	00006899	18.2014	96.6807
+
+>MAP.39397	MAP.39397.collection		larval collection					Myanmar	GAZ	00006899	18.1	96.5
+
+>MAP.39398	MAP.39398.collection		larval collection					Myanmar	GAZ	00006899	18.033	96.481
+
+>MAP.39399	MAP.39399.collection		larval collection					Myanmar	GAZ	00006899	18.14	96.6
+
+>MAP.39400	MAP.39400.collection		larval collection					Myanmar	GAZ	00006899	18.549	95.6
+
+>MAP.39401	MAP.39401.collection		larval collection					Myanmar	GAZ	00006899	18.267	95.833
+
+>MAP.39402	MAP.39402.collection		larval collection					Myanmar	GAZ	00006899	22.2781	96.3212
+
+>MAP.39403	MAP.39403.collection		larval collection					Myanmar	GAZ	00006899	22.95	96.49
+
+>MAP.39404	MAP.39404.collection		larval collection					Myanmar	GAZ	00006899	10.29	98.67
+
+>MAP.39407	MAP.39407.collection			house resting inside				Myanmar	GAZ	00006899	18.2014	96.6807
+
+>MAP.39418	MAP.39418.collection			house resting inside				Myanmar	GAZ	00006899	22.084	96.597
+
+>MAP.39420	MAP.39420.collection			house resting inside				Myanmar	GAZ	00006899	22.2781	96.3212
+
+>MAP.39422	MAP.39422.collection			house resting inside				Myanmar	GAZ	00006899	22.95	96.49
+
+>MAP.39425	MAP.39425.collection		animal baited net trap	house resting inside				Myanmar	GAZ	00006899	18.6203	96.4472
+
+>MAP.39433	MAP.39431.collection		larval collection	house resting inside				Myanmar	GAZ	00006899	11.5136	98.7931
+
+>MAP.39434	MAP.39434.collection			house resting inside				Myanmar	GAZ	00006899	17.43	95.82
+
+>MAP.39438	MAP.39438.collection			house resting inside				Myanmar	GAZ	00006899	10.29	98.67
+
+>MAP.39439	MAP.39439.collection		larval collection	house resting inside				Myanmar	GAZ	00006899	12.3907	98.7532
+
+>MAP.4963	MAP.4963.collection		man biting indoors	animal shed resting				China	GAZ	00002845	34.902	116.803
+
+>MAP.4970	MAP.4970.collection		man biting indoors	animal shed resting				China	GAZ	00002845	35.082	115.415
+
+>MAP.4974	MAP.4974.collection		man biting indoors	animal shed resting				China	GAZ	00002845	35.316	116.498
+
+>MAP.4989	MAP.4989.collection		man biting indoors	animal shed resting				China	GAZ	00002845	35.1003	116.4978
+
+>MAP.4997	MAP.4997.collection		man biting indoors	animal shed resting				China	GAZ	00002845	35.1	118.264
+
+>MAP.5005	MAP.5005.collection		man biting indoors	animal shed resting				China	GAZ	00002845	35.4267	115.5958
+
+>MAP.5011	MAP.5011.collection		man biting indoors	animal shed resting				China	GAZ	00002845	35.034	117
+
+>MAP.5015	MAP.5015.collection		man biting indoors	animal shed resting				China	GAZ	00002845	36.367	115.498
+
+>MAP.5023	MAP.5015.collection		man biting indoors	animal shed resting				China	GAZ	00002845	36.367	115.498
+

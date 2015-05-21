@@ -1,0 +1,129 @@
+<MAP.10850	MAP.10850.collection		man biting indoors	man biting outdoors	house resting inside	larval collection	-03/-11	Cameroon	GAZ	00001093	2.385	10
+
+<MAP.10851	MAP.10851.collection		man biting indoors	man biting outdoors	house resting inside	larval collection	-03/-11	Cameroon	GAZ	00001093	4	11.0333
+
+<MAP.10852	MAP.10852.collection		man biting indoors	man biting outdoors	house resting inside	larval collection	-03/-11	Cameroon	GAZ	00001093	2.401	10.315
+
+<MAP.10853	MAP.10853.collection		man biting indoors	man biting outdoors	house resting inside	larval collection	-03/-11	Cameroon	GAZ	00001093	3.816	11.483
+
+<MAP.12007	MAP.12007.collection		outside shelter artificial	human baited net trap			-11/-11	Zimbabwe	GAZ	00001106	-17.2167	31.75
+
+<MAP.32027	MAP.32027.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	9.446	-5.645
+
+<MAP.32028	MAP.32027.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	9.446	-5.645
+
+<MAP.32029	MAP.32029.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	8.183	-4.984
+
+<MAP.32030	MAP.32029.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	8.183	-4.984
+
+<MAP.32031	MAP.32031.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	9.35	-5.634
+
+<MAP.32032	MAP.32031.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	9.35	-5.634
+
+<MAP.32037	MAP.32037.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	9.484	-5.835
+
+<MAP.32038	MAP.32037.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	9.484	-5.835
+
+<MAP.32039	MAP.32039.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	7.26	-8.154
+
+<MAP.32040	MAP.32039.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	7.26	-8.154
+
+<MAP.32043	MAP.32043.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	5.332	-4.031
+
+<MAP.32044	MAP.32043.collection		man biting				-07/-08	Côte d'Ivoire	GAZ	00000906	5.332	-4.031
+
+<MAP.41099	MAP.41099.collection		human baited net trap	outlet window trap			-06/-07	Benin	GAZ	00000904	6.356	2.439
+
+<MAP.41100	MAP.41099.collection		human baited net trap	outlet window trap			-06/-07	Benin	GAZ	00000904	6.356	2.439
+
+<MAP.41101	MAP.41099.collection		human baited net trap	outlet window trap			-06/-07	Benin	GAZ	00000904	6.356	2.439
+
+<MAP.45987	MAP.45987.collection		house resting inside	indoor light trap			-04/-09	Tanzania	GAZ	00001103	-3.75	37.6
+
+<MAP.45988	MAP.45987.collection		house resting inside	indoor light trap			-04/-09	Tanzania	GAZ	00001103	-3.75	37.6
+
+<MAP.45989	MAP.45987.collection		house resting inside	indoor light trap			-04/-09	Tanzania	GAZ	00001103	-3.75	37.6
+
+<MAP.45990	MAP.45990.collection		house resting inside	indoor light trap			-04/-09	Tanzania	GAZ	00001103	-4.366	38.05
+
+<MAP.45991	MAP.45990.collection		house resting inside	indoor light trap			-04/-09	Tanzania	GAZ	00001103	-4.366	38.05
+
+<MAP.45992	MAP.45990.collection		house resting inside	indoor light trap			-04/-09	Tanzania	GAZ	00001103	-4.366	38.05
+
+<MAP.45993	MAP.45993.collection		house resting inside	indoor light trap			-04/-09	Tanzania	GAZ	00001103	-3.4109	37.1949
+
+<MAP.45994	MAP.45993.collection		house resting inside	indoor light trap			-04/-09	Tanzania	GAZ	00001103	-3.4109	37.1949
+
+<MAP.45995	MAP.45993.collection		house resting inside	indoor light trap			-04/-09	Tanzania	GAZ	00001103	-3.4109	37.1949
+
+<MAP.62280	MAP.62280.collection		larval collection				-09/-11	Senegal	GAZ	00000913	14.674	-17.437
+
+<MAP.9473	MAP.9473.collection		outlet window trap	house resting inside			-05/-07	Sierra Leone	GAZ	00000914	8.117	-11.618
+
+<MAP.9714	MAP.9714.collection		larval collection				-07/-09	Ethiopia	GAZ	00000567	7.932	38.708
+
+---
+>MAP.10850	MAP.10850.collection		man biting indoors	man biting outdoors	house resting inside	larval collection		Cameroon	GAZ	00001093	2.385	10
+
+>MAP.10851	MAP.10851.collection		man biting indoors	man biting outdoors	house resting inside	larval collection		Cameroon	GAZ	00001093	4	11.0333
+
+>MAP.10852	MAP.10852.collection		man biting indoors	man biting outdoors	house resting inside	larval collection		Cameroon	GAZ	00001093	2.401	10.315
+
+>MAP.10853	MAP.10853.collection		man biting indoors	man biting outdoors	house resting inside	larval collection		Cameroon	GAZ	00001093	3.816	11.483
+
+>MAP.12007	MAP.12007.collection		outside shelter artificial	human baited net trap				Zimbabwe	GAZ	00001106	-17.2167	31.75
+
+>MAP.32027	MAP.32027.collection		man biting					Côte d'Ivoire	GAZ	00000906	9.446	-5.645
+
+>MAP.32028	MAP.32027.collection		man biting					Côte d'Ivoire	GAZ	00000906	9.446	-5.645
+
+>MAP.32029	MAP.32029.collection		man biting					Côte d'Ivoire	GAZ	00000906	8.183	-4.984
+
+>MAP.32030	MAP.32029.collection		man biting					Côte d'Ivoire	GAZ	00000906	8.183	-4.984
+
+>MAP.32031	MAP.32031.collection		man biting					Côte d'Ivoire	GAZ	00000906	9.35	-5.634
+
+>MAP.32032	MAP.32031.collection		man biting					Côte d'Ivoire	GAZ	00000906	9.35	-5.634
+
+>MAP.32037	MAP.32037.collection		man biting					Côte d'Ivoire	GAZ	00000906	9.484	-5.835
+
+>MAP.32038	MAP.32037.collection		man biting					Côte d'Ivoire	GAZ	00000906	9.484	-5.835
+
+>MAP.32039	MAP.32039.collection		man biting					Côte d'Ivoire	GAZ	00000906	7.26	-8.154
+
+>MAP.32040	MAP.32039.collection		man biting					Côte d'Ivoire	GAZ	00000906	7.26	-8.154
+
+>MAP.32043	MAP.32043.collection		man biting					Côte d'Ivoire	GAZ	00000906	5.332	-4.031
+
+>MAP.32044	MAP.32043.collection		man biting					Côte d'Ivoire	GAZ	00000906	5.332	-4.031
+
+>MAP.41099	MAP.41099.collection		human baited net trap	outlet window trap				Benin	GAZ	00000904	6.356	2.439
+
+>MAP.41100	MAP.41099.collection		human baited net trap	outlet window trap				Benin	GAZ	00000904	6.356	2.439
+
+>MAP.41101	MAP.41099.collection		human baited net trap	outlet window trap				Benin	GAZ	00000904	6.356	2.439
+
+>MAP.45987	MAP.45987.collection		house resting inside	indoor light trap				Tanzania	GAZ	00001103	-3.75	37.6
+
+>MAP.45988	MAP.45987.collection		house resting inside	indoor light trap				Tanzania	GAZ	00001103	-3.75	37.6
+
+>MAP.45989	MAP.45987.collection		house resting inside	indoor light trap				Tanzania	GAZ	00001103	-3.75	37.6
+
+>MAP.45990	MAP.45990.collection		house resting inside	indoor light trap				Tanzania	GAZ	00001103	-4.366	38.05
+
+>MAP.45991	MAP.45990.collection		house resting inside	indoor light trap				Tanzania	GAZ	00001103	-4.366	38.05
+
+>MAP.45992	MAP.45990.collection		house resting inside	indoor light trap				Tanzania	GAZ	00001103	-4.366	38.05
+
+>MAP.45993	MAP.45993.collection		house resting inside	indoor light trap				Tanzania	GAZ	00001103	-3.4109	37.1949
+
+>MAP.45994	MAP.45993.collection		house resting inside	indoor light trap				Tanzania	GAZ	00001103	-3.4109	37.1949
+
+>MAP.45995	MAP.45993.collection		house resting inside	indoor light trap				Tanzania	GAZ	00001103	-3.4109	37.1949
+
+>MAP.62280	MAP.35693.collection		larval collection					Senegal	GAZ	00000913	14.674	-17.437
+
+>MAP.9473	MAP.9473.collection		outlet window trap	house resting inside				Sierra Leone	GAZ	00000914	8.117	-11.618
+
+>MAP.9714	MAP.9714.collection		larval collection					Ethiopia	GAZ	00000567	7.932	38.708
+
