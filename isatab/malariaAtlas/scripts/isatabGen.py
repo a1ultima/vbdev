@@ -255,8 +255,7 @@ for continent in continents:
 
     ##############################
     # I_INVESTIGATIONS HELPER   :  I will use this to help me annotate the i_investigations.txt sheet: the following code finds all unique species ID & sampling methods, it accumulate across continents
-    ##############################
-    
+    ##############################    
 
     try:
         print('\t\tAccumulating methods: i_investigations...OK')
