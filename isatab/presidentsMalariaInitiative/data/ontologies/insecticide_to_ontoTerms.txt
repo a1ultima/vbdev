@@ -1,0 +1,36 @@
+Insecticide tested	Parameter Value [group1.insecticidal substance]	Term Source Ref	Term Accession Number	Parameter Value [group1.concentration]	Unit	Term Source Ref	Term Accession Number
+Malathion 5.0%	malathion	MIRO	10000065	5	percent	UO	0000187
+Alphacypermethrin 0.05%	alpha-cypermethrin	MIRO	10000128	0.05	percent	UO	0000187
+Alphacypermethrin 0.1%	alpha-cypermethrin	MIRO	10000128	0.1	percent	UO	0000187
+Alphacypermethrin 0.4%	alpha-cypermethrin	MIRO	10000128	0.4	percent	UO	0000187
+Bendiocarb 0.1%	bendiocarb	MIRO	10000006	0.1	percent	UO	0000187
+Bendiocarb 1.0%	bendiocarb	MIRO	10000006	1	percent	UO	0000187
+Cyfluthrin 0.15%	cyfluthrin	MIRO	10000122	0.15	percent	UO	0000187
+Cypermethrin 1%	cypermethrin	MIRO	10000127	1	percent	UO	0000187
+DDT 4.0%	DDT	MIRO	10000157	4	percent	UO	0000187
+Deltamethrin 0.025%	deltamethrin	MIRO	10000133	0.025	percent	UO	0000187
+Deltamethrin 0.05%	deltamethrin	MIRO	10000133	0.05	percent	UO	0000187
+Dieldrin 4.0%	dieldrin	MIRO	10000160	4	percent	UO	0000187
+Etofenprox 0.5%	etofenprox	MIRO	10000136	0.5	percent	UO	0000187
+Fenitrothion 0.1%	fenitrothion	MIRO	10000056	0.1	percent	UO	0000187
+Fenitrothion 1.0%	fenitrothion	MIRO	10000056	1	percent	UO	0000187
+Lambda-cyhalothrin 0.05%	lambda-cyhalothrin	MIRO	10000125	0.05	percent	UO	0000187
+Lambda-cyhalothrin 0.75%	lambda-cyhalothrin	MIRO	10000125	0.75	percent	UO	0000187
+Malathion 0.5%	malathion	MIRO	10000065	0.5	percent	UO	0000187
+ Malathion 5.0%	malathion	MIRO	10000065	5	percent	UO	0000187
+Permethrin 0.75%	permethrin	MIRO	10000144	0.75	percent	UO	0000187
+Pirimiphos?methyl 0.25%	pirimiphos-methyl	MIRO	10000082	0.25	percent	UO	0000187
+Pirimiphos-methyl 0.05%	pirimiphos-methyl	MIRO	10000082	0.05	percent	UO	0000187
+Pirimiphos-methyl 1.0%	pirimiphos-methyl	MIRO	10000082	1	percent	UO	0000187
+Propoxur 0.1%	propoxur	MIRO	10000023	0.1	percent	UO	0000187
+Alphacypermethrin 12.5æg	alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023
+Bendiocarb 12.5æg	bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023
+DDT 100æg	DDT	MIRO	10000157	100	microgram	UO	0000023
+Deltamethrin 12.5æg	deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023
+Fenitrothion 50æg	fenitrothion	MIRO	10000056	50	microgram	UO	0000023
+Lambda-cyhalothrin 12.5æg	lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023
+Permethrin 12.5æg	permethrin	MIRO	10000144	12.5	microgram	UO	0000023
+Pirimiphos-methyl 20æg	pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023
+Alphacypermethrin	alpha-cypermethrin	MIRO	10000128				
+NA							
+Permethrin	permethrin	MIRO	10000144				

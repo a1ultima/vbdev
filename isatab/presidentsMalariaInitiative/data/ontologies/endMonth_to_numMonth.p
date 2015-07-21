@@ -1,0 +1,26 @@
+(dp0
+S'Mar'
+p1
+S'03'
+p2
+sS'Jun'
+p3
+S'06'
+p4
+sS'End month'
+p5
+S'xx-xx-xx/xx-oo-xx'
+p6
+sS'NR'
+p7
+S''
+p8
+sS'Dec'
+p9
+S'12'
+p10
+sS'Nov'
+p11
+S'11'
+p12
+s.

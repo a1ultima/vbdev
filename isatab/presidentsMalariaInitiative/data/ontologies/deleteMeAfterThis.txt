@@ -1,0 +1,6 @@
+
+
+
+Source Name	Sample Name	Description	Comment [comment]	Material Type	Term Source Ref	Term Accession Number	Comment [age]	Characteristics [sex (EFO:0000695)]	Term Source Ref	Term Accession Number	Characteristics [developmental stage (EFO:0000399)]	Term Source Ref	Term Accession Number	Characteristics [age (EFO:0000246)]	Unit	Term Source Ref	Term Accession Number
+
+

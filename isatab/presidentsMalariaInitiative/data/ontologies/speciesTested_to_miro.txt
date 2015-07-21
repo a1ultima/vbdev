@@ -1,0 +1,8 @@
+Species tested	Characteristics [species assay result (VBcv:0000961)]	Term Source Ref	Term Accession Number
+An. pharoensis	Anopheles pharoensis	MIRO	40003564
+An. arabiensis	Anopheles arabiensis	MIRO	40002224
+An. gambiae s.s.	Anopheles gambiae	MIRO	40003829
+An. gambiae s.l.	Anopheles gambiae sensu lato	MIRO	40003480
+An. funestus s.l.	Anopheles funestus sensu lato	MIRO	40003478
+An. funestus	Anopheles funestus	MIRO	40003834
+An. coustani	Anopheles coustani	MIRO	40000064

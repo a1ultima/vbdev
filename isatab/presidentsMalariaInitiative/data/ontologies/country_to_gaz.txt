@@ -1,0 +1,21 @@
+Country	Characteristics [Collection site (VBcv:0000831)]	Term Source Ref	Term Accession Number
+Ghana	Ghana	GAZ	00000908
+Liberia	Liberia	GAZ	00000911
+Madagascar	Madagascar	GAZ	00001108
+Angola	Angola	GAZ	00001095
+Ethiopia	Ethiopia	GAZ	00000567
+Zambia	Zambia	GAZ	00001107
+Zimbabwe	Zimbabwe	GAZ	00001106
+Malawi	Malawi	GAZ	00001105
+Democratic Republic of the Congo	Democratic Republic of the Congo	GAZ	00001086
+Senegal	Senegal	GAZ	00000913
+Rwanda	Rwanda	GAZ	00001087
+Mozambique	Mozambique	GAZ	00001100
+Uganda	Uganda	GAZ	00001102
+Mali	Mali	GAZ	00000584
+Burundi	Burundi	GAZ	00001090
+Kenya	Kenya	GAZ	00001101
+Nigeria	Nigeria	GAZ	00000912
+Tanzania, United Republic of	Tanzania	GAZ	00001103
+Burkina Faso	Burkina Faso	GAZ	00000905
+Benin	Benin	GAZ	00000904

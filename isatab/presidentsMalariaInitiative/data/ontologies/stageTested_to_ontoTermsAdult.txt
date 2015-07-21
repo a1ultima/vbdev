@@ -1,0 +1,5 @@
+Stage tested (and origin)	Characteristics [developmental stage (EFO:0000399)]	Term Source Ref	Term Accession Number
+NR	adult	IDOMAL	655
+F0 adults (from wild larvae)	adult	IDOMAL	655
+F0 adults (wild collected) 	adult	IDOMAL	655
+F1 adults (progeny of wild adults)	adult	IDOMAL	655

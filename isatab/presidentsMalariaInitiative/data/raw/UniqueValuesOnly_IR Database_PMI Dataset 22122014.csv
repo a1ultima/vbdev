@@ -1,0 +1,10 @@
+Unique Values (set) ,,,,
+,"Description: Similar to Sheet: ""IR_Database_PMI Dataset 2212201"", but rows are unique values only, for which there should be ontology terms matched against",,,
+,,,,
+,,,,
+,,,IR_Test_Method,
+,,Investigation type,Test                                           type,Insecticide tested
+,,Mechanism,Ace1R,
+,,Phenotypic,CDC bottle_adults,
+,,,kdr (mutation unspecified),
+,,,WHO test kit_adults,

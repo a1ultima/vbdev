@@ -1,0 +1,180 @@
+Sample Name	Assay Name	Protocol REF	Performer	Date	Comment [note]	Parameter Value [group1.insecticidal substance]	Term Source Ref	Term Accession Number	Parameter Value [group1.concentration]	Unit	Term Source Ref	Term Accession Number	Parameter Value [duration of exposure]	Unit	Term Source Ref	Term Accession Number	Raw Data File
+PMI476	PMI.IR_WHO.PMI476.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI508	PMI.IR_WHO.PMI508.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI509	PMI.IR_WHO.PMI509.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI510	PMI.IR_WHO.PMI510.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI511	PMI.IR_WHO.PMI511.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI512	PMI.IR_WHO.PMI512.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI513	PMI.IR_WHO.PMI513.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI523	PMI.IR_WHO.PMI523.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI524	PMI.IR_WHO.PMI524.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI525	PMI.IR_WHO.PMI525.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI526	PMI.IR_WHO.PMI526.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI527	PMI.IR_WHO.PMI527.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI528	PMI.IR_WHO.PMI528.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI538	PMI.IR_WHO.PMI538.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI539	PMI.IR_WHO.PMI539.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI540	PMI.IR_WHO.PMI540.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI541	PMI.IR_WHO.PMI541.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI542	PMI.IR_WHO.PMI542.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI543	PMI.IR_WHO.PMI543.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI544	PMI.IR_WHO.PMI544.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI546	PMI.IR_WHO.PMI546.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI549	PMI.IR_WHO.PMI549.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI552	PMI.IR_WHO.PMI552.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI554	PMI.IR_WHO.PMI554.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI556	PMI.IR_WHO.PMI556.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI558	PMI.IR_WHO.PMI558.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI559	PMI.IR_WHO.PMI559.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI560	PMI.IR_WHO.PMI560.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI561	PMI.IR_WHO.PMI561.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI562	PMI.IR_WHO.PMI562.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI563	PMI.IR_WHO.PMI563.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI564	PMI.IR_WHO.PMI564.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI565	PMI.IR_WHO.PMI565.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI566	PMI.IR_WHO.PMI566.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI567	PMI.IR_WHO.PMI567.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI568	PMI.IR_WHO.PMI568.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI569	PMI.IR_WHO.PMI569.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI570	PMI.IR_WHO.PMI570.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI571	PMI.IR_WHO.PMI571.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI572	PMI.IR_WHO.PMI572.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI573	PMI.IR_WHO.PMI573.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI574	PMI.IR_WHO.PMI574.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI575	PMI.IR_WHO.PMI575.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI576	PMI.IR_WHO.PMI576.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI577	PMI.IR_WHO.PMI577.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI578	PMI.IR_WHO.PMI578.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI579	PMI.IR_WHO.PMI579.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI580	PMI.IR_WHO.PMI580.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI581	PMI.IR_WHO.PMI581.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI582	PMI.IR_WHO.PMI582.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI583	PMI.IR_WHO.PMI583.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI584	PMI.IR_WHO.PMI584.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI585	PMI.IR_WHO.PMI585.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI586	PMI.IR_WHO.PMI586.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI587	PMI.IR_WHO.PMI587.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI588	PMI.IR_WHO.PMI588.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI589	PMI.IR_WHO.PMI589.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI590	PMI.IR_WHO.PMI590.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI591	PMI.IR_WHO.PMI591.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI592	PMI.IR_WHO.PMI592.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI593	PMI.IR_WHO.PMI593.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI594	PMI.IR_WHO.PMI594.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI595	PMI.IR_WHO.PMI595.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI596	PMI.IR_WHO.PMI596.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI597	PMI.IR_WHO.PMI597.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI598	PMI.IR_WHO.PMI598.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI599	PMI.IR_WHO.PMI599.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI600	PMI.IR_WHO.PMI600.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI601	PMI.IR_WHO.PMI601.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI602	PMI.IR_WHO.PMI602.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI603	PMI.IR_WHO.PMI603.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI604	PMI.IR_WHO.PMI604.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI605	PMI.IR_WHO.PMI605.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI606	PMI.IR_WHO.PMI606.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI607	PMI.IR_WHO.PMI607.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI608	PMI.IR_WHO.PMI608.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI609	PMI.IR_WHO.PMI609.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI610	PMI.IR_WHO.PMI610.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI611	PMI.IR_WHO.PMI611.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI612	PMI.IR_WHO.PMI612.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI613	PMI.IR_WHO.PMI613.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI614	PMI.IR_WHO.PMI614.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI615	PMI.IR_WHO.PMI615.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI616	PMI.IR_WHO.PMI616.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI617	PMI.IR_WHO.PMI617.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI618	PMI.IR_WHO.PMI618.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI619	PMI.IR_WHO.PMI619.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI620	PMI.IR_WHO.PMI620.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI621	PMI.IR_WHO.PMI621.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI622	PMI.IR_WHO.PMI622.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI623	PMI.IR_WHO.PMI623.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI624	PMI.IR_WHO.PMI624.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI625	PMI.IR_WHO.PMI625.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI626	PMI.IR_WHO.PMI626.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI627	PMI.IR_WHO.PMI627.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI628	PMI.IR_WHO.PMI628.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI629	PMI.IR_WHO.PMI629.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI630	PMI.IR_WHO.PMI630.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI631	PMI.IR_WHO.PMI631.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI632	PMI.IR_WHO.PMI632.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI633	PMI.IR_WHO.PMI633.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI642	PMI.IR_WHO.PMI642.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI643	PMI.IR_WHO.PMI643.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI644	PMI.IR_WHO.PMI644.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI645	PMI.IR_WHO.PMI645.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI646	PMI.IR_WHO.PMI646.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI647	PMI.IR_WHO.PMI647.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI648	PMI.IR_WHO.PMI648.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI1034	PMI.IR_WHO.PMI1034.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1035	PMI.IR_WHO.PMI1035.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1036	PMI.IR_WHO.PMI1036.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1037	PMI.IR_WHO.PMI1037.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1038	PMI.IR_WHO.PMI1038.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1039	PMI.IR_WHO.PMI1039.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1040	PMI.IR_WHO.PMI1040.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1041	PMI.IR_WHO.PMI1041.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1042	PMI.IR_WHO.PMI1042.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1045	PMI.IR_WHO.PMI1045.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1046	PMI.IR_WHO.PMI1046.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1047	PMI.IR_WHO.PMI1047.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1048	PMI.IR_WHO.PMI1048.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1049	PMI.IR_WHO.PMI1049.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1086	PMI.IR_WHO.PMI1086.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1092	PMI.IR_WHO.PMI1092.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1093	PMI.IR_WHO.PMI1093.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1101	PMI.IR_WHO.PMI1101.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1102	PMI.IR_WHO.PMI1102.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1103	PMI.IR_WHO.PMI1103.DDT 100æg	IR_WHO				DDT	MIRO	10000157	100	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1104	PMI.IR_WHO.PMI1104.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1105	PMI.IR_WHO.PMI1105.Fenitrothion 50æg	IR_WHO				fenitrothion	MIRO	10000056	50	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1106	PMI.IR_WHO.PMI1106.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1107	PMI.IR_WHO.PMI1107.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1108	PMI.IR_WHO.PMI1108.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1119	PMI.IR_WHO.PMI1119.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1120	PMI.IR_WHO.PMI1120.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1121	PMI.IR_WHO.PMI1121.DDT 100æg	IR_WHO				DDT	MIRO	10000157	100	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1122	PMI.IR_WHO.PMI1122.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1123	PMI.IR_WHO.PMI1123.Fenitrothion 50æg	IR_WHO				fenitrothion	MIRO	10000056	50	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1124	PMI.IR_WHO.PMI1124.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1125	PMI.IR_WHO.PMI1125.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1141	PMI.IR_WHO.PMI1141.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1146	PMI.IR_WHO.PMI1146.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1151	PMI.IR_WHO.PMI1151.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1157	PMI.IR_WHO.PMI1157.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1169	PMI.IR_WHO.PMI1169.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1174	PMI.IR_WHO.PMI1174.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1175	PMI.IR_WHO.PMI1175.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1181	PMI.IR_WHO.PMI1181.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1188	PMI.IR_WHO.PMI1188.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1194	PMI.IR_WHO.PMI1194.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1195	PMI.IR_WHO.PMI1195.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1201	PMI.IR_WHO.PMI1201.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1202	PMI.IR_WHO.PMI1202.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1208	PMI.IR_WHO.PMI1208.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1209	PMI.IR_WHO.PMI1209.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1215	PMI.IR_WHO.PMI1215.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1216	PMI.IR_WHO.PMI1216.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1222	PMI.IR_WHO.PMI1222.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1223	PMI.IR_WHO.PMI1223.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1230	PMI.IR_WHO.PMI1230.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1237	PMI.IR_WHO.PMI1237.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1243	PMI.IR_WHO.PMI1243.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1250	PMI.IR_WHO.PMI1250.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1257	PMI.IR_WHO.PMI1257.Permethrin 12.5æg	IR_WHO				permethrin	MIRO	10000144	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1259	PMI.IR_WHO.PMI1259.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1266	PMI.IR_WHO.PMI1266.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1273	PMI.IR_WHO.PMI1273.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1280	PMI.IR_WHO.PMI1280.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023			UO		p_IR_WHO.txt
+PMI1719	PMI.IR_WHO.PMI1719.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI1721	PMI.IR_WHO.PMI1721.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI1723	PMI.IR_WHO.PMI1723.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI1725	PMI.IR_WHO.PMI1725.Fenitrothion 50æg	IR_WHO				fenitrothion	MIRO	10000056	50	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI1727	PMI.IR_WHO.PMI1727.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI1735	PMI.IR_WHO.PMI1735.Alphacypermethrin 12.5æg	IR_WHO				alpha-cypermethrin	MIRO	10000128	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI1737	PMI.IR_WHO.PMI1737.Bendiocarb 12.5æg	IR_WHO				bendiocarb	MIRO	10000006	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI1738	PMI.IR_WHO.PMI1738.DDT 100æg	IR_WHO				DDT	MIRO	10000157	100	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI1741	PMI.IR_WHO.PMI1741.Deltamethrin 12.5æg	IR_WHO				deltamethrin	MIRO	10000133	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI1744	PMI.IR_WHO.PMI1744.Lambda-cyhalothrin 12.5æg	IR_WHO				lambda-cyhalothrin	MIRO	10000125	12.5	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
+PMI1745	PMI.IR_WHO.PMI1745.Pirimiphos-methyl 20æg	IR_WHO				pirimiphos-methyl	MIRO	10000082	20	microgram	UO	0000023	30	minute	UO	0000031	p_IR_WHO.txt
