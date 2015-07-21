@@ -1,12 +1,12 @@
 # coding=utf-8
 
-#pdb.set_trace() #@1212
 
+#pdb.set_trace() #@1212
 ###########
 # Imports #
 ###########
 
-from os import listdir 
+from os import listdir
 import pickle
 import numpy as np
 import os 
@@ -55,6 +55,7 @@ def filter_assay_rows( assay_data_rowise, assay_string_match ):
 
     # get indices of rows of data not relevant to IR_WHO assays
     row_indices_matching_specified_assay    = [i for i,row in enumerate(assay_specification_column) if not row==assay_string_match]
+
     filtered_assay_data                     = np.delete(assay_data_rowise,row_indices_matching_specified_assay,axis=0)
 
     return filtered_assay_data
@@ -233,9 +234,7 @@ col_stage_termSourceRef     = np.array(header_to_datacolumn['Stage tested (and o
 # 10. header: 'Term Accession Number'
 col_stage_accn              = np.array(["0000655"]*nrows)
 
-
-pdb.set_trace() # @1552
-
+#pdb.set_trace() # @1552
 
 # 10. header: 'Characteristics [age (EFO:0000246]'
 col_ageEFO                  = np.array(["2-5"]*nrows)
@@ -896,6 +895,15 @@ p_IR_WHO             = np.vstack(( p_IR_WHO_headers, p_IR_WHO_filtered ))
 #   <<<<< @todo: sanity check the code up till p_IR_BA, as they were done ad hoc from home... >>>>>
 col_IR_BA_sample_names                     = col_IR_WHO_sample_names
 col_IR_BA_assay_names                      = col_IR_WHO_assay_names
+
+
+col_IR_BA_assay_names_2 = []
+
+for i in col_IR_BA_assay_names:
+    col_IR_BA_assay_names_2.append(i.replace("IR_WHO","IR_BA"))
+
+col_IR_BA_assay_names_2 = np.array(col_IR_BA_assay_names_2)
+
 col_IR_BA_protolRef                        = col_IR_WHO_protolRef
 col_IR_BA_performer                        = col_IR_WHO_performer
 col_IR_BA_date                             = col_IR_WHO_date
@@ -966,39 +974,25 @@ a_IR_BA             = np.vstack((a_IR_BA_headers,a_IR_BA_filtered))
 
 # @todo: put these rows of data (col_p_IR_*) stacked then headers then filter using the filter_assay_rows() functions                @latest
 
-# Assay Name
-col_p_IR_BA_assay_names              = col_p_IR_WHO_assay_names
-# Phenotype Name
-col_p_IR_BA_mortalityPercentage      = col_p_IR_WHO_mortalityPercentage
-# Observable
-col_p_IR_BA_observable_value         = col_p_IR_WHO_observable_value
-# Term Source Ref
-col_p_IR_BA_observable_termSourceRef = col_p_IR_WHO_observable_termSourceRef
-# Term Accession Number
-col_p_IR_BA_observable_accn          = col_p_IR_WHO_observable_accn
-# Attribute
-col_p_IR_BA_attribute_value          = col_p_IR_WHO_attribute_value
-# Term Source Ref
-col_p_IR_BA_attribute_termSourceRef  = col_p_IR_WHO_attribute_termSourceRef
-# Term Accession Number
-col_p_IR_BA_attribute_accn           = col_p_IR_WHO_attribute_accn
-# Value
-col_p_IR_BA_value_value              = col_p_IR_WHO_value_value
-# Term Source Ref
-col_p_IR_BA_value_termSourceRef      = col_p_IR_WHO_value_termSourceRef
-# Term Accession Number
-col_p_IR_BA_value_accn               = col_p_IR_WHO_value_accn
-# Unit
-col_p_IR_BA_value_unit               = col_p_IR_WHO_value_unit
-# Term Source Ref
-col_p_IR_BA_value_unit_termSourceRef = col_p_IR_WHO_value_unit_termSourceRef
-# Term Accession Number
-col_p_IR_BA_value_unit_accn          = col_p_IR_WHO_value_unit_accn
+col_p_IR_BA_assay_names              = copy(col_p_IR_WHO_assay_names)
+col_p_IR_BA_mortalityPercentage      = copy(col_p_IR_WHO_mortalityPercentage)
+col_p_IR_BA_observable_value         = copy(col_p_IR_WHO_observable_value)
+col_p_IR_BA_observable_termSourceRef = copy(col_p_IR_WHO_observable_termSourceRef)
+col_p_IR_BA_observable_accn          = copy(col_p_IR_WHO_observable_accn)
+col_p_IR_BA_attribute_value          = copy(col_p_IR_WHO_attribute_value)
+col_p_IR_BA_attribute_termSourceRef  = copy(col_p_IR_WHO_attribute_termSourceRef)
+col_p_IR_BA_attribute_accn           = copy(col_p_IR_WHO_attribute_accn)
+col_p_IR_BA_value_value              = copy(col_p_IR_WHO_value_value)
+col_p_IR_BA_value_termSourceRef      = copy(col_p_IR_WHO_value_termSourceRef)
+col_p_IR_BA_value_accn               = copy(col_p_IR_WHO_value_accn)
+col_p_IR_BA_value_unit               = copy(col_p_IR_WHO_value_unit)
+col_p_IR_BA_value_unit_termSourceRef = copy(col_p_IR_WHO_value_unit_termSourceRef)
+col_p_IR_BA_value_unit_accn          = copy(col_p_IR_WHO_value_unit_accn)
 
 
 # make compatible w/ p_IR_BA_* format 
 
-p_IR_WHO_headers = np.array([   'Assay Name',\
+p_IR_BA_headers = np.array([   'Assay Name',\
                                 'Phenotype Name',\
                                 'Observable',\
                                 'Term Source Ref',\
@@ -1013,7 +1007,7 @@ p_IR_WHO_headers = np.array([   'Assay Name',\
                                 'Term Source Ref',\
                                 'Term Accession Number'     ]) 
 
-p_IR_WHO = np.array([   col_p_IR_BA_assay_names,\
+p_IR_BA = np.array([   col_p_IR_BA_assay_names,\
                         col_p_IR_BA_mortalityPercentage,\
                         col_p_IR_BA_observable_value,\
                         col_p_IR_BA_observable_termSourceRef,\
@@ -1029,13 +1023,13 @@ p_IR_WHO = np.array([   col_p_IR_BA_assay_names,\
                         col_p_IR_BA_value_unit_accn ])
 
 # rows are flipped to columns
-p_IR_WHO             = p_IR_WHO.T
+p_IR_BA             = p_IR_BA.T
 
-# filter out non IR_BA rows 
-p_IR_WHO_filtered    = filter_assay_rows( p_IR_WHO, "CDC bottle_adults" )  # @DONE: check length of filtered WHO assay is 
+# filter out non p_IR_BA rows 
+p_IR_BA_filtered    = filter_assay_rows( p_IR_BA, "CDC bottle_adults" )  # @DONE: check length of filtered WHO assay is 
 
 # stack the column headers on top
-p_IR_WHO             = np.vstack(( p_IR_WHO_headers, p_IR_WHO_filtered ))
+p_IR_BA             = np.vstack(( p_IR_BA_headers, p_IR_BA_filtered ))
 
 
 ############################################################################
@@ -1046,32 +1040,32 @@ p_IR_WHO             = np.vstack(( p_IR_WHO_headers, p_IR_WHO_filtered ))
 ################
 ################
 
-#
-# check if necessary paths exist, else make them
-#
-# @DONE: check if file exists else create it
-check_path_exists_else_make_it("../data/")
-check_path_exists_else_make_it("../data/ontologies")
-check_path_exists_else_make_it("../data/raw")
-check_path_exists_else_make_it("../data/isatab")
+# #
+# # check if necessary paths exist, else make them
+# #
+# # @DONE: check if file exists else create it
+# check_path_exists_else_make_it("../data/")
+# check_path_exists_else_make_it("../data/ontologies")
+# check_path_exists_else_make_it("../data/raw")
+# check_path_exists_else_make_it("../data/isatab")
 
-#
-# write ISA-Tab files  
-#
-np.savetxt("../data/isatab/s_samples.tsv",      s_samples,      delimiter="\t", fmt="%s")
-np.savetxt("../data/isatab/a_collection.tsv",   a_collection,   delimiter="\t", fmt="%s")
-np.savetxt("../data/isatab/a_species.tsv",      a_species,      delimiter="\t", fmt="%s")
+# #
+# # write ISA-Tab files  
+# #
+# np.savetxt("../data/isatab/s_samples.tsv",      s_samples,      delimiter="\t", fmt="%s")
+# np.savetxt("../data/isatab/a_collection.tsv",   a_collection,   delimiter="\t", fmt="%s")
+# np.savetxt("../data/isatab/a_species.tsv",      a_species,      delimiter="\t", fmt="%s")
 
-#
-# @DONE: check that columns of these two sheets match against Fonseca format
-#
-np.savetxt("../data/isatab/a_IR_WHO.tsv",       a_IR_WHO,       delimiter="\t", fmt="%s")
-np.savetxt("../data/isatab/a_IR_BA.tsv",        a_IR_BA,        delimiter="\t", fmt="%s")
+# #
+# # @DONE: check that columns of these two sheets match against Fonseca format
+# #
+# np.savetxt("../data/isatab/a_IR_WHO.tsv",       a_IR_WHO,       delimiter="\t", fmt="%s")
+# np.savetxt("../data/isatab/a_IR_BA.tsv",        a_IR_BA,        delimiter="\t", fmt="%s")
 
-#
-# @DONE: check that columns of these two sheets match against Fonseca format
-#
-np.savetxt("../data/isatab/p_IR_WHO.tsv",       p_IR_WHO,        delimiter="\t", fmt="%s")
-np.savetxt("../data/isatab/p_IR_BA.tsv",       p_IR_WHO,        delimiter="\t", fmt="%s")
+# #
+# # @DONE: check that columns of these two sheets match against Fonseca format
+# #
+# np.savetxt("../data/isatab/p_IR_WHO.tsv",       p_IR_WHO,        delimiter="\t", fmt="%s")
+#np.savetxt("../data/isatab/p_IR_BA.tsv",          p_IR_BA,        delimiter="\t", fmt="%s")
 
 print("--- %s seconds ---" % (time.time() - start_time))
