@@ -64,6 +64,24 @@ def filter_assay_rows( assay_data_rowise, assay_string_match ):
 # Main #
 ########
 
+
+#
+# Check data paths exist
+#
+
+
+# check if necessary paths exist, else make them
+#
+# @DONE: check if file exists else create it
+check_path_exists_else_make_it("../data/")
+check_path_exists_else_make_it("../data/ontologies")
+check_path_exists_else_make_it("../data/raw")
+check_path_exists_else_make_it("../data/isatab")
+
+#
+# ...
+#
+
 import time
 start_time = time.time()
 
@@ -308,6 +326,10 @@ s_samples = s_samples.T
 s_samples = np.vstack((s_samples_headers,s_samples))
 
 
+# @save:s_samples
+np.savetxt("../data/isatab/s_samples.tsv",      s_samples,      delimiter="\t", fmt="%s")
+
+
 #######################
 ## a_collections.txt ## @a_collections
 #######################
@@ -323,7 +345,7 @@ col_collection_assay_names            = np.array(["PMI.collection."+i for i in s
 
 # Description
 ### e.g.: "human landing patch"
-col_collection_description            = np.array(["human landing patch"]*nrows)
+col_collection_description            = np.array(["catch of live specimens"]*nrows)
 
 # Protocol REF
 ### e.g.: "CATCH"
@@ -564,6 +586,10 @@ a_collection = a_collection.T
 ### stack the column headers on top
 a_collection = np.vstack((a_collection_headers,a_collection))
 
+# @save:a_collections
+np.savetxt("../data/isatab/a_collection.tsv",   a_collection,   delimiter="\t", fmt="%s")
+
+
 #############
 # a_species #  @@A_sPECIES
 #############
@@ -626,6 +652,11 @@ a_species = a_species.T
 
 ### stack the column headers on top
 a_species = np.vstack((a_species_headers,a_species))
+
+
+# @save:a_species
+np.savetxt("../data/isatab/a_species.tsv",      a_species,      delimiter="\t", fmt="%s")
+
 
 ############
 # a_IR_WHO #  @@a_IR_WHO    # @done: git commit from home  
@@ -763,6 +794,11 @@ a_IR_WHO_filtered = filter_assay_rows( a_IR_WHO, "WHO test kit_adults" )  # @DON
 # stack the column headers on top
 a_IR_WHO = np.vstack(( a_IR_WHO_headers, a_IR_WHO_filtered ))
 
+
+# @save:a_IR_WHO
+np.savetxt("../data/isatab/a_IR_WHO.tsv",      a_IR_WHO,      delimiter="\t", fmt="%s")
+
+
 ############
 # p_IR_WHO #          @@p_IR_WHO
 ############
@@ -778,7 +814,6 @@ col_p_IR_WHO_assay_names = col_IR_WHO_assay_names
 # e.g.: Mortality percentage:100, 0.05% deltamethrin
 col_p_IR_WHO_mortalityPercentage    = []
 mortalityPercentages                = header_to_datacolumn['Calculated  average mortality adjusted for control  (%)']["raw_dataset_column"]  # e.g. NR, 0.987, 42.58%
-
 mortalityPercentages_no_unit        = []
 
 for i,mortality in enumerate(mortalityPercentages):
@@ -878,13 +913,17 @@ p_IR_WHO = np.array([           col_p_IR_WHO_assay_names,
 # rows are flipped to columns
 p_IR_WHO             = p_IR_WHO.T
 
+
+#pdb.set_trace()  # @0950
+
 # filter out non IR_BA rows 
 p_IR_WHO_filtered    = filter_assay_rows( p_IR_WHO, "WHO test kit_adults" )  # @DONE: check length of filtered WHO assay is 
 
 # stack the column headers on top
 p_IR_WHO             = np.vstack(( p_IR_WHO_headers, p_IR_WHO_filtered ))
 
-
+# @save:p_IR_WHO
+np.savetxt("../data/isatab/p_IR_WHO.tsv",      p_IR_WHO,      delimiter="\t", fmt="%s")
 
 
 ############
@@ -893,16 +932,10 @@ p_IR_WHO             = np.vstack(( p_IR_WHO_headers, p_IR_WHO_filtered ))
 
 #   <<<<< @todo: need to filter to include only WHO_testkit rows >>>>>
 #   <<<<< @todo: sanity check the code up till p_IR_BA, as they were done ad hoc from home... >>>>>
-col_IR_BA_sample_names                     = col_IR_WHO_sample_names
-col_IR_BA_assay_names                      = col_IR_WHO_assay_names
+col_IR_BA_sample_names = col_IR_WHO_sample_names
+col_IR_BA_assay_names  = col_IR_WHO_assay_names
 
-
-col_IR_BA_assay_names_2 = []
-
-for i in col_IR_BA_assay_names:
-    col_IR_BA_assay_names_2.append(i.replace("IR_WHO","IR_BA"))
-
-col_IR_BA_assay_names_2 = np.array(col_IR_BA_assay_names_2)
+col_IR_BA_assay_names_final = [i.replace("IR_WHO","IR_BA") for i in col_IR_BA_assay_names]
 
 col_IR_BA_protolRef                        = col_IR_WHO_protolRef
 col_IR_BA_performer                        = col_IR_WHO_performer
@@ -968,6 +1001,9 @@ a_IR_BA_filtered    = filter_assay_rows( a_IR_BA, "CDC bottle_adults" )  # @DONE
 # stack the column headers on top
 a_IR_BA             = np.vstack((a_IR_BA_headers,a_IR_BA_filtered))
 
+# @save:a_IR_BA
+np.savetxt("../data/isatab/a_IR_BA.tsv",      a_IR_BA,      delimiter="\t", fmt="%s")
+
 ############
 # p_IR_BA  #   @done: git commit from home
 ############
@@ -989,9 +1025,7 @@ col_p_IR_BA_value_unit               = copy(col_p_IR_WHO_value_unit)
 col_p_IR_BA_value_unit_termSourceRef = copy(col_p_IR_WHO_value_unit_termSourceRef)
 col_p_IR_BA_value_unit_accn          = copy(col_p_IR_WHO_value_unit_accn)
 
-
 # make compatible w/ p_IR_BA_* format 
-
 p_IR_BA_headers = np.array([   'Assay Name',\
                                 'Phenotype Name',\
                                 'Observable',\
@@ -1007,7 +1041,7 @@ p_IR_BA_headers = np.array([   'Assay Name',\
                                 'Term Source Ref',\
                                 'Term Accession Number'     ]) 
 
-p_IR_BA = np.array([   col_p_IR_BA_assay_names,\
+p_IR_BA = np.array([    col_p_IR_BA_assay_names,\
                         col_p_IR_BA_mortalityPercentage,\
                         col_p_IR_BA_observable_value,\
                         col_p_IR_BA_observable_termSourceRef,\
@@ -1030,6 +1064,9 @@ p_IR_BA_filtered    = filter_assay_rows( p_IR_BA, "CDC bottle_adults" )  # @DONE
 
 # stack the column headers on top
 p_IR_BA             = np.vstack(( p_IR_BA_headers, p_IR_BA_filtered ))
+
+# @save:a_IR_BA
+np.savetxt("../data/isatab/p_IR_BA.tsv",      p_IR_BA,      delimiter="\t", fmt="%s")
 
 
 ############################################################################
@@ -1066,6 +1103,6 @@ p_IR_BA             = np.vstack(( p_IR_BA_headers, p_IR_BA_filtered ))
 # # @DONE: check that columns of these two sheets match against Fonseca format
 # #
 # np.savetxt("../data/isatab/p_IR_WHO.tsv",       p_IR_WHO,        delimiter="\t", fmt="%s")
-#np.savetxt("../data/isatab/p_IR_BA.tsv",          p_IR_BA,        delimiter="\t", fmt="%s")
+# np.savetxt("../data/isatab/p_IR_BA.tsv",        p_IR_BA,        delimiter="\t", fmt="%s")
 
 print("--- %s seconds ---" % (time.time() - start_time))
