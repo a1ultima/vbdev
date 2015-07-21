@@ -64,11 +64,9 @@ def filter_assay_rows( assay_data_rowise, assay_string_match ):
 # Main #
 ########
 
-
 #
 # Check data paths exist
 #
-
 
 # check if necessary paths exist, else make them
 #
@@ -653,7 +651,6 @@ a_species = a_species.T
 ### stack the column headers on top
 a_species = np.vstack((a_species_headers,a_species))
 
-
 # @save:a_species
 np.savetxt("../data/isatab/a_species.tsv",      a_species,      delimiter="\t", fmt="%s")
 
@@ -794,10 +791,8 @@ a_IR_WHO_filtered = filter_assay_rows( a_IR_WHO, "WHO test kit_adults" )  # @DON
 # stack the column headers on top
 a_IR_WHO = np.vstack(( a_IR_WHO_headers, a_IR_WHO_filtered ))
 
-
 # @save:a_IR_WHO
 np.savetxt("../data/isatab/a_IR_WHO.tsv",      a_IR_WHO,      delimiter="\t", fmt="%s")
-
 
 ############
 # p_IR_WHO #          @@p_IR_WHO
@@ -935,24 +930,23 @@ np.savetxt("../data/isatab/p_IR_WHO.tsv",      p_IR_WHO,      delimiter="\t", fm
 col_IR_BA_sample_names = col_IR_WHO_sample_names
 col_IR_BA_assay_names  = col_IR_WHO_assay_names
 
-col_IR_BA_assay_names_final = [i.replace("IR_WHO","IR_BA") for i in col_IR_BA_assay_names]
-
-col_IR_BA_protolRef                        = col_IR_WHO_protolRef
-col_IR_BA_performer                        = col_IR_WHO_performer
-col_IR_BA_date                             = col_IR_WHO_date
-col_IR_BA_note                             = col_IR_WHO_note
-col_IR_BA_insecticide_value                = col_IR_WHO_insecticide_value
-col_IR_BA_insecticide_termSourceRef        = col_IR_WHO_insecticide_termSourceRef
-col_IR_BA_insecticide_accn                 = col_IR_WHO_insecticide_accn
-col_IR_BA_concentration_value              = col_IR_WHO_concentration_value
-col_IR_BA_concentration_unit               = col_IR_WHO_concentration_unit
-col_IR_BA_concentration_termSourceRef      = col_IR_WHO_concentration_termSourceRef
-col_IR_BA_concentration_accn               = col_IR_WHO_concentration_accn
-col_IR_BA_durationOfExposure_value         = col_IR_WHO_durationOfExposure_value
-col_IR_BA_durationOfExposure_unit          = col_IR_WHO_durationOfExposure_unit
-col_IR_BA_durationOfExposure_accn          = col_IR_WHO_durationOfExposure_accn
-col_IR_BA_durationOfExposure_termSourceRef = col_IR_WHO_durationOfExposure_termSourceRef
-col_IR_BA_rawDataFile                      = col_IR_WHO_rawDataFile
+col_IR_BA_assay_names_final                 = [i.replace("IR_WHO","IR_BA") for i in col_IR_BA_assay_names]
+col_IR_BA_protolRef                         = copy([i.replace("IR_WHO","IR_BA") for i in col_IR_BA_protolRef])
+col_IR_BA_performer                         = copy(col_IR_WHO_performer)
+col_IR_BA_date                              = copy(col_IR_WHO_date)
+col_IR_BA_note                              = copy(col_IR_WHO_note)
+col_IR_BA_insecticide_value                 = copy(col_IR_WHO_insecticide_value)
+col_IR_BA_insecticide_termSourceRef         = copy(col_IR_WHO_insecticide_termSourceRef)
+col_IR_BA_insecticide_accn                  = copy(col_IR_WHO_insecticide_accn)
+col_IR_BA_concentration_value               = copy(col_IR_WHO_concentration_value)
+col_IR_BA_concentration_unit                = copy(col_IR_WHO_concentration_unit)
+col_IR_BA_concentration_termSourceRef       = copy(col_IR_WHO_concentration_termSourceRef)
+col_IR_BA_concentration_accn                = copy(col_IR_WHO_concentration_accn)
+col_IR_BA_durationOfExposure_value          = copy(col_IR_WHO_durationOfExposure_value)
+col_IR_BA_durationOfExposure_unit           = copy(col_IR_WHO_durationOfExposure_unit)
+col_IR_BA_durationOfExposure_accn           = copy(col_IR_WHO_durationOfExposure_accn)
+col_IR_BA_durationOfExposure_termSourceRef  = copy(col_IR_WHO_durationOfExposure_termSourceRef)
+col_IR_BA_rawDataFile                       = copy(col_IR_WHO_rawDataFile)
 
 a_IR_BA_headers = np.array([    'Sample Name',\
                                 'Assay Name',\
@@ -973,24 +967,24 @@ a_IR_BA_headers = np.array([    'Sample Name',\
                                 'Term Accession Number',\
                                 'Raw Data File' ])
 
-a_IR_BA = np.array([            col_IR_WHO_sample_names,\
-                                col_IR_WHO_assay_names_final,\
-                                col_IR_WHO_protolRef,\
-                                col_IR_WHO_performer,\
-                                col_IR_WHO_date,\
-                                col_IR_WHO_note,\
-                                col_IR_WHO_insecticide_value,\
-                                col_IR_WHO_insecticide_termSourceRef,\
-                                col_IR_WHO_insecticide_accn,\
-                                col_IR_WHO_concentration_value,\
-                                col_IR_WHO_concentration_unit,\
-                                col_IR_WHO_concentration_termSourceRef,\
-                                col_IR_WHO_concentration_accn,\
-                                col_IR_WHO_durationOfExposure_value,\
-                                col_IR_WHO_durationOfExposure_unit,\
-                                col_IR_WHO_durationOfExposure_termSourceRef,\
-                                col_IR_WHO_durationOfExposure_accn,\
-                                col_IR_WHO_rawDataFile  ])
+a_IR_BA = np.array([    col_IR_BA_sample_names,\
+                        col_IR_BA_assay_names_final,\
+                        col_IR_BA_protolRef,\
+                        col_IR_BA_performer,\
+                        col_IR_BA_date,\
+                        col_IR_BA_note,\
+                        col_IR_BA_insecticide_value,\
+                        col_IR_BA_insecticide_termSourceRef,\
+                        col_IR_BA_insecticide_accn,\
+                        col_IR_BA_concentration_value,\
+                        col_IR_BA_concentration_unit,\
+                        col_IR_BA_concentration_termSourceRef,\
+                        col_IR_BA_concentration_accn,\
+                        col_IR_BA_durationOfExposure_value,\
+                        col_IR_BA_durationOfExposure_unit,\
+                        col_IR_BA_durationOfExposure_termSourceRef,\
+                        col_IR_BA_durationOfExposure_accn,\
+                        col_IR_BA_rawDataFile ])
 
 # rows are flipped to columns
 a_IR_BA             = a_IR_BA.T
