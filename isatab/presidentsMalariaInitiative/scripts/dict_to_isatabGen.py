@@ -585,6 +585,7 @@ a_collection = np.vstack((a_collection_headers,a_collection))
 # @save:a_collections
 np.savetxt("../data/isatab/a_collection.tsv",   a_collection,   delimiter="\t", fmt="%s")
 
+# nvm
 
 #############
 # a_species #  @@A_sPECIES
