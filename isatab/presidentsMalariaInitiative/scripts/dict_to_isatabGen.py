@@ -79,7 +79,6 @@ check_path_exists_else_make_it("../data/isatab")
 #
 # ...
 #
-
 import time
 start_time = time.time()
 
@@ -115,7 +114,6 @@ for pickle_name in pickle_names:
 #       s_samples
 #
 # put the transposed data into a dict
-
 header_to_datacolumn = {}
 
 for i,header in enumerate(headers):
@@ -130,12 +128,12 @@ for i,header in enumerate(headers):
 
 # create a dictionary that translates between keys in header_to_datacolumn vs. keys in ontologyKey_to_variableName
 headerToDatacolumnKEY_to_ontologyKeyToVariableNameKEY = {
-    'Species tested':       'species_to_miroTerm_miroId',
-    'Insecticide tested':   'insecticide_to_ontoTerms',
-    'Country':              'country_to_gazTerm_gazId',
-    'Start month':          'startMonth_to_numMonth',
-    'End month':            'endMonth_to_numMonth',
-    'Year':                 'yearStartToEnd_yearStart_yearEnd',
+    'Species tested':            'species_to_miroTerm_miroId',
+    'Insecticide tested':        'insecticide_to_ontoTerms',
+    'Country':                   'country_to_gazTerm_gazId',
+    'Start month':               'startMonth_to_numMonth',
+    'End month':                 'endMonth_to_numMonth',
+    'Year':                      'yearStartToEnd_yearStart_yearEnd',
     'Stage tested (and origin)': 'stageTested_ontoTermAdult_termSourceRef_accnNum'
 }
 
@@ -154,7 +152,8 @@ for key1 in headerToDatacolumnKEY_to_ontologyKeyToVariableNameKEY.keys():
     for row in header_to_datacolumn[key1]['raw_dataset_column']:
 
         if "\xe6g" in row:
-            row = row.replace("\xe6g","\xc3\xa6g")
+            #row = row.replace("\xe6g","\xc3\xa6g")
+            row = row.replace("\xe6g","aeg")
 
         try: 
             # IF there is a second layer of keys for the dict, then iterate over those as subkeys
@@ -291,7 +290,6 @@ s_samples_headers           = np.array([    'Source Name',\
 #   [col 1: ..... ]
 #   [col 2: ..... ]
 #   [ ............]
-
 s_samples = np.vstack(( col_source_names,\
                         col_sample_names,\
                         col_description,\
@@ -607,10 +605,6 @@ col_species_description         = np.array([""]*nrows)
 #Protocol REF
 # "SPECIES"
 col_species_protocolRef         = np.array(["SPECIES"]*nrows)
-
-#Protocol REF
-# "SPECIES"
-col_species_protocolRef         = np.array(["SPECIES_PCR"]*nrows)
 
 #Performer
 # ""
@@ -931,7 +925,7 @@ col_IR_BA_sample_names = col_IR_WHO_sample_names
 col_IR_BA_assay_names  = col_IR_WHO_assay_names
 
 col_IR_BA_assay_names_final                 = [i.replace("IR_WHO","IR_BA") for i in col_IR_BA_assay_names]
-col_IR_BA_protolRef                         = copy([i.replace("IR_WHO","IR_BA") for i in col_IR_BA_protolRef])
+col_IR_BA_protolRef                         = copy([i.replace("IR_WHO","IR_BA") for i in col_IR_WHO_protolRef])
 col_IR_BA_performer                         = copy(col_IR_WHO_performer)
 col_IR_BA_date                              = copy(col_IR_WHO_date)
 col_IR_BA_note                              = copy(col_IR_WHO_note)
@@ -1003,8 +997,7 @@ np.savetxt("../data/isatab/a_IR_BA.tsv",      a_IR_BA,      delimiter="\t", fmt=
 ############
 
 # @todo: put these rows of data (col_p_IR_*) stacked then headers then filter using the filter_assay_rows() functions                @latest
-
-col_p_IR_BA_assay_names              = copy(col_p_IR_WHO_assay_names)
+col_p_IR_BA_assay_names              = copy(col_IR_BA_assay_names_final)
 col_p_IR_BA_mortalityPercentage      = copy(col_p_IR_WHO_mortalityPercentage)
 col_p_IR_BA_observable_value         = copy(col_p_IR_WHO_observable_value)
 col_p_IR_BA_observable_termSourceRef = copy(col_p_IR_WHO_observable_termSourceRef)
@@ -1020,7 +1013,7 @@ col_p_IR_BA_value_unit_termSourceRef = copy(col_p_IR_WHO_value_unit_termSourceRe
 col_p_IR_BA_value_unit_accn          = copy(col_p_IR_WHO_value_unit_accn)
 
 # make compatible w/ p_IR_BA_* format 
-p_IR_BA_headers = np.array([   'Assay Name',\
+p_IR_BA_headers = np.array([    'Assay Name',\
                                 'Phenotype Name',\
                                 'Observable',\
                                 'Term Source Ref',\
