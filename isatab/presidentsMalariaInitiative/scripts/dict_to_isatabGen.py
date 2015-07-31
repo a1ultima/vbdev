@@ -1,9 +1,7 @@
 # coding=utf-8
 
-
-#pdb.set_trace() #@1212
 ###########
-# Imports #
+# Imports # 
 ###########
 
 from os import listdir
@@ -152,8 +150,8 @@ for key1 in headerToDatacolumnKEY_to_ontologyKeyToVariableNameKEY.keys():
     for row in header_to_datacolumn[key1]['raw_dataset_column']:
 
         if "\xe6g" in row:
-            #row = row.replace("\xe6g","\xc3\xa6g")
-            row = row.replace("\xe6g","aeg")
+            row = row.replace("\xe6g","\xc3\xa6g")      # @UTR-8
+            #row = row.replace("\xe6g","aeg")
 
         try: 
             # IF there is a second layer of keys for the dict, then iterate over those as subkeys
@@ -250,8 +248,6 @@ col_stage_termSourceRef     = np.array(header_to_datacolumn['Stage tested (and o
 # 10. header: 'Term Accession Number'
 col_stage_accn              = np.array(["0000655"]*nrows)
 
-#pdb.set_trace() # @1552
-
 # 10. header: 'Characteristics [age (EFO:0000246]'
 col_ageEFO                  = np.array(["2-5"]*nrows)
 
@@ -324,7 +320,7 @@ s_samples = np.vstack((s_samples_headers,s_samples))
 
 
 # @save:s_samples
-np.savetxt("../data/isatab/s_samples.tsv",      s_samples,      delimiter="\t", fmt="%s")
+np.savetxt("../data/isatab/s_samples.txt",      s_samples,      delimiter="\t", fmt="%s")
 
 
 #######################
@@ -548,6 +544,9 @@ a_collection_headers = [    "Sample Name",\
 #
 # @unite-columns:a_species
 #
+
+col_collection_performer = [i.replace(" ","cfornadel@usaid.gov lnorris@usaid.gov") for i in col_collection_performer]
+
 a_collection = np.vstack((  col_collection_sample_names,\
                             col_collection_assay_names,\
                             col_collection_description,\
@@ -576,8 +575,6 @@ a_collection = np.vstack((  col_collection_sample_names,\
                             col_collection_provinces,\
                             col_collection_country  ))
 
-pdb.set_trace()     # @1242
-
 #
 # rows are flipped to columns
 #
@@ -587,7 +584,7 @@ a_collection = a_collection.T
 a_collection = np.vstack((a_collection_headers,a_collection))
 
 # @save:a_collections
-np.savetxt("../data/isatab/a_collection.tsv",   a_collection,   delimiter="\t", fmt="%s")
+np.savetxt("../data/isatab/a_collection.txt",   a_collection,   delimiter="\t", fmt="%s")
 
 
 
@@ -651,7 +648,7 @@ a_species = a_species.T
 a_species = np.vstack((a_species_headers,a_species))
 
 # @save:a_species
-np.savetxt("../data/isatab/a_species.tsv",      a_species,      delimiter="\t", fmt="%s")
+np.savetxt("../data/isatab/a_species.txt",      a_species,      delimiter="\t", fmt="%s")
 
 
 ############
@@ -791,7 +788,7 @@ a_IR_WHO_filtered = filter_assay_rows( a_IR_WHO, "WHO test kit_adults" )  # @DON
 a_IR_WHO = np.vstack(( a_IR_WHO_headers, a_IR_WHO_filtered ))
 
 # @save:a_IR_WHO
-np.savetxt("../data/isatab/a_IR_WHO.tsv",      a_IR_WHO,      delimiter="\t", fmt="%s")
+np.savetxt("../data/isatab/a_IR_WHO.txt",      a_IR_WHO,      delimiter="\t", fmt="%s")
 
 ############
 # p_IR_WHO #          @@p_IR_WHO
@@ -802,7 +799,10 @@ np.savetxt("../data/isatab/a_IR_WHO.tsv",      a_IR_WHO,      delimiter="\t", fm
 # Assay Name
 # e.g.: Corrales-El Playón.dr.IR_WHO.deltamethrin
 col_p_IR_WHO_assay_names = np.array(["PMI.IR_WHO."+i for i in sample_names])
-col_p_IR_WHO_assay_names = col_IR_WHO_assay_names
+col_p_IR_WHO_assay_names = col_IR_WHO_assay_names                       
+
+# removing all æ UTR-8 special characters with ASCII "ae" characters, @todo: add the true æ characters aftrewards... 
+col_p_IR_WHO_assay_names = [i.replace("\xe6","ae") for i in col_p_IR_WHO_assay_names]
 
 # Phenotype Name
 # e.g.: Mortality percentage:100, 0.05% deltamethrin
@@ -907,9 +907,6 @@ p_IR_WHO = np.array([           col_p_IR_WHO_assay_names,
 # rows are flipped to columns
 p_IR_WHO             = p_IR_WHO.T
 
-
-#pdb.set_trace()  # @0950
-
 # filter out non IR_BA rows 
 p_IR_WHO_filtered    = filter_assay_rows( p_IR_WHO, "WHO test kit_adults" )  # @DONE: check length of filtered WHO assay is 
 
@@ -917,7 +914,7 @@ p_IR_WHO_filtered    = filter_assay_rows( p_IR_WHO, "WHO test kit_adults" )  # @
 p_IR_WHO             = np.vstack(( p_IR_WHO_headers, p_IR_WHO_filtered ))
 
 # @save:p_IR_WHO
-np.savetxt("../data/isatab/p_IR_WHO.tsv",      p_IR_WHO,      delimiter="\t", fmt="%s")
+np.savetxt("../data/isatab/p_IR_WHO.txt",      p_IR_WHO,      delimiter="\t", fmt="%s")
 
 
 ############
@@ -926,11 +923,14 @@ np.savetxt("../data/isatab/p_IR_WHO.tsv",      p_IR_WHO,      delimiter="\t", fm
 
 #   <<<<< @todo: need to filter to include only WHO_testkit rows >>>>>
 #   <<<<< @todo: sanity check the code up till p_IR_BA, as they were done ad hoc from home... >>>>>
-col_IR_BA_sample_names = col_IR_WHO_sample_names
-col_IR_BA_assay_names  = col_IR_WHO_assay_names
+col_IR_BA_sample_names = col_IR_WHO_sample_names    # prior to filtering away the IR_WHO bits
+col_IR_BA_assay_names  = col_IR_WHO_assay_names     # prior to filtering away the IR_WHO bits 
 
 col_IR_BA_assay_names_final                 = [i.replace("IR_WHO","IR_BA") for i in col_IR_BA_assay_names]
 col_IR_BA_protolRef                         = copy([i.replace("IR_WHO","IR_BA") for i in col_IR_WHO_protolRef])
+
+col_IR_BA_assay_names_final = [i.replace("\xe6","ae") for i in copy(col_IR_BA_assay_names_final)]
+
 col_IR_BA_performer                         = copy(col_IR_WHO_performer)
 col_IR_BA_date                              = copy(col_IR_WHO_date)
 col_IR_BA_note                              = copy(col_IR_WHO_note)
@@ -945,7 +945,7 @@ col_IR_BA_durationOfExposure_value          = copy(col_IR_WHO_durationOfExposure
 col_IR_BA_durationOfExposure_unit           = copy(col_IR_WHO_durationOfExposure_unit)
 col_IR_BA_durationOfExposure_accn           = copy(col_IR_WHO_durationOfExposure_accn)
 col_IR_BA_durationOfExposure_termSourceRef  = copy(col_IR_WHO_durationOfExposure_termSourceRef)
-col_IR_BA_rawDataFile                       = copy(col_IR_WHO_rawDataFile)
+col_IR_BA_rawDataFile                       = np.array([i.replace("WHO","BA") for i in copy(col_IR_WHO_rawDataFile)])
 
 a_IR_BA_headers = np.array([    'Sample Name',\
                                 'Assay Name',\
@@ -991,11 +991,12 @@ a_IR_BA             = a_IR_BA.T
 # filter out non IR_BA rows 
 a_IR_BA_filtered    = filter_assay_rows( a_IR_BA, "CDC bottle_adults" )  # @DONE: check length of filtered WHO assay is 
 
+
 # stack the column headers on top
 a_IR_BA             = np.vstack((a_IR_BA_headers,a_IR_BA_filtered))
 
 # @save:a_IR_BA
-np.savetxt("../data/isatab/a_IR_BA.tsv",      a_IR_BA,      delimiter="\t", fmt="%s")
+np.savetxt("../data/isatab/a_IR_BA.txt",      a_IR_BA,      delimiter="\t", fmt="%s")
 
 ############
 # p_IR_BA  #   @done: git commit from home
@@ -1003,6 +1004,9 @@ np.savetxt("../data/isatab/a_IR_BA.tsv",      a_IR_BA,      delimiter="\t", fmt=
 
 # @todo: put these rows of data (col_p_IR_*) stacked then headers then filter using the filter_assay_rows() functions                @latest
 col_p_IR_BA_assay_names              = copy(col_IR_BA_assay_names_final)
+
+col_p_IR_BA_assay_names = [i.replace("\xe6","ae") for i in copy(col_p_IR_BA_assay_names)]
+
 col_p_IR_BA_mortalityPercentage      = copy(col_p_IR_WHO_mortalityPercentage)
 col_p_IR_BA_observable_value         = copy(col_p_IR_WHO_observable_value)
 col_p_IR_BA_observable_termSourceRef = copy(col_p_IR_WHO_observable_termSourceRef)
@@ -1058,8 +1062,7 @@ p_IR_BA_filtered    = filter_assay_rows( p_IR_BA, "CDC bottle_adults" )  # @DONE
 p_IR_BA             = np.vstack(( p_IR_BA_headers, p_IR_BA_filtered ))
 
 # @save:a_IR_BA
-np.savetxt("../data/isatab/p_IR_BA.tsv",      p_IR_BA,      delimiter="\t", fmt="%s")
-
+np.savetxt("../data/isatab/p_IR_BA.txt",      p_IR_BA,      delimiter="\t", fmt="%s")
 
 ############################################################################
 
@@ -1081,20 +1084,20 @@ np.savetxt("../data/isatab/p_IR_BA.tsv",      p_IR_BA,      delimiter="\t", fmt=
 # #
 # # write ISA-Tab files  
 # #
-# np.savetxt("../data/isatab/s_samples.tsv",      s_samples,      delimiter="\t", fmt="%s")
-# np.savetxt("../data/isatab/a_collection.tsv",   a_collection,   delimiter="\t", fmt="%s")
-# np.savetxt("../data/isatab/a_species.tsv",      a_species,      delimiter="\t", fmt="%s")
+# np.savetxt("../data/isatab/s_samples.txt",      s_samples,      delimiter="\t", fmt="%s")
+# np.savetxt("../data/isatab/a_collection.txt",   a_collection,   delimiter="\t", fmt="%s")
+# np.savetxt("../data/isatab/a_species.txt",      a_species,      delimiter="\t", fmt="%s")
 
 # #
 # # @DONE: check that columns of these two sheets match against Fonseca format
 # #
-# np.savetxt("../data/isatab/a_IR_WHO.tsv",       a_IR_WHO,       delimiter="\t", fmt="%s")
-# np.savetxt("../data/isatab/a_IR_BA.tsv",        a_IR_BA,        delimiter="\t", fmt="%s")
+# np.savetxt("../data/isatab/a_IR_WHO.txt",       a_IR_WHO,       delimiter="\t", fmt="%s")
+# np.savetxt("../data/isatab/a_IR_BA.txt",        a_IR_BA,        delimiter="\t", fmt="%s")
 
 # #
 # # @DONE: check that columns of these two sheets match against Fonseca format
 # #
-# np.savetxt("../data/isatab/p_IR_WHO.tsv",       p_IR_WHO,        delimiter="\t", fmt="%s")
-# np.savetxt("../data/isatab/p_IR_BA.tsv",        p_IR_BA,        delimiter="\t", fmt="%s")
+# np.savetxt("../data/isatab/p_IR_WHO.txt",       p_IR_WHO,        delimiter="\t", fmt="%s")
+# np.savetxt("../data/isatab/p_IR_BA.txt",        p_IR_BA,        delimiter="\t", fmt="%s")
 
 print("--- %s seconds ---" % (time.time() - start_time))
