@@ -176,10 +176,6 @@ for key1 in headerToDatacolumnKEY_to_ontologyKeyToVariableNameKEY.keys():
             except KeyError:
                 header_to_datacolumn[key1]['mapped_ontology_columns'][ontology_term] = [ontology_value]                
 
-
-pdb.set_trace()
-
-
 ############################################################################
 ############################################################################
 # Generate ISA-Tab's tabs: s_samples.txt, a_collections.txt, g_assay...    #
@@ -288,10 +284,6 @@ col_samples_comment_Journalreference               = np.array(header_to_datacolu
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
 col_samples_comment_RemarksegFullstoPdeviationsfromstandardprocedureooM     = np.array(header_to_datacolumn['Remarks (eg. deviations from standard procedures)']['raw_dataset_column'])
 
-# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
-col_samples_comment_RemarksegFullstoPdeviationsfromstandardprocedureooM     = np.array(header_to_datacolumn['Remarks (eg. deviations from standard procedures)']['raw_dataset_column'])
-
-
 ## }
 
 
@@ -317,13 +309,12 @@ s_samples_headers           = np.array([    'Source Name',\
                                             'Unit',\
                                             'Term Source Ref',\
                                             'Term Accession Number',\
-                                            
-                                            'Comment[Investigation type]'
-                                            'Comment[Number of replicates for control]'
-                                            'Comment[Total mosquitoes in all controls]'
-                                            'Comment[Institute that collected data]'
-                                            'Comment[Data published in a journal?]'
-                                            'Comment[Journal reference]'
+                                            'Comment[Investigation type]',\
+                                            'Comment[Number of replicates for control]',\
+                                            'Comment[Total mosquitoes in all controls]',\
+                                            'Comment[Institute that collected data]',\
+                                            'Comment[Data published in a journal?]',\
+                                            'Comment[Journal reference]',\
                                             'Comment[Remarks (eg. deviations from standard procedures)]'])
 
 ### stack the s_samples columns vertically as rows 
@@ -350,7 +341,16 @@ s_samples = np.vstack(( col_source_names,\
                         col_ageEFO,\
                         col_ageEFO_unit,\
                         col_ageEFO_termSourceRef,\
-                        col_ageEFO_termAccnNo ))
+                        col_ageEFO_termAccnNo,\
+                        col_comment_InvestigationType,\
+                        col_samples_comment_Numberofreplicatesforcontrol,\
+                        col_samples_comment_Total_mosquitoesinallcontrols,\
+                        col_samples_comment_Institutethatcollectedddata,\
+                        col_samples_comment_Datapublishedinajournal,\
+                        col_samples_comment_Journalreference,\
+                        col_samples_comment_RemarksegFullstoPdeviationsfromstandardprocedureooM))  
+
+pdb.set_trace()
 
 ### transpose such that columns fall into columns
 # [ col1 col2 ... ]
@@ -361,6 +361,8 @@ s_samples = s_samples.T
 ### stack the column headers on top
 s_samples = np.vstack((s_samples_headers,s_samples))
 
+
+pdb.set_trace()
 
 # @save:s_samples
 np.savetxt("../data/isatab/s_samples.txt",      s_samples,      delimiter="\t", fmt="%s")
