@@ -83,11 +83,12 @@ start_time = time.time()
 #
 # Read .csv file representing the punett
 #
+#reader      = csv.reader(open("../data/raw/IR Database_PMI Dataset 22122014_pasted_tabs.csv","rb"),delimiter="\t")
 reader      = csv.reader(open("../data/raw/IR Database_PMI Dataset 22122014.csv","rb"),delimiter=",")
 x           = list(reader)
 dataset     = np.array(x)
 superheaders= dataset[0]
-headers     = dataset[1] 
+headers     = dataset[1]
 
 dataset_transposed = list(dataset[2:].T)  # so that columns become stacked as rows
 
@@ -174,6 +175,9 @@ for key1 in headerToDatacolumnKEY_to_ontologyKeyToVariableNameKEY.keys():
                 header_to_datacolumn[key1]['mapped_ontology_columns'][ontology_term].append(ontology_value)
             except KeyError:
                 header_to_datacolumn[key1]['mapped_ontology_columns'][ontology_term] = [ontology_value]                
+
+
+pdb.set_trace()
 
 
 ############################################################################
