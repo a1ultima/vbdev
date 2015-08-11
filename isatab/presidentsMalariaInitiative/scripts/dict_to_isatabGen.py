@@ -350,7 +350,8 @@ s_samples = np.vstack(( col_source_names,\
                         col_samples_comment_Journalreference,\
                         col_samples_comment_RemarksegFullstoPdeviationsfromstandardprocedureooM))  
 
-pdb.set_trace()
+### Prune out all "NR" (not recorded) values as empty strings ""
+s_samples[s_samples=="NR"]=""
 
 ### transpose such that columns fall into columns
 # [ col1 col2 ... ]
@@ -361,12 +362,11 @@ s_samples = s_samples.T
 ### stack the column headers on top
 s_samples = np.vstack((s_samples_headers,s_samples))
 
-
-pdb.set_trace()
-
 # @save:s_samples
 np.savetxt("../data/isatab/s_samples.txt",      s_samples,      delimiter="\t", fmt="%s")
 
+
+pdb.set_trace()
 
 #######################
 ## a_collections.txt ## @a_collections
@@ -628,6 +628,9 @@ a_collection = a_collection.T
 ### stack the column headers on top
 a_collection = np.vstack((a_collection_headers,a_collection))
 
+### prune out all "NR" (not recorded) values as empty strings ""
+a_collection[a_collection=="NR"]=""
+
 # @save:a_collections
 np.savetxt("../data/isatab/a_collection.txt",   a_collection,   delimiter="\t", fmt="%s")
 
@@ -691,6 +694,9 @@ a_species = a_species.T
 
 ### stack the column headers on top
 a_species = np.vstack((a_species_headers,a_species))
+
+### prune out all "NR" (not recorded) values as empty strings ""
+a_species[a_species=="NR"]=""
 
 # @save:a_species
 np.savetxt("../data/isatab/a_species.txt",      a_species,      delimiter="\t", fmt="%s")
@@ -823,16 +829,19 @@ a_IR_WHO = np.array([   col_IR_WHO_sample_names,\
                         col_IR_WHO_durationOfExposure_accn,\
                         col_IR_WHO_rawDataFile  ])
 
-# rows are flipped to columns
+### rows are flipped to columns
 a_IR_WHO = a_IR_WHO.T
 
-# filter out non IR_BA rows 
+### filter out non IR_BA rows 
 a_IR_WHO_filtered = filter_assay_rows( a_IR_WHO, "WHO test kit_adults" )  # @DONE: check length of filtered WHO assay is 
 
-# stack the column headers on top
+### stack the column headers on top
 a_IR_WHO = np.vstack(( a_IR_WHO_headers, a_IR_WHO_filtered ))
 
-# @save:a_IR_WHO
+### prune out all "NR" (not recorded) values as empty strings ""
+a_IR_WHO[a_IR_WHO=="NR"]=""
+
+### @save:a_IR_WHO
 np.savetxt("../data/isatab/a_IR_WHO.txt",      a_IR_WHO,      delimiter="\t", fmt="%s")
 
 ############
@@ -949,16 +958,19 @@ p_IR_WHO = np.array([           col_p_IR_WHO_assay_names,
                                 col_p_IR_WHO_value_unit_termSourceRef,
                                 col_p_IR_WHO_value_unit_accn    ])
 
-# rows are flipped to columns
+### rows are flipped to columns
 p_IR_WHO             = p_IR_WHO.T
 
-# filter out non IR_BA rows 
+### filter out non IR_BA rows 
 p_IR_WHO_filtered    = filter_assay_rows( p_IR_WHO, "WHO test kit_adults" )  # @DONE: check length of filtered WHO assay is 
 
-# stack the column headers on top
+### stack the column headers on top
 p_IR_WHO             = np.vstack(( p_IR_WHO_headers, p_IR_WHO_filtered ))
 
-# @save:p_IR_WHO
+### prune out all "NR" (not recorded) values as empty strings ""
+p_IR_WHO[p_IR_WHO=="NR"]=""
+
+### @save:p_IR_WHO
 np.savetxt("../data/isatab/p_IR_WHO.txt",      p_IR_WHO,      delimiter="\t", fmt="%s")
 
 
@@ -1036,9 +1048,11 @@ a_IR_BA             = a_IR_BA.T
 # filter out non IR_BA rows 
 a_IR_BA_filtered    = filter_assay_rows( a_IR_BA, "CDC bottle_adults" )  # @DONE: check length of filtered WHO assay is 
 
-
 # stack the column headers on top
 a_IR_BA             = np.vstack((a_IR_BA_headers,a_IR_BA_filtered))
+
+### prune out all "NR" (not recorded) values as empty strings ""
+a_IR_BA[a_IR_BA=="NR"]=""
 
 # @save:a_IR_BA
 np.savetxt("../data/isatab/a_IR_BA.txt",      a_IR_BA,      delimiter="\t", fmt="%s")
@@ -1105,6 +1119,9 @@ p_IR_BA_filtered    = filter_assay_rows( p_IR_BA, "CDC bottle_adults" )  # @DONE
 
 # stack the column headers on top
 p_IR_BA             = np.vstack(( p_IR_BA_headers, p_IR_BA_filtered ))
+
+### prune out all "NR" (not recorded) values as empty strings ""
+p_IR_BA[p_IR_BA=="NR"]=""
 
 # @save:a_IR_BA
 np.savetxt("../data/isatab/p_IR_BA.txt",      p_IR_BA,      delimiter="\t", fmt="%s")
