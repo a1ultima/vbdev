@@ -264,6 +264,37 @@ col_ageEFO_termSourceRef    = np.array(["UO"]*nrows)
 # 10. header: 'Term Accession Number'
 col_ageEFO_termAccnNo       = np.array(["0000033"]*nrows)
 
+
+## comment columns {
+   
+# Comment [ Investigation type ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
+col_comment_InvestigationType     = np.array(header_to_datacolumn['Investigation type']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
+col_samples_comment_Numberofreplicatesforcontrol   = np.array(header_to_datacolumn['Number of replicates for control']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
+col_samples_comment_Total_mosquitoesinallcontrols  = np.array(header_to_datacolumn['Total mosquitoes in all controls']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
+col_samples_comment_Institutethatcollectedddata    = np.array(header_to_datacolumn['Institute that collected data']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
+col_samples_comment_Datapublishedinajournal       = np.array(header_to_datacolumn['Data published in a journal?']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
+col_samples_comment_Journalreference               = np.array(header_to_datacolumn['Journal reference']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
+col_samples_comment_RemarksegFullstoPdeviationsfromstandardprocedureooM     = np.array(header_to_datacolumn['Remarks (eg. deviations from standard procedures)']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
+col_samples_comment_RemarksegFullstoPdeviationsfromstandardprocedureooM     = np.array(header_to_datacolumn['Remarks (eg. deviations from standard procedures)']['raw_dataset_column'])
+
+
+## }
+
+
 # @unite-columns
 s_samples_headers           = np.array([    'Source Name',\
                                             'Sample Name',\
@@ -285,7 +316,15 @@ s_samples_headers           = np.array([    'Source Name',\
                                             'Characteristics [age (EFO:0000246)]',\
                                             'Unit',\
                                             'Term Source Ref',\
-                                            'Term Accession Number' ])
+                                            'Term Accession Number',\
+                                            
+                                            'Comment[Investigation type]'
+                                            'Comment[Number of replicates for control]'
+                                            'Comment[Total mosquitoes in all controls]'
+                                            'Comment[Institute that collected data]'
+                                            'Comment[Data published in a journal?]'
+                                            'Comment[Journal reference]'
+                                            'Comment[Remarks (eg. deviations from standard procedures)]'])
 
 ### stack the s_samples columns vertically as rows 
 #   [col 1: ..... ]
