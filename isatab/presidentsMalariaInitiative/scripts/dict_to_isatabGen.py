@@ -1,4 +1,5 @@
-# coding=utf-8
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 ###########
 # Imports # 
@@ -365,9 +366,6 @@ s_samples = np.vstack((s_samples_headers,s_samples))
 # @save:s_samples
 np.savetxt("../data/isatab/s_samples.txt",      s_samples,      delimiter="\t", fmt="%s")
 
-
-pdb.set_trace()
-
 #######################
 ## a_collections.txt ## @a_collections
 #######################
@@ -558,6 +556,62 @@ assert len(col_collection_provinces)==len(provinces)==nrows
 # Characteristics [Collection site country (VBcv:0000701)]
 col_collection_country = countries
 
+
+## Comment [ * ] columns 
+
+# Comment [ country ]       @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_Country      = np.array(header_to_datacolumn['Country']['raw_dataset_column'])
+
+# Comment [ country code ]       @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_CountryCode  = np.array(header_to_datacolumn['Country code']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_Year         = np.array(header_to_datacolumn['Year']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_Startmonth = np.array(header_to_datacolumn['Start month']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_Endmonth = np.array(header_to_datacolumn['End month']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_Province1stadminlevel     = np.array(header_to_datacolumn['Province             1st admin level']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_District2ndadminlevel = np.array(header_to_datacolumn['District 2nd admin level']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_DistrictUpdate     = np.array(header_to_datacolumn['District Update']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_Commune3rdadminlevel     = np.array(header_to_datacolumn['Commune 3rd admin level']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_VillageorLocalityMoositeMooORIG     = np.array(header_to_datacolumn['Village or Locality (site) ORIG']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_LatitudeUTM_XUPDATE2     = np.array(header_to_datacolumn['Latitude UTM_X UPDATE2']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_collection_comment_LongitudeUTM_YUPDATE2     = np.array(header_to_datacolumn['Longitude UTM_Y UPDATE2']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_collection_comment_GEOREFSTATUS     = np.array(header_to_datacolumn['GEOREF STATUS']['raw_dataset_column'])
+
+
+
 # a_collection headers (from: Fonseca ISA-Tab: https://goo.gl/607nLN)
 a_collection_headers = [    "Sample Name",\
                             "Assay Name",\
@@ -585,7 +639,21 @@ a_collection_headers = [    "Sample Name",\
                             "Characteristics [Collection site county (VBcv:0000828)]",\
                             "Characteristics [Collection site district (VBcv:0000699)]",\
                             "Characteristics [Collection site province (VBcv:0000700)]",\
-                            "Characteristics [Collection site country (VBcv:0000701)]"]
+                            "Characteristics [Collection site country (VBcv:0000701)]",\
+                            'Comment[Country code',\
+                            'Comment[Country',\
+                            'Comment[Year]',\
+                            'Comment[Start month]',\
+                            'Comment[End month]',\
+                            'Comment[Province             1st admin level]',\
+                            'Comment[District 2nd admin level]',\
+                            'Comment[District Update]',\
+                            'Comment[Commune 3rd admin level]',\
+                            'Comment[Village or Locality (site) ORIG]',\
+                            'Comment[Latitude UTM_X UPDATE2]',\
+                            'Comment[Longitude UTM_Y UPDATE2]',\
+                            'Comment[GEOREF STATUS]' ]
+
 #
 # @unite-columns:a_species
 #
@@ -618,7 +686,20 @@ a_collection = np.vstack((  col_collection_sample_names,\
                             col_collection_county,\
                             col_collection_district,\
                             col_collection_provinces,\
-                            col_collection_country  ))
+                            col_collection_country,\
+                            col_collection_comment_Country,\
+                            col_collection_comment_CountryCode,\
+                            col_collection_comment_Year,\
+                            col_collection_comment_Startmonth,\
+                            col_collection_comment_Endmonth,\
+                            col_collection_comment_Province1stadminlevel,\
+                            col_collection_comment_District2ndadminlevel,\
+                            col_collection_comment_DistrictUpdate,\
+                            col_collection_comment_Commune3rdadminlevel,\
+                            col_collection_comment_VillageorLocalityMoositeMooORIG,\
+                            col_collection_comment_LatitudeUTM_XUPDATE2,\
+                            col_collection_comment_LongitudeUTM_YUPDATE2,\
+                            col_collection_comment_GEOREFSTATUS))
 
 #
 # rows are flipped to columns
@@ -633,7 +714,6 @@ a_collection[a_collection=="NR"]=""
 
 # @save:a_collections
 np.savetxt("../data/isatab/a_collection.txt",   a_collection,   delimiter="\t", fmt="%s")
-
 
 
 #############
@@ -675,7 +755,19 @@ col_species_result_termSourceRef= np.array(["MIRO"]*nrows)
 #Term Accession Number
 # "40000165"
 col_species_result_accn         = np.array(header_to_datacolumn["Species tested"]["mapped_ontology_columns"]["miroId"])
-a_species_headers               = np.array(['Sample Name','Assay Name','Description','Protocol REF','Performer','Date','Characteristics [species assay result (VBcv:0000961)]','Term Source Ref','Term Accession Number'])
+
+
+## Comment [ * ] columns 
+
+col_species_comment_StagetestedMooandMooorigin = np.array(header_to_datacolumn['Stage tested (and origin)']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+#
+col_species_comment_Speciesusedincontrols = np.array(header_to_datacolumn['Species used in controls']['raw_dataset_column'])
+
+
+# headers
+a_species_headers               = np.array(['Sample Name','Assay Name','Description','Protocol REF','Performer','Date','Characteristics [species assay result (VBcv:0000961)]','Term Source Ref','Term Accession Number','Comment[Stage tested (and origin)]', 'Comment[Species used in controls]'])
 
 # @unite-columns:a_species
 a_species                       = np.vstack((   col_species_sample_names,\
@@ -686,7 +778,10 @@ a_species                       = np.vstack((   col_species_sample_names,\
                                                 col_species_date,\
                                                 col_species_result_value,\
                                                 col_species_result_termSourceRef,\
-                                                col_species_result_accn     ))
+                                                col_species_result_accn,\
+                                                col_species_comment_StagetestedMooandMooorigin,\
+                                                col_species_comment_Speciesusedincontrols     ))
+
 #
 # rows are flipped to columns
 #
@@ -806,9 +901,81 @@ col_IR_WHO_durationOfExposure_accn          = col_IR_WHO_durationOfExposure_accn
 # e.g. 'p_IR_WHO.txt'
 col_IR_WHO_rawDataFile = np.array(['p_IR_WHO.txt']*nrows)
 
+
+## Comment[ * ] columns
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_comment_TestType             = np.array(header_to_datacolumn['Test                                           type']['raw_dataset_column'])
+
+# Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_comment_InsecticideTested     = np.array(header_to_datacolumn['Insecticide tested']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_Timeatwhichmortalityrecorded     = np.array(header_to_datacolumn['Time at which mortality recorded']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_ResistancestatusSusceptibleColoNMooEquaL98PoPooM       = np.array(header_to_datacolumn['Resistance status Susceptible:(>=98%) Moderate:(90-98%) High:(<90%)']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_RecordedaveragemortalityinTreatmentsMooPoPooM     = np.array(header_to_datacolumn['Recorded average mortality in treatments (%)']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_RecordedaveragemortalityincontrolsMooPoPooM     = np.array(header_to_datacolumn['Recorded average mortality in controls (%)']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_CalculatedaveragemortalityadjustedforcontrolMooPoPooM     = np.array(header_to_datacolumn['Calculated  average mortality adjusted for control  (%)']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_Numberofreplicatestested     = np.array(header_to_datacolumn['Number of replicates tested']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_Totalmosquitoesinalltestreplicates     = np.array(header_to_datacolumn['Total mosquitoes in all test replicates']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_ChemicalclassCommAifstandarddosage     = np.array(header_to_datacolumn['Chemical class, if standard dosage']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_UPDATEDSTATUS                          = np.array(header_to_datacolumn['UPDATED STATUS']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_Resistancestatus_IRMapper     = np.array(header_to_datacolumn['Resistance status_IRMapper']['raw_dataset_column'])
+
+# Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
+col_IR_WHO_Resistancecode_IRMapper     = np.array(header_to_datacolumn['Resistance code_IR Mapper']['raw_dataset_column'])
+
 ##  <<<@DONE: do header numbers>>>
 ## <<<<<<<@todo: add new headers in "Comment []" form, after browsing: Unique-values...xlsx
-a_IR_WHO_headers = np.array(['Sample Name','Assay Name','Protocol REF','Performer','Date','Comment [note]','Parameter Value [group1.insecticidal substance]','Term Source Ref','Term Accession Number','Parameter Value [group1.concentration]','Unit','Term Source Ref','Term Accession Number','Parameter Value [duration of exposure]','Unit','Term Source Ref','Term Accession Number','Raw Data File'])
+a_IR_WHO_headers = np.array([   'Sample Name',\
+                                'Assay Name',\
+                                'Protocol REF',\
+                                'Performer',\
+                                'Date',\
+                                'Comment [note]',\
+                                'Parameter Value [group1.insecticidal substance]',\
+                                'Term Source Ref',\
+                                'Term Accession Number',\
+                                'Parameter Value [group1.concentration]',\
+                                'Unit',\
+                                'Term Source Ref',\
+                                'Term Accession Number',\
+                                'Parameter Value [duration of exposure]',\
+                                'Unit',\
+                                'Term Source Ref',\
+                                'Term Accession Number',\
+                                'Raw Data File',\
+                                'Comment[Test                                           type]',\
+                                'Comment[Insecticide tested]',\
+                                'Comment[Time at which mortality recorded]',\
+                                'Comment[Resistance status Susceptible:(>=98%) Moderate:(90-98%) High:(<90%)]',\
+                                'Comment[Recorded average mortality in treatments (%)]',\
+                                'Comment[Recorded average mortality in controls (%)]',\
+                                'Comment[Calculated  average mortality adjusted for control  (%)]',\
+                                'Comment[Number of replicates tested]',\
+                                'Comment[Total mosquitoes in all test replicates]',\
+                                'Comment[Chemical class, if standard dosage]',\
+                                'Comment[UPDATED STATUS]',\
+                                'Comment[Resistance status_IRMapper]',\
+                                'Comment[Resistance code_IR Mapper]'])
 
 a_IR_WHO = np.array([   col_IR_WHO_sample_names,\
                         col_IR_WHO_assay_names_final,\
@@ -827,7 +994,21 @@ a_IR_WHO = np.array([   col_IR_WHO_sample_names,\
                         col_IR_WHO_durationOfExposure_unit,\
                         col_IR_WHO_durationOfExposure_termSourceRef,\
                         col_IR_WHO_durationOfExposure_accn,\
-                        col_IR_WHO_rawDataFile  ])
+                        col_IR_WHO_rawDataFile,\
+                        col_IR_WHO_comment_TestType,\
+                        col_IR_WHO_comment_InsecticideTested,\
+                        col_IR_WHO_Timeatwhichmortalityrecorded,\
+                        col_IR_WHO_ResistancestatusSusceptibleColoNMooEquaL98PoPooM,\
+                        col_IR_WHO_RecordedaveragemortalityinTreatmentsMooPoPooM,\
+                        col_IR_WHO_RecordedaveragemortalityincontrolsMooPoPooM,\
+                        col_IR_WHO_CalculatedaveragemortalityadjustedforcontrolMooPoPooM,\
+                        col_IR_WHO_Numberofreplicatestested,\
+                        col_IR_WHO_Totalmosquitoesinalltestreplicates,\
+                        col_IR_WHO_ChemicalclassCommAifstandarddosage,\
+                        col_IR_WHO_UPDATEDSTATUS,\
+                        col_IR_WHO_Resistancestatus_IRMapper,\
+                        col_IR_WHO_Resistancecode_IRMapper])
+
 
 ### rows are flipped to columns
 a_IR_WHO = a_IR_WHO.T
@@ -843,6 +1024,9 @@ a_IR_WHO[a_IR_WHO=="NR"]=""
 
 ### @save:a_IR_WHO
 np.savetxt("../data/isatab/a_IR_WHO.txt",      a_IR_WHO,      delimiter="\t", fmt="%s")
+
+
+
 
 ############
 # p_IR_WHO #          @@p_IR_WHO
@@ -986,7 +1170,7 @@ col_IR_BA_assay_names  = col_IR_WHO_assay_names     # prior to filtering away th
 col_IR_BA_assay_names_final                 = [i.replace("IR_WHO","IR_BA") for i in col_IR_BA_assay_names]
 col_IR_BA_protolRef                         = copy([i.replace("IR_WHO","IR_BA") for i in col_IR_WHO_protolRef])
 
-col_IR_BA_assay_names_final = [i.replace("\xe6","ae") for i in copy(col_IR_BA_assay_names_final)]
+col_IR_BA_assay_names_final = [i.replace("\xe6","µg") for i in copy(col_IR_BA_assay_names_final)]
 
 col_IR_BA_performer                         = copy(col_IR_WHO_performer)
 col_IR_BA_date                              = copy(col_IR_WHO_date)
@@ -1003,6 +1187,20 @@ col_IR_BA_durationOfExposure_unit           = copy(col_IR_WHO_durationOfExposure
 col_IR_BA_durationOfExposure_accn           = copy(col_IR_WHO_durationOfExposure_accn)
 col_IR_BA_durationOfExposure_termSourceRef  = copy(col_IR_WHO_durationOfExposure_termSourceRef)
 col_IR_BA_rawDataFile                       = np.array([i.replace("WHO","BA") for i in copy(col_IR_WHO_rawDataFile)])
+
+col_IR_BA_comment_TestType                                      = copy(col_IR_WHO_comment_TestType)
+col_IR_BA_comment_InsecticideTested                             = copy(col_IR_WHO_comment_InsecticideTested)
+col_IR_BA_Timeatwhichmortalityrecorded                          = copy(col_IR_WHO_Timeatwhichmortalityrecorded)
+col_IR_BA_ResistancestatusSusceptibleColoNMooEquaL98PoPooM      = copy(col_IR_WHO_ResistancestatusSusceptibleColoNMooEquaL98PoPooM)
+col_IR_BA_RecordedaveragemortalityinTreatmentsMooPoPooM         = copy(col_IR_WHO_RecordedaveragemortalityinTreatmentsMooPoPooM)
+col_IR_BA_RecordedaveragemortalityincontrolsMooPoPooM           = copy(col_IR_WHO_RecordedaveragemortalityincontrolsMooPoPooM)
+col_IR_BA_CalculatedaveragemortalityadjustedforcontrolMooPoPooM = copy(col_IR_WHO_CalculatedaveragemortalityadjustedforcontrolMooPoPooM)
+col_IR_BA_Numberofreplicatestested                              = copy(col_IR_WHO_Numberofreplicatestested)
+col_IR_BA_Totalmosquitoesinalltestreplicates                    = copy(col_IR_WHO_Totalmosquitoesinalltestreplicates)
+col_IR_BA_ChemicalclassCommAifstandarddosage                    = copy(col_IR_WHO_ChemicalclassCommAifstandarddosage)
+col_IR_BA_UPDATEDSTATUS                                         = copy(col_IR_WHO_UPDATEDSTATUS)
+col_IR_BA_Resistancestatus_IRMapper                             = copy(col_IR_WHO_Resistancestatus_IRMapper)
+col_IR_BA_Resistancecode_IRMapper                               = copy(col_IR_WHO_Resistancecode_IRMapper)
 
 a_IR_BA_headers = np.array([    'Sample Name',\
                                 'Assay Name',\
@@ -1021,7 +1219,20 @@ a_IR_BA_headers = np.array([    'Sample Name',\
                                 'Unit',\
                                 'Term Source Ref',\
                                 'Term Accession Number',\
-                                'Raw Data File' ])
+                                'Raw Data File',\
+                                'Comment[Test                                           type]',\
+                                'Comment[Insecticide tested]',\
+                                'Comment[Time at which mortality recorded]',\
+                                'Comment[Resistance status Susceptible:(>=98%) Moderate:(90-98%) High:(<90%)]',\
+                                'Comment[Recorded average mortality in treatments (%)]',\
+                                'Comment[Recorded average mortality in controls (%)]',\
+                                'Comment[Calculated  average mortality adjusted for control  (%)]',\
+                                'Comment[Number of replicates tested]',\
+                                'Comment[Total mosquitoes in all test replicates]',\
+                                'Comment[Chemical class, if standard dosage]',\
+                                'Comment[UPDATED STATUS]',\
+                                'Comment[Resistance status_IRMapper]',\
+                                'Comment[Resistance code_IR Mapper]' ])
 
 a_IR_BA = np.array([    col_IR_BA_sample_names,\
                         col_IR_BA_assay_names_final,\
@@ -1040,7 +1251,20 @@ a_IR_BA = np.array([    col_IR_BA_sample_names,\
                         col_IR_BA_durationOfExposure_unit,\
                         col_IR_BA_durationOfExposure_termSourceRef,\
                         col_IR_BA_durationOfExposure_accn,\
-                        col_IR_BA_rawDataFile ])
+                        col_IR_BA_rawDataFile,\
+                        col_IR_BA_comment_TestType,\
+                        col_IR_BA_comment_InsecticideTested,\
+                        col_IR_BA_Timeatwhichmortalityrecorded,\
+                        col_IR_BA_ResistancestatusSusceptibleColoNMooEquaL98PoPooM,\
+                        col_IR_BA_RecordedaveragemortalityinTreatmentsMooPoPooM,\
+                        col_IR_BA_RecordedaveragemortalityincontrolsMooPoPooM,\
+                        col_IR_BA_CalculatedaveragemortalityadjustedforcontrolMooPoPooM,\
+                        col_IR_BA_Numberofreplicatestested,\
+                        col_IR_BA_Totalmosquitoesinalltestreplicates,\
+                        col_IR_BA_ChemicalclassCommAifstandarddosage,\
+                        col_IR_BA_UPDATEDSTATUS,\
+                        col_IR_BA_Resistancestatus_IRMapper,\
+                        col_IR_BA_Resistancecode_IRMapper])
 
 # rows are flipped to columns
 a_IR_BA             = a_IR_BA.T
@@ -1064,7 +1288,7 @@ np.savetxt("../data/isatab/a_IR_BA.txt",      a_IR_BA,      delimiter="\t", fmt=
 # @todo: put these rows of data (col_p_IR_*) stacked then headers then filter using the filter_assay_rows() functions                @latest
 col_p_IR_BA_assay_names              = copy(col_IR_BA_assay_names_final)
 
-col_p_IR_BA_assay_names = [i.replace("\xe6","ae") for i in copy(col_p_IR_BA_assay_names)]
+col_p_IR_BA_assay_names = [i.replace("\xe6","µg") for i in copy(col_p_IR_BA_assay_names)]
 
 col_p_IR_BA_mortalityPercentage      = copy(col_p_IR_WHO_mortalityPercentage)
 col_p_IR_BA_observable_value         = copy(col_p_IR_WHO_observable_value)
