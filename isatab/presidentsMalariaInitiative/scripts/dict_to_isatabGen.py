@@ -1040,7 +1040,7 @@ col_p_IR_WHO_assay_names = np.array(["PMI.IR_WHO."+i for i in sample_names])
 col_p_IR_WHO_assay_names = col_IR_WHO_assay_names                       
 
 # removing all æ UTR-8 special characters with ASCII "ae" characters, @todo: add the true æ characters aftrewards... 
-col_p_IR_WHO_assay_names = [i.replace("\xe6","ae") for i in col_p_IR_WHO_assay_names]
+col_p_IR_WHO_assay_names = [i.replace("\xe6","µg") for i in col_p_IR_WHO_assay_names]
 
 # Phenotype Name
 # e.g.: Mortality percentage:100, 0.05% deltamethrin
