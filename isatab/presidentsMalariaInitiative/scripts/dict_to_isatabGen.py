@@ -260,7 +260,7 @@ col_comment_ref             = np.array(header_to_datacolumn["REF#"]["raw_dataset
 col_comment_origSourceRef   = np.array(header_to_datacolumn["ORIG SOURCE REF"]["raw_dataset_column"])
 
 # ...
-col_comment_ref             = np.array(["PMI SOURCE REF#"]*nrows)
+#col_comment_ref             = np.array(["PMI SOURCE REF#"]*nrows)
 
 # ...
 col_comment                 = np.array([""]*nrows)
@@ -341,7 +341,6 @@ s_samples_headers           = np.array([    'Source Name',\
                                             'Sample Name',\
                                             'Description',\
                                             "Comment [PMI ORIG REF#]",\
-                                            "Comment [PMI REF#]",\
                                             "Comment [PMI SOURCE REF#]",\
                                             'Comment [comment]',\
                                             'Material Type',\
@@ -374,7 +373,6 @@ s_samples = np.vstack(( col_source_names,\
                         col_sample_names,\
                         col_description,\
                         col_comment_origRef,\
-                        col_comment_ref,\
                         col_comment_origSourceRef,\
                         col_comment,\
                         col_material_type,\
@@ -793,7 +791,6 @@ col_species_result_termSourceRef= np.array(["MIRO"]*nrows)
 # "40000165"
 col_species_result_accn         = np.array(header_to_datacolumn["Species tested"]["mapped_ontology_columns"]["miroId"])
 
-
 ## Comment [ * ] columns 
 
 col_species_comment_StagetestedMooandMooorigin = np.array(header_to_datacolumn['Stage tested (and origin)']['raw_dataset_column'])
@@ -801,7 +798,6 @@ col_species_comment_StagetestedMooandMooorigin = np.array(header_to_datacolumn['
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
 #
 col_species_comment_Speciesusedincontrols = np.array(header_to_datacolumn['Species used in controls']['raw_dataset_column'])
-
 
 # headers
 a_species_headers               = np.array(['Sample Name','Assay Name','Description','Protocol REF','Performer','Date','Characteristics [species assay result (VBcv:0000961)]','Term Source Ref','Term Accession Number','Comment[Stage tested (and origin)]', 'Comment[Species used in controls]'])
@@ -856,28 +852,28 @@ for i,assay_name in enumerate(col_IR_WHO_assay_names):
     assay_name_final    = assay_name+"."+insecticide
     col_IR_WHO_assay_names_final.append(assay_name_final)
 
-col_IR_WHO_assay_names  = np.array(col_IR_WHO_assay_names_final)
+col_IR_WHO_assay_names                  = np.array(col_IR_WHO_assay_names_final)
 
 # Protocol REF
 # e.g. 'IR_WHO'
-col_IR_WHO_protolRef    = np.array(["IR_WHO"]*nrows)
+col_IR_WHO_protolRef                    = np.array(["IR_WHO"]*nrows)
 
 # Performer
 # e.g. ''
-col_IR_WHO_performer    = np.array([""]*nrows)
+col_IR_WHO_performer                    = np.array([""]*nrows)
 
 # Date
 # e.g. ''
-col_IR_WHO_date         = np.array([""]*nrows)
+col_IR_WHO_date                         = np.array([""]*nrows)
 
 # Comment [note]
 # e.g. ''
-col_IR_WHO_note         = np.array([""]*nrows)
+col_IR_WHO_note                         = np.array([""]*nrows)
 
 # Parameter Value [group1.insecticidal substance]
 # e.g. 'lambda-cyhalothrin'
 #col_IR_WHO_insecticide_value = header_to_datacolumn["Insecticide tested"]["raw_dataset_column"]
-col_IR_WHO_insecticide_value = header_to_datacolumn["Insecticide tested"]["mapped_ontology_columns"]["ins_term"]
+col_IR_WHO_insecticide_value            = header_to_datacolumn["Insecticide tested"]["mapped_ontology_columns"]["ins_term"]
 
 # Term Source Ref
 # e.g. 'MIRO'
@@ -944,43 +940,43 @@ col_IR_WHO_rawDataFile = np.array(['p_IR_WHO.txt']*nrows)
 ## Comment[ * ] columns
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_comment_TestType             = np.array(header_to_datacolumn['Test                                           type']['raw_dataset_column'])
+col_IR_WHO_comment_TestType                             = np.array(header_to_datacolumn['Test                                           type']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_comment_InsecticideTested     = np.array(header_to_datacolumn['Insecticide tested']['raw_dataset_column'])
+col_IR_WHO_comment_InsecticideTested                    = np.array(header_to_datacolumn['Insecticide tested']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_Timeatwhichmortalityrecorded     = np.array(header_to_datacolumn['Time at which mortality recorded']['raw_dataset_column'])
+col_IR_WHO_Timeatwhichmortalityrecorded                 = np.array(header_to_datacolumn['Time at which mortality recorded']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_ResistancestatusSusceptibleColoNMooEquaL98PoPooM       = np.array(header_to_datacolumn['Resistance status Susceptible:(>=98%) Moderate:(90-98%) High:(<90%)']['raw_dataset_column'])
+col_IR_WHO_ResistancestatusSusceptibleColoNMooEquaL98PoPooM         = np.array(header_to_datacolumn['Resistance status Susceptible:(>=98%) Moderate:(90-98%) High:(<90%)']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_RecordedaveragemortalityinTreatmentsMooPoPooM     = np.array(header_to_datacolumn['Recorded average mortality in treatments (%)']['raw_dataset_column'])
+col_IR_WHO_RecordedaveragemortalityinTreatmentsMooPoPooM            = np.array(header_to_datacolumn['Recorded average mortality in treatments (%)']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_RecordedaveragemortalityincontrolsMooPoPooM     = np.array(header_to_datacolumn['Recorded average mortality in controls (%)']['raw_dataset_column'])
+col_IR_WHO_RecordedaveragemortalityincontrolsMooPoPooM              = np.array(header_to_datacolumn['Recorded average mortality in controls (%)']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_CalculatedaveragemortalityadjustedforcontrolMooPoPooM     = np.array(header_to_datacolumn['Calculated  average mortality adjusted for control  (%)']['raw_dataset_column'])
+col_IR_WHO_CalculatedaveragemortalityadjustedforcontrolMooPoPooM    = np.array(header_to_datacolumn['Calculated  average mortality adjusted for control  (%)']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_Numberofreplicatestested     = np.array(header_to_datacolumn['Number of replicates tested']['raw_dataset_column'])
+col_IR_WHO_Numberofreplicatestested                                 = np.array(header_to_datacolumn['Number of replicates tested']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_Totalmosquitoesinalltestreplicates     = np.array(header_to_datacolumn['Total mosquitoes in all test replicates']['raw_dataset_column'])
+col_IR_WHO_Totalmosquitoesinalltestreplicates                       = np.array(header_to_datacolumn['Total mosquitoes in all test replicates']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_ChemicalclassCommAifstandarddosage     = np.array(header_to_datacolumn['Chemical class, if standard dosage']['raw_dataset_column'])
+col_IR_WHO_ChemicalclassCommAifstandarddosage                       = np.array(header_to_datacolumn['Chemical class, if standard dosage']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_UPDATEDSTATUS                          = np.array(header_to_datacolumn['UPDATED STATUS']['raw_dataset_column'])
+col_IR_WHO_UPDATEDSTATUS                                            = np.array(header_to_datacolumn['UPDATED STATUS']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_Resistancestatus_IRMapper     = np.array(header_to_datacolumn['Resistance status_IRMapper']['raw_dataset_column'])
+col_IR_WHO_Resistancestatus_IRMapper                                = np.array(header_to_datacolumn['Resistance status_IRMapper']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_IR_WHO_Resistancecode_IRMapper     = np.array(header_to_datacolumn['Resistance code_IR Mapper']['raw_dataset_column'])
+col_IR_WHO_Resistancecode_IRMapper                              = np.array(header_to_datacolumn['Resistance code_IR Mapper']['raw_dataset_column'])
 
 ##  <<<@DONE: do header numbers>>>
 ## <<<<<<<@todo: add new headers in "Comment []" form, after browsing: Unique-values...xlsx
