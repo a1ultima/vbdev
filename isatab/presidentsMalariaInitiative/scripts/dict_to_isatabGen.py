@@ -1,5 +1,24 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
+## -*- coding: iso-8859-1 -*-
+
+"""
+
+Generates ISA-Tab sheets: 
+
+    s_samples.txt
+    a_collections.txt
+    a_species.txt
+    a_IR_WHO.txt
+    p_IR_WHO.txt
+    a_IR_BA.txt
+    p_IR_BA.txt
+
+And puts them in:
+
+    /home/ab108/0VB/isatab/presidentsMalariaInitiative/data/isatab/
+
+"""
+
 
 ###########
 # Imports # 
@@ -40,7 +59,7 @@ def check_path_exists_else_make_it( path ):
 
 def filter_assay_rows( assay_data_rowise, assay_string_match ):
 
-    """ remove all rows of data not pertaining to the desired assay 
+    """ remove all data rows (from the original .csv) not pertaining to the desired isa-tab sheet, e.g. some rows belong to a_IR_BA.txt whereas others belong to a_IR_WHO.txt
 
     Args:
         assay_string_match:     e.g. "WHO test kit_adults"  (from: header_to_datacolumn["Test                                           type"]["raw_dataset_column"])
@@ -63,28 +82,26 @@ def filter_assay_rows( assay_data_rowise, assay_string_match ):
 # Main #
 ########
 
-#
-# Check data paths exist
-#
+print "Preparing to generate the following ISA-Tab tabs: s_samples.txt, a_collection.txt, a_IR_BA.txt, a_IR_WHO.txt, a_species.txt, p_IR_BA.txt, p_IR_WHO.txt..."
+
+##########################
+# Check data paths exist #
+##########################
 
 # check if necessary paths exist, else make them
 #
 # @DONE: check if file exists else create it
+print "\tChecking required directories exist..."
 check_path_exists_else_make_it("../data/")
 check_path_exists_else_make_it("../data/ontologies")
 check_path_exists_else_make_it("../data/raw")
 check_path_exists_else_make_it("../data/isatab")
 
-#
-# ...
-#
-import time
-start_time = time.time()
+#############################
+# Read "raw pmi speadsheet" #
+#############################
 
-#
-# Read .csv file representing the punett
-#
-#reader      = csv.reader(open("../data/raw/IR Database_PMI Dataset 22122014_pasted_tabs.csv","rb"),delimiter="\t")
+print "\tReading in raw PMI data spreadhseet (.csv):  ../data/raw/IR Database_PMI Dataset 22122014.csv"
 reader      = csv.reader(open("../data/raw/IR Database_PMI Dataset 22122014.csv","rb"),delimiter=",")
 x           = list(reader)
 dataset     = np.array(x)
@@ -93,40 +110,66 @@ headers     = dataset[1]
 
 dataset_transposed = list(dataset[2:].T)  # so that columns become stacked as rows
 
-#
-# 1. Get some ontologies 
+
+###############################################
+# Read ontology -to- raw PMI data "onto maps" #
+###############################################
+
+# Get some ontologies 
 #
 #       search for all the pickle files (which should be ontology keys) 
 #
+print "\tReading in foreign keys of Raw PMI values -to- VectorBase-friendly ontology terms:  ../data/ontology/*.p "
+
 ontologyKey_to_variableName = {}
 
 pickle_names = [fn for fn in listdir("../data/ontologies/") if ".p" in fn]
 
 for pickle_name in pickle_names:
+    print "\t\t"+str(pickle_name)
     with open('../data/ontologies/'+pickle_name, 'rb') as handle:
         pickled_ontology = pickle.load(handle)
         pickle_name = pickle_name.replace(".p","")
         ontologyKey_to_variableName[pickle_name] = pickled_ontology  # e.g. ../data/ontologies/country_to_gaz.txt
 
+################################################
+# Unite "onto maps" with "raw pmi spreadsheet" #    this gets ugly so feel free to skip to "Generate ISA-Tab" (line 210+)
+################################################
+# 
+# Unite the following code (up to line 210) unites ontology foreign keys with raw PMI data rows into a giant dict called: "header_to_datacolumn"
 #
-# 2. Split the columns into sheets they belong to 
+# "header_to_datacolumn", is a dict where:
+#   - each key is a name of a column header as it appears in the original raw PMI spreadheet (../data/raw/IR Database_PMI Dataset 22122014.csv)
+#   - each value is a column of data, which would need to join side-by-side to form ISA-Tabs tabs, such as s_samples.txt (multiple columns per isa-tab sheet)
 #
-#       s_samples
-#
-# put the transposed data into a dict
+"""
+Diagram illustrating "header_to_datacolumn"'s structure:
+
+ ---key1---key2---etc.
+     |        
+     |---'raw_dataset_column':          column of data from PMI spreadsheet       (element1---element2---element3---etc.)
+     |                                                                                |||       |||        |||
+     |---'mapped_ontology_columns':     corresponding column of ontology terms    (ontterm1---ontterm2---ontterm3---etc.)
+
+List of all keys (key1, key2, etc.) by name:
+
+    ['Resistance code_IR Mapper', 'UPDATED STATUS', 'Resistance status_IRMapper', 'Investigation type', 'Chemical class, if standard dosage', 'Comments', 'GEOREF STATUS', 'End month', 'Start month', 'Recorded average mortality in treatments (%)', 'Total mosquitoes in all test replicates', 'Journal reference', 'Village or Locality UPDATED (Co-ordinates)', 'District Update', 'ORIG SOURCE REF', 'Longitude UTM_Y UPDATE2', 'Test                                           type', 'Country', 'REF#', 'Count', 'Species used in controls', 'Time at which mortality recorded', 'Mechanism status', 'Allelic frequency                   (%)', 'ORIG SOURCE', 'Number of replicates tested', 'Province             1st admin level', 'Insecticide tested', 'Resistance status Susceptible:(>=98%) Moderate:(90-98%) High:(<90%)', 'Calculated  average mortality adjusted for control  (%)', 'ORIG REF#', 'Species tested', 'Remarks (eg. deviations from standard procedures)', 'Recorded average mortality in controls (%)', 'Total mosquitoes in all controls', 'Institute that collected data', 'District 2nd admin level', 'Commune 3rd admin level', 'Latitude UTM_X UPDATE2', 'Number of replicates for control', 'Country code', 'Stage tested (and origin)', 'Year', 'Village or Locality (site) ORIG', 'Data published in a journal?']
+
+E.g. Column of data corresponding to key: "Resistance code_IR Mapper": 
+
+    ['PR', 'PR', 'S', 'S', 'PR', 'PR', 'PR', 'S', 'R', 'PR', 'PR', 'S', 'S', 'S', 'PR', ...etc...
+
+"""
+
+
 header_to_datacolumn = {}
 
 for i,header in enumerate(headers):
     header_to_datacolumn[header] = { 'raw_dataset_column':dataset_transposed[i],\
                                      'mapped_ontology_columns':{} }
 
-# test it DONE
-
-# for a given data_transposed column, get all the mapped onto terms in the ontologies dict, as their own columns
-
-# get the ontologies out one by one, then get their corresponding columns of data out
-
-# create a dictionary that translates between keys in header_to_datacolumn vs. keys in ontologyKey_to_variableName
+# get all the mapped onto terms in the ontologies dict, as their own columns: get the ontologies out one by one, then get their corresponding columns of data out
+#       create a dictionary that translates between keys in header_to_datacolumn vs. keys in ontologyKey_to_variableName
 headerToDatacolumnKEY_to_ontologyKeyToVariableNameKEY = {
     'Species tested':            'species_to_miroTerm_miroId',
     'Insecticide tested':        'insecticide_to_ontoTerms',
@@ -136,7 +179,6 @@ headerToDatacolumnKEY_to_ontologyKeyToVariableNameKEY = {
     'Year':                      'yearStartToEnd_yearStart_yearEnd',
     'Stage tested (and origin)': 'stageTested_ontoTermAdult_termSourceRef_accnNum'
 }
-
 
 #
 # Get onto term columns 
@@ -177,15 +219,22 @@ for key1 in headerToDatacolumnKEY_to_ontologyKeyToVariableNameKEY.keys():
             except KeyError:
                 header_to_datacolumn[key1]['mapped_ontology_columns'][ontology_term] = [ontology_value]                
 
+
 ############################################################################
 ############################################################################
 # Generate ISA-Tab's tabs: s_samples.txt, a_collections.txt, g_assay...    #
 ############################################################################
 ############################################################################
 
+print "\tConstructing each ISA-Tab sheet..."
+
 ###################
 ## s_samples.txt ## @s_samples
 ###################
+
+print "\t\ts_samples.txt"
+
+# Each of the following 
 
 # @todo: test s_samples for errors then show Bob
 sample_names                = header_to_datacolumn["ORIG SOURCE REF"]["raw_dataset_column"]
@@ -265,7 +314,7 @@ col_ageEFO_termAccnNo       = np.array(["0000033"]*nrows)
 ## comment columns {
    
 # Comment [ Investigation type ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
-col_comment_InvestigationType     = np.array(header_to_datacolumn['Investigation type']['raw_dataset_column'])
+col_comment_InvestigationType                       = np.array(header_to_datacolumn['Investigation type']['raw_dataset_column'])
 
 # Comment [ @@@a ]           @todo: @@inc.:headers_list, inc. to @unite:s_samples
 col_samples_comment_Numberofreplicatesforcontrol   = np.array(header_to_datacolumn['Number of replicates for control']['raw_dataset_column'])
@@ -286,7 +335,6 @@ col_samples_comment_Journalreference               = np.array(header_to_datacolu
 col_samples_comment_RemarksegFullstoPdeviationsfromstandardprocedureooM     = np.array(header_to_datacolumn['Remarks (eg. deviations from standard procedures)']['raw_dataset_column'])
 
 ## }
-
 
 # @unite-columns
 s_samples_headers           = np.array([    'Source Name',\
@@ -370,6 +418,8 @@ np.savetxt("../data/isatab/s_samples.txt",      s_samples,      delimiter="\t", 
 ## a_collections.txt ## @a_collections
 #######################
 
+print "\t\ta_collections.txt"
+
 # 1. look at kathrin / fonseca IR study ISA-Tab and get all column headers below \/
 ## the following are column headers of @Kathrin's ISA-Tab (@fonseca): a_collections.txt
 
@@ -389,7 +439,7 @@ col_collection_protocolRef            = np.array(["CATCH"]*nrows)
 
 # Performer
 ### e.g.: " "
-col_collection_performer              = np.array([" "]*nrows)
+col_collection_performer              = np.array([""]*nrows)
 
 # Date
 ### e.g.: "2006-05/2006-11"
@@ -450,80 +500,80 @@ for i,month_start in enumerate(months_start):
     col_collection_date.append(date)
 
 # save it as a column 
-col_collection_date             = col_collection_date
+col_collection_date                     = col_collection_date
 
 # Characteristics [sampling time (EFO:0000689)]
 ### e.g.: "17:30/20:00"
 # @DONE: check sampling time from the report in the email > find email from WL
-col_collection_sampling_time    = [""]*nrows  # left empty since we do not know sampling time
+col_collection_sampling_time            = [""]*nrows  # left empty since we do not know sampling time
 
 # Characteristics [Temperature at time of collection (EFO:0001702)]
 ### e.g.: "25/28"
-col_collection_temperature      = [""]*nrows  # left empty since temperature unavailable
+col_collection_temperature              = [""]*nrows  # left empty since temperature unavailable
 
 # Unit
 ## e.g.: "degree Celsius"
-col_collection_temperature_unit = [""]*nrows  # left empty since temperature unavailable
+col_collection_temperature_unit         = [""]*nrows  # left empty since temperature unavailable
 
 # Term Source Ref
 ## e.g.: "UO"
-col_collection_temperature_source_ref = [""]*nrows  # left empty since temperature unavailable
+col_collection_temperature_source_ref   = [""]*nrows  # left empty since temperature unavailable
 
 # Term Accession Number
 ## e.g.: "0000027"
-col_collection_temperature_accn = [""]*nrows  # left empty since temperature unavailable
+col_collection_temperature_accn         = [""]*nrows  # left empty since temperature unavailable
 
 # Comment [household ID]
 ## e.g.: " "
-col_collection_householdId      = [""]*nrows  # left empty since household ID unavailable
+col_collection_householdId              = [""]*nrows  # left empty since household ID unavailable
 
 # Characteristics [Collection site (VBcv:0000831)]
 ## e.g.: "Municipality of Antioquia"
-col_collection_site             = np.array(header_to_datacolumn['Country']['mapped_ontology_columns']['gazTerm'])
+col_collection_site                     = np.array(header_to_datacolumn['Country']['mapped_ontology_columns']['gazTerm'])
 
 # Term Source Ref
 ## e.g.: "GAZ"
-col_collection_site_termSourceRef = np.array(header_to_datacolumn['Country']['mapped_ontology_columns']['source'])
+col_collection_site_termSourceRef       = np.array(header_to_datacolumn['Country']['mapped_ontology_columns']['source'])
 
 # Term Accession Number
 ## e.g.: "00073117"
-col_collection_site_accn          = np.array(header_to_datacolumn['Country']['mapped_ontology_columns']['gazId'])
+col_collection_site_accn                = np.array(header_to_datacolumn['Country']['mapped_ontology_columns']['gazId'])
 
 # Characteristics [Collection site latitude (VBcv:0000817)]
 ## e.g.: "7.582777778"
-col_collection_latitude         = header_to_datacolumn['Latitude UTM_X UPDATE2']['raw_dataset_column']
+col_collection_latitude                 = header_to_datacolumn['Latitude UTM_X UPDATE2']['raw_dataset_column']
 
 # Characteristics [Collection site longitude (VBcv:0000816)]
 ## e.g.: "-75.35194444"
-col_collection_longitude        = header_to_datacolumn['Longitude UTM_Y UPDATE2']['raw_dataset_column']
+col_collection_longitude                = header_to_datacolumn['Longitude UTM_Y UPDATE2']['raw_dataset_column']
 
 # Characteristics [Collection site altitude (VBcv:0000832)]
 ## e.g.: ""
-col_collection_altitude         = [""]*nrows  # not available
+col_collection_altitude                 = [""]*nrows  # not available
 
 # Characteristics [Collection site location (VBcv:0000698)]
 ## e.g.: ""
-col_collection_location         = [""]*nrows  # not available
+col_collection_location                 = [""]*nrows  # not available
 
 # Characteristics [Collection site village (VBcv:0000829)]
 ## e.g.: ""
-col_collection_village          = [""]*nrows  # not available
+col_collection_village                  = [""]*nrows  # not available
 
 # Characteristics [Collection site locality (VBcv:0000697)]
 ## e.g.: ""
-col_collection_locality         = np.array(header_to_datacolumn["Commune 3rd admin level"]["raw_dataset_column"])
+col_collection_locality                 = np.array(header_to_datacolumn["Commune 3rd admin level"]["raw_dataset_column"])
 
 # Characteristics [Collection site suburb (VBcv:0000845)]
 ## e.g.: ""
-col_collection_suburb           = np.array([""]*nrows)
+col_collection_suburb                   = np.array([""]*nrows)
 
 # Characteristics [Collection site city (VBcv:0000844)]
 ## e.g.: ""
-col_collection_city             = np.array([""]*nrows)
+col_collection_city                     = np.array([""]*nrows)
 
 # Characteristics [Collection site county (VBcv:0000828)]
 ## e.g.: ""
-col_collection_county           = np.array([""]*nrows)
+col_collection_county                   = np.array([""]*nrows)
 
 # Characteristics [Collection site district (VBcv:0000699)]
 # @DONE: consolidate 'District Update' w/ 'District 2nd admin level' by prioritising the latter if available
@@ -560,56 +610,43 @@ col_collection_country = countries
 ## Comment [ * ] columns 
 
 # Comment [ country ]       @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
-col_collection_comment_Country      = np.array(header_to_datacolumn['Country']['raw_dataset_column'])
+col_collection_comment_Country                  = np.array(header_to_datacolumn['Country']['raw_dataset_column'])
 
 # Comment [ country code ]       @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
-col_collection_comment_CountryCode  = np.array(header_to_datacolumn['Country code']['raw_dataset_column'])
+col_collection_comment_CountryCode              = np.array(header_to_datacolumn['Country code']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
-col_collection_comment_Year         = np.array(header_to_datacolumn['Year']['raw_dataset_column'])
+col_collection_comment_Year                     = np.array(header_to_datacolumn['Year']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
-col_collection_comment_Startmonth = np.array(header_to_datacolumn['Start month']['raw_dataset_column'])
+col_collection_comment_Startmonth               = np.array(header_to_datacolumn['Start month']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
-col_collection_comment_Endmonth = np.array(header_to_datacolumn['End month']['raw_dataset_column'])
+col_collection_comment_Endmonth                 = np.array(header_to_datacolumn['End month']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
-col_collection_comment_Province1stadminlevel     = np.array(header_to_datacolumn['Province             1st admin level']['raw_dataset_column'])
+col_collection_comment_Province1stadminlevel    = np.array(header_to_datacolumn['Province             1st admin level']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
-col_collection_comment_District2ndadminlevel = np.array(header_to_datacolumn['District 2nd admin level']['raw_dataset_column'])
+col_collection_comment_District2ndadminlevel    = np.array(header_to_datacolumn['District 2nd admin level']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
-col_collection_comment_DistrictUpdate     = np.array(header_to_datacolumn['District Update']['raw_dataset_column'])
+col_collection_comment_DistrictUpdate           = np.array(header_to_datacolumn['District Update']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
 col_collection_comment_Commune3rdadminlevel     = np.array(header_to_datacolumn['Commune 3rd admin level']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
-col_collection_comment_VillageorLocalityMoositeMooORIG     = np.array(header_to_datacolumn['Village or Locality (site) ORIG']['raw_dataset_column'])
+col_collection_comment_VillageorLocalityMoositeMooORIG = np.array(header_to_datacolumn['Village or Locality (site) ORIG']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
-col_collection_comment_LatitudeUTM_XUPDATE2     = np.array(header_to_datacolumn['Latitude UTM_X UPDATE2']['raw_dataset_column'])
+#col_collection_comment_LatitudeUTM_XUPDATE2     = np.array(header_to_datacolumn['Latitude UTM_X UPDATE2']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-#
-col_collection_comment_LongitudeUTM_YUPDATE2     = np.array(header_to_datacolumn['Longitude UTM_Y UPDATE2']['raw_dataset_column'])
+#col_collection_comment_LongitudeUTM_YUPDATE2    = np.array(header_to_datacolumn['Longitude UTM_Y UPDATE2']['raw_dataset_column'])
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
-col_collection_comment_GEOREFSTATUS     = np.array(header_to_datacolumn['GEOREF STATUS']['raw_dataset_column'])
-
+col_collection_comment_GEOREFSTATUS             = np.array(header_to_datacolumn['GEOREF STATUS']['raw_dataset_column'])
 
 
 # a_collection headers (from: Fonseca ISA-Tab: https://goo.gl/607nLN)
@@ -650,15 +687,14 @@ a_collection_headers = [    "Sample Name",\
                             'Comment[District Update]',\
                             'Comment[Commune 3rd admin level]',\
                             'Comment[Village or Locality (site) ORIG]',\
-                            'Comment[Latitude UTM_X UPDATE2]',\
-                            'Comment[Longitude UTM_Y UPDATE2]',\
                             'Comment[GEOREF STATUS]' ]
 
 #
 # @unite-columns:a_species
 #
 
-col_collection_performer = [i.replace(" ","cfornadel@usaid.gov lnorris@usaid.gov") for i in col_collection_performer]
+#col_collection_performer = [i.replace(" ","cfornadel@usaid.gov lnorris@usaid.gov") for i in col_collection_performer] # @todo: find out if there is a delimiter for multiple performer emails
+#col_collection_performer = [i.replace(" ","cfornadel@usaid.gov") for i in col_collection_performer] # @todo: try to address ^ to include multiple performer emails
 
 a_collection = np.vstack((  col_collection_sample_names,\
                             col_collection_assay_names,\
@@ -697,8 +733,6 @@ a_collection = np.vstack((  col_collection_sample_names,\
                             col_collection_comment_DistrictUpdate,\
                             col_collection_comment_Commune3rdadminlevel,\
                             col_collection_comment_VillageorLocalityMoositeMooORIG,\
-                            col_collection_comment_LatitudeUTM_XUPDATE2,\
-                            col_collection_comment_LongitudeUTM_YUPDATE2,\
                             col_collection_comment_GEOREFSTATUS))
 
 #
@@ -716,12 +750,15 @@ a_collection[a_collection=="NR"]=""
 np.savetxt("../data/isatab/a_collection.txt",   a_collection,   delimiter="\t", fmt="%s")
 
 
+
 #############
 # a_species #  @@A_sPECIES
 #############
 
+print "\t\ta_species.txt"
+
 #Sample Name
-# "Corrales-El PlayÃ³n"
+# "Corrales-El Playón"
 col_species_sample_names        = np.array([i for i in sample_names])
 
 #Assay Name
@@ -801,12 +838,14 @@ np.savetxt("../data/isatab/a_species.txt",      a_species,      delimiter="\t", 
 # a_IR_WHO #  @@a_IR_WHO    # @done: git commit from home  
 ############
 
+print "\t\ta_IR_WHO.txt"
+
 # Sample Name
-# e.g. 'Corrales-El PlayÃ³n'
+# e.g. 'Corrales-El Playón'
 col_IR_WHO_sample_names         = np.array([i for i in sample_names])
 
 # Assay Name
-# e.g. 'Corrales-El PlayÃ³n.dr.IR_WHO.lambda-cyhalothrin'
+# e.g. 'Corrales-El Playón.dr.IR_WHO.lambda-cyhalothrin'
 col_IR_WHO_assay_names          = np.array(["PMI.IR_WHO."+i for i in sample_names])
 col_IR_WHO_assay_names_final    = []
 
@@ -1026,21 +1065,21 @@ a_IR_WHO[a_IR_WHO=="NR"]=""
 np.savetxt("../data/isatab/a_IR_WHO.txt",      a_IR_WHO,      delimiter="\t", fmt="%s")
 
 
-
-
 ############
 # p_IR_WHO #          @@p_IR_WHO
 ############
-#   <<<<< @todo: need to filter to include only WHO_testkit rows >>>>>
-#   <<<<< @todo: sanity check the code up till p_IR_BA, as they were done ad hoc from home... >>>>>
+#   <<<<< @DONE: need to filter to include only WHO_testkit rows >>>>>
+#   <<<<< @DONE: sanity check the code up till p_IR_BA, as they were done ad hoc from home... >>>>>
+
+print "\t\tp_IR_WHO.txt"
 
 # Assay Name
-# e.g.: Corrales-El PlayÃ³n.dr.IR_WHO.deltamethrin
+# e.g.: Corrales-El Playón.dr.IR_WHO.deltamethrin
 col_p_IR_WHO_assay_names = np.array(["PMI.IR_WHO."+i for i in sample_names])
 col_p_IR_WHO_assay_names = col_IR_WHO_assay_names                       
 
-# removing all Ã¦ UTR-8 special characters with ASCII "ae" characters, @todo: add the true Ã¦ characters aftrewards... 
-col_p_IR_WHO_assay_names = [i.replace("\xe6","Âµg") for i in col_p_IR_WHO_assay_names]
+# removing all æ UTR-8 special characters with ASCII "ae" characters, @todo: add the true æ characters aftrewards... 
+col_p_IR_WHO_assay_names = [i.replace("\xe6","ae") for i in col_p_IR_WHO_assay_names]
 
 # Phenotype Name
 # e.g.: Mortality percentage:100, 0.05% deltamethrin
@@ -1162,6 +1201,8 @@ np.savetxt("../data/isatab/p_IR_WHO.txt",      p_IR_WHO,      delimiter="\t", fm
 # a_IR_BA  #    @@a_IR_BA
 ############
 
+print "\t\ta_IR_BA.txt"
+
 #   <<<<< @todo: need to filter to include only WHO_testkit rows >>>>>
 #   <<<<< @todo: sanity check the code up till p_IR_BA, as they were done ad hoc from home... >>>>>
 col_IR_BA_sample_names = col_IR_WHO_sample_names    # prior to filtering away the IR_WHO bits
@@ -1170,7 +1211,7 @@ col_IR_BA_assay_names  = col_IR_WHO_assay_names     # prior to filtering away th
 col_IR_BA_assay_names_final                 = [i.replace("IR_WHO","IR_BA") for i in col_IR_BA_assay_names]
 col_IR_BA_protolRef                         = copy([i.replace("IR_WHO","IR_BA") for i in col_IR_WHO_protolRef])
 
-col_IR_BA_assay_names_final = [i.replace("\xe6","Âµg") for i in copy(col_IR_BA_assay_names_final)]
+col_IR_BA_assay_names_final = [i.replace("æ","µ") for i in copy(col_IR_BA_assay_names_final)]
 
 col_IR_BA_performer                         = copy(col_IR_WHO_performer)
 col_IR_BA_date                              = copy(col_IR_WHO_date)
@@ -1285,10 +1326,12 @@ np.savetxt("../data/isatab/a_IR_BA.txt",      a_IR_BA,      delimiter="\t", fmt=
 # p_IR_BA  #   @done: git commit from home
 ############
 
-# @todo: put these rows of data (col_p_IR_*) stacked then headers then filter using the filter_assay_rows() functions                @latest
+print "\t\tp_IR_BA.txt"
+
+# @DONE: put these rows of data (col_p_IR_*) stacked then headers then filter using the filter_assay_rows() functions                @latest
 col_p_IR_BA_assay_names              = copy(col_IR_BA_assay_names_final)
 
-col_p_IR_BA_assay_names = [i.replace("\xe6","Âµg") for i in copy(col_p_IR_BA_assay_names)]
+col_p_IR_BA_assay_names = [i.replace("\xe6","µ") for i in copy(col_p_IR_BA_assay_names)]
 
 col_p_IR_BA_mortalityPercentage      = copy(col_p_IR_WHO_mortalityPercentage)
 col_p_IR_BA_observable_value         = copy(col_p_IR_WHO_observable_value)
@@ -1386,4 +1429,4 @@ np.savetxt("../data/isatab/p_IR_BA.txt",      p_IR_BA,      delimiter="\t", fmt=
 # np.savetxt("../data/isatab/p_IR_WHO.txt",       p_IR_WHO,        delimiter="\t", fmt="%s")
 # np.savetxt("../data/isatab/p_IR_BA.txt",        p_IR_BA,        delimiter="\t", fmt="%s")
 
-print("--- %s seconds ---" % (time.time() - start_time))
+#print("--- %s seconds ---" % (time.time() - start_time))
