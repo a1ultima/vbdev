@@ -557,6 +557,7 @@ col_collection_location                 = [""]*nrows  # not available
 ## e.g.: ""
 col_collection_village                  = [""]*nrows  # not available
 
+
 # Characteristics [Collection site locality (VBcv:0000697)]
 ## e.g.: ""
 col_collection_locality                 = np.array(header_to_datacolumn["Commune 3rd admin level"]["raw_dataset_column"])
@@ -636,6 +637,11 @@ col_collection_comment_Commune3rdadminlevel     = np.array(header_to_datacolumn[
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
 col_collection_comment_VillageorLocalityMoositeMooORIG = np.array(header_to_datacolumn['Village or Locality (site) ORIG']['raw_dataset_column'])
+
+a = list(col_collection_comment_VillageorLocalityMoositeMooORIG)    # clean away trailing whitespaces
+b = [i.replace(" ","") for i in a] 
+
+col_collection_village = b
 
 # Comment [ @@@ ]           @todo: @@inc.:headers_list, inc. to @unite:a_collection
 #col_collection_comment_LatitudeUTM_XUPDATE2     = np.array(header_to_datacolumn['Latitude UTM_X UPDATE2']['raw_dataset_column'])
