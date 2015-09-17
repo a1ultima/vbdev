@@ -923,7 +923,9 @@ for i,row in enumerate(col_IR_WHO_durationOfExposure_value):
         col_IR_WHO_durationOfExposure_unit[i]   = "minute"
         col_IR_WHO_durationOfExposure_accn[i]   = "0000031"
     elif "hrs" in row:
-        col_IR_WHO_durationOfExposure_value[i]  = row.replace("hrs","")
+        # 24 hours is actually the recovery time, the standard exposure time is 1 hour for WHO paper kit based on
+        # http://apps.who.int/iris/bitstream/10665/80139/1/9789241505154_eng.pdf
+        col_IR_WHO_durationOfExposure_value[i]  = "1"
         col_IR_WHO_durationOfExposure_unit[i]   = "hour"
         col_IR_WHO_durationOfExposure_accn[i]   = "0000032"
     else:
